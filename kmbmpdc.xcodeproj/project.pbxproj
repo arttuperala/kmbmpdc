@@ -1,0 +1,525 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		811E38C81D4D16310099BF4C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811E38C71D4D16310099BF4C /* Constants.swift */; };
+		81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7BFC1D48B13D00416934 /* AppDelegate.swift */; };
+		81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7BFE1D48B13D00416934 /* Assets.xcassets */; };
+		81AA7C0D1D48B13E00416934 /* kmbmpdcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C0C1D48B13E00416934 /* kmbmpdcTests.swift */; };
+		81AA7C181D48B13E00416934 /* kmbmpdcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C171D48B13E00416934 /* kmbmpdcUITests.swift */; };
+		81AA7C2E1D492B1F00416934 /* MPDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C2D1D492B1F00416934 /* MPDController.swift */; };
+		81AA7C311D492C5A00416934 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C2F1D492C5A00416934 /* Controls.swift */; };
+		81AA7C321D492C5A00416934 /* Controls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7C301D492C5A00416934 /* Controls.xib */; };
+		81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81C25DAF1D4B300900B53155 /* MainMenu.xib */; };
+		81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E20F0E1D4F320400C594C8 /* libmpdclient.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		81AA7C091D48B13E00416934 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81AA7BF11D48B13D00416934 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81AA7BF81D48B13D00416934;
+			remoteInfo = kmbmpdc;
+		};
+		81AA7C141D48B13E00416934 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81AA7BF11D48B13D00416934 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81AA7BF81D48B13D00416934;
+			remoteInfo = kmbmpdc;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		811E38C71D4D16310099BF4C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		81AA7BF91D48B13D00416934 /* kmbmpdc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kmbmpdc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AA7BFC1D48B13D00416934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		81AA7BFE1D48B13D00416934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		81AA7C031D48B13D00416934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81AA7C081D48B13E00416934 /* kmbmpdcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kmbmpdcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AA7C0C1D48B13E00416934 /* kmbmpdcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kmbmpdcTests.swift; sourceTree = "<group>"; };
+		81AA7C0E1D48B13E00416934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81AA7C131D48B13E00416934 /* kmbmpdcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kmbmpdcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AA7C171D48B13E00416934 /* kmbmpdcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kmbmpdcUITests.swift; sourceTree = "<group>"; };
+		81AA7C191D48B13E00416934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81AA7C2D1D492B1F00416934 /* MPDController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPDController.swift; sourceTree = "<group>"; };
+		81AA7C2F1D492C5A00416934 /* Controls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		81AA7C301D492C5A00416934 /* Controls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Controls.xib; sourceTree = "<group>"; };
+		81C25DAF1D4B300900B53155 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		81E20F0E1D4F320400C594C8 /* libmpdclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpdclient.a; path = libmpdclient/src/.libs/libmpdclient.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		81AA7BF61D48B13D00416934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C051D48B13E00416934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C101D48B13E00416934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		81AA7BF01D48B13D00416934 = {
+			isa = PBXGroup;
+			children = (
+				81E20F0E1D4F320400C594C8 /* libmpdclient.a */,
+				81AA7BFB1D48B13D00416934 /* kmbmpdc */,
+				81AA7C0B1D48B13E00416934 /* kmbmpdcTests */,
+				81AA7C161D48B13E00416934 /* kmbmpdcUITests */,
+				81AA7BFA1D48B13D00416934 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		81AA7BFA1D48B13D00416934 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81AA7BF91D48B13D00416934 /* kmbmpdc.app */,
+				81AA7C081D48B13E00416934 /* kmbmpdcTests.xctest */,
+				81AA7C131D48B13E00416934 /* kmbmpdcUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		81AA7BFB1D48B13D00416934 /* kmbmpdc */ = {
+			isa = PBXGroup;
+			children = (
+				81AA7C031D48B13D00416934 /* Info.plist */,
+				81AA7BFC1D48B13D00416934 /* AppDelegate.swift */,
+				811E38C71D4D16310099BF4C /* Constants.swift */,
+				81AA7C2F1D492C5A00416934 /* Controls.swift */,
+				81AA7C2D1D492B1F00416934 /* MPDController.swift */,
+				81AA7BFE1D48B13D00416934 /* Assets.xcassets */,
+				81AA7C301D492C5A00416934 /* Controls.xib */,
+				81C25DAF1D4B300900B53155 /* MainMenu.xib */,
+			);
+			path = kmbmpdc;
+			sourceTree = "<group>";
+		};
+		81AA7C0B1D48B13E00416934 /* kmbmpdcTests */ = {
+			isa = PBXGroup;
+			children = (
+				81AA7C0C1D48B13E00416934 /* kmbmpdcTests.swift */,
+				81AA7C0E1D48B13E00416934 /* Info.plist */,
+			);
+			path = kmbmpdcTests;
+			sourceTree = "<group>";
+		};
+		81AA7C161D48B13E00416934 /* kmbmpdcUITests */ = {
+			isa = PBXGroup;
+			children = (
+				81AA7C171D48B13E00416934 /* kmbmpdcUITests.swift */,
+				81AA7C191D48B13E00416934 /* Info.plist */,
+			);
+			path = kmbmpdcUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		81AA7BF81D48B13D00416934 /* kmbmpdc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81AA7C1C1D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdc" */;
+			buildPhases = (
+				81AA7BF51D48B13D00416934 /* Sources */,
+				81AA7BF61D48B13D00416934 /* Frameworks */,
+				81AA7BF71D48B13D00416934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kmbmpdc;
+			productName = kmbmpdc;
+			productReference = 81AA7BF91D48B13D00416934 /* kmbmpdc.app */;
+			productType = "com.apple.product-type.application";
+		};
+		81AA7C071D48B13E00416934 /* kmbmpdcTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81AA7C1F1D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdcTests" */;
+			buildPhases = (
+				81AA7C041D48B13E00416934 /* Sources */,
+				81AA7C051D48B13E00416934 /* Frameworks */,
+				81AA7C061D48B13E00416934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81AA7C0A1D48B13E00416934 /* PBXTargetDependency */,
+			);
+			name = kmbmpdcTests;
+			productName = kmbmpdcTests;
+			productReference = 81AA7C081D48B13E00416934 /* kmbmpdcTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		81AA7C121D48B13E00416934 /* kmbmpdcUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81AA7C221D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdcUITests" */;
+			buildPhases = (
+				81AA7C0F1D48B13E00416934 /* Sources */,
+				81AA7C101D48B13E00416934 /* Frameworks */,
+				81AA7C111D48B13E00416934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81AA7C151D48B13E00416934 /* PBXTargetDependency */,
+			);
+			name = kmbmpdcUITests;
+			productName = kmbmpdcUITests;
+			productReference = 81AA7C131D48B13E00416934 /* kmbmpdcUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		81AA7BF11D48B13D00416934 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Perälä";
+				TargetAttributes = {
+					81AA7BF81D48B13D00416934 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					81AA7C071D48B13E00416934 = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 81AA7BF81D48B13D00416934;
+					};
+					81AA7C121D48B13E00416934 = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 81AA7BF81D48B13D00416934;
+					};
+				};
+			};
+			buildConfigurationList = 81AA7BF41D48B13D00416934 /* Build configuration list for PBXProject "kmbmpdc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 81AA7BF01D48B13D00416934;
+			productRefGroup = 81AA7BFA1D48B13D00416934 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				81AA7BF81D48B13D00416934 /* kmbmpdc */,
+				81AA7C071D48B13E00416934 /* kmbmpdcTests */,
+				81AA7C121D48B13E00416934 /* kmbmpdcUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		81AA7BF71D48B13D00416934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */,
+				81AA7C321D492C5A00416934 /* Controls.xib in Resources */,
+				81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C061D48B13E00416934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C111D48B13E00416934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		81AA7BF51D48B13D00416934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AA7C2E1D492B1F00416934 /* MPDController.swift in Sources */,
+				81AA7C311D492C5A00416934 /* Controls.swift in Sources */,
+				81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */,
+				811E38C81D4D16310099BF4C /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C041D48B13E00416934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AA7C0D1D48B13E00416934 /* kmbmpdcTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81AA7C0F1D48B13E00416934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AA7C181D48B13E00416934 /* kmbmpdcUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		81AA7C0A1D48B13E00416934 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81AA7BF81D48B13D00416934 /* kmbmpdc */;
+			targetProxy = 81AA7C091D48B13E00416934 /* PBXContainerItemProxy */;
+		};
+		81AA7C151D48B13E00416934 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81AA7BF81D48B13D00416934 /* kmbmpdc */;
+			targetProxy = 81AA7C141D48B13E00416934 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		81AA7C1A1D48B13E00416934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		81AA7C1B1D48B13E00416934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		81AA7C1D1D48B13E00416934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = kmbmpdc/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libmpdclient/2.10/lib,
+					"$(PROJECT_DIR)/libmpdclient/src/.libs",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/**";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		81AA7C1E1D48B13E00416934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = kmbmpdc/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libmpdclient/2.10/lib,
+					"$(PROJECT_DIR)/libmpdclient/src/.libs",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/**";
+			};
+			name = Release;
+		};
+		81AA7C201D48B13E00416934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = kmbmpdcTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kmbmpdc.app/Contents/MacOS/kmbmpdc";
+			};
+			name = Debug;
+		};
+		81AA7C211D48B13E00416934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = kmbmpdcTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kmbmpdc.app/Contents/MacOS/kmbmpdc";
+			};
+			name = Release;
+		};
+		81AA7C231D48B13E00416934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = kmbmpdcUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = kmbmpdc;
+			};
+			name = Debug;
+		};
+		81AA7C241D48B13E00416934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = kmbmpdcUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = kmbmpdc;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		81AA7BF41D48B13D00416934 /* Build configuration list for PBXProject "kmbmpdc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81AA7C1A1D48B13E00416934 /* Debug */,
+				81AA7C1B1D48B13E00416934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81AA7C1C1D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81AA7C1D1D48B13E00416934 /* Debug */,
+				81AA7C1E1D48B13E00416934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81AA7C1F1D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdcTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81AA7C201D48B13E00416934 /* Debug */,
+				81AA7C211D48B13E00416934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81AA7C221D48B13E00416934 /* Build configuration list for PBXNativeTarget "kmbmpdcUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81AA7C231D48B13E00416934 /* Debug */,
+				81AA7C241D48B13E00416934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 81AA7BF11D48B13D00416934 /* Project object */;
+}
