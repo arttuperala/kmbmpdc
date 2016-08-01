@@ -1,0 +1,21 @@
+language: objective-c
+osx_image: xcode7.3
+before_install:
+  - brew update
+  - brew list autoconf || brew install autoconf
+  - brew list automake || brew install automake
+  - brew list doxygen || brew install doxygen
+  - brew uninstall libtool
+  - brew list libtool || brew install libtool
+  - cd libmpdclient
+  - sed -i .bak 's/libtoolize/glibtoolize/g' autogen.sh
+  - ./autogen.sh
+  - make
+  - cd ..
+install:
+  - xcodebuild -target kmbmpdc -configuration Release
+before_script:
+  - brew install swiftlint
+script:
+  - cd kmbmpdc
+  - swiftlint
