@@ -40,8 +40,12 @@ class MPDController: NSObject {
 
     /// Frees up the connection and sets the instance variable connected to false. Also exits idle
     /// if still idling. Sends a KMBMPDCDisconnected on completion.
-    func disconnect() {
-        if idling { idleExit() }
+    /// - Parameter exitIdle: Boolean value indicating if idle should be exited before the
+    /// connection is freed up. Defaults to true.
+    func disconnect(exitIdle: Bool = true) {
+        if exitIdle {
+            idleExit()
+        }
         mpd_connection_free(mpdConnection!)
         connected = false
 
@@ -121,7 +125,7 @@ class MPDController: NSObject {
                           MPD_IDLE_OPTIONS.rawValue {
                     self.reloadOptions()
                 } else if event_mask.rawValue == 0 && !self.quitIdle {
-                    self.disconnect()
+                    self.disconnect(false)
                     break
                 }
             }
