@@ -1,7 +1,7 @@
 language: objective-c
 osx_image: xcode7.3
 before_install:
-  - brew update
+  - brew update >/dev/null
   - brew list autoconf || brew install autoconf
   - brew list automake || brew install automake
   - brew list doxygen || brew install doxygen
@@ -13,9 +13,13 @@ before_install:
   - make
   - cd ..
 install:
+  - version_number=`git describe --tags --abbrev=0 2>/dev/null || echo 0.0`
+  - if [[ $? != 0 ]]; then version_number="0.0"; fi
+  - agvtool new-version -all $TRAVIS_BUILD_NUMBER
+  - agvtool new-marketing-version $version_number
   - xcodebuild -target kmbmpdc -configuration Release
 before_script:
-  - brew install swiftlint
+  - brew list swiftlint || brew install swiftlint
 script:
   - cd kmbmpdc
   - swiftlint
