@@ -5,7 +5,7 @@ class MPDController: NSObject {
     static let sharedController = MPDController()
     static var idleMask: mpd_idle = mpd_idle(rawValue: MPD_IDLE_PLAYER.rawValue |
                                                         MPD_IDLE_OPTIONS.rawValue)
-    var mpdConnection: COpaquePointer?
+    var mpdConnection: OpaquePointer?
 
     var connected: Bool = false
     var consumeMode: Bool = false
@@ -28,8 +28,8 @@ class MPDController: NSObject {
             reloadOptions()
             idleEnter()
 
-            let notification = NSNotification(name: Constants.Notifications.connected, object: nil)
-            NSNotificationCenter.defaultCenter().postNotification(notification)
+            let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.connected), object: nil)
+            NotificationCenter.default.post(notification)
         }
     }
 
@@ -42,15 +42,15 @@ class MPDController: NSObject {
     /// if still idling. Sends a KMBMPDCDisconnected on completion.
     /// - Parameter exitIdle: Boolean value indicating if idle should be exited before the
     /// connection is freed up. Defaults to true.
-    func disconnect(exitIdle: Bool = true) {
+    func disconnect(_ exitIdle: Bool = true) {
         if exitIdle {
             idleExit()
         }
         mpd_connection_free(mpdConnection!)
         connected = false
 
-        let notification = NSNotification(name: Constants.Notifications.disconnected, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
+        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.disconnected), object: nil)
+        NotificationCenter.default.post(notification)
     }
 
     /// Starts the idling background loop and sets quitIdle to false.
@@ -79,21 +79,21 @@ class MPDController: NSObject {
     /// Sends a notification with the current track name, artist and album.
     func notifyTrackChange() {
         let trackInfo = mpd_run_get_queue_song_id(mpdConnection!, UInt32(currentTrack))
-        let trackName = String.fromCString(mpd_song_get_tag(trackInfo, MPD_TAG_TITLE, 0))
-        let trackAlbum = String.fromCString(mpd_song_get_tag(trackInfo, MPD_TAG_ALBUM, 0))
-        let trackArtist = String.fromCString(mpd_song_get_tag(trackInfo, MPD_TAG_ARTIST, 0))
+        let trackName = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_TITLE, 0))
+        let trackAlbum = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ALBUM, 0))
+        let trackArtist = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ARTIST, 0))
         mpd_song_free(trackInfo)
 
         let notification = NSUserNotification()
         notification.title = trackName
         if trackAlbum != nil && trackArtist != nil {
-            notification.informativeText = "\(trackArtist!) - \(trackAlbum!)"
+            notification.informativeText = "\(trackArtist) - \(trackAlbum)"
         } else if trackAlbum != nil {
-            notification.informativeText = "null - \(trackAlbum!)"
+            notification.informativeText = "null - \(trackAlbum)"
         } else if trackArtist != nil {
-            notification.informativeText = "\(trackArtist!) - null"
+            notification.informativeText = "\(trackArtist) - null"
         }
-        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
+        NSUserNotificationCenter.default.deliver(notification)
     }
 
     /// Toggles between play and pause modes.
@@ -114,8 +114,8 @@ class MPDController: NSObject {
     /// idling property is set to false so that operations that wait for idling to be finished can
     /// continue execution.
     func receiveIdleEvents() {
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+        let priority = DispatchQueue.GlobalQueuePriority.default
+        DispatchQueue.global(priority: priority).async {
             while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
@@ -142,7 +142,7 @@ class MPDController: NSObject {
     /// KMBMPDCPlayerReload notification upon completion.
     /// - Parameter showNotification: Boolean indicating if a track change notification should be
     /// sent out if noticed. Defaults to true.
-    func reloadPlayerStatus(showNotification: Bool = true) {
+    func reloadPlayerStatus(_ showNotification: Bool = true) {
         let status = mpd_run_status(mpdConnection!)
         playerState = mpd_status_get_state(status)
         let songId: Int32 = mpd_status_get_song_id(status)
@@ -153,8 +153,8 @@ class MPDController: NSObject {
             if showNotification { notifyTrackChange() }
         }
 
-        let notification = NSNotification(name: Constants.Notifications.playerRefresh, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
+        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.playerRefresh), object: nil)
+        NotificationCenter.default.post(notification)
     }
 
     /// Fetches the current options of MPD and updates the instance variables with the new data.
@@ -167,8 +167,8 @@ class MPDController: NSObject {
         singleMode = mpd_status_get_single(status)
         mpd_status_free(status)
 
-        let notification = NSNotification(name: Constants.Notifications.optionsRefresh, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
+        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.optionsRefresh), object: nil)
+        NotificationCenter.default.post(notification)
     }
 
     /// Toggles repeat mode.
@@ -192,7 +192,7 @@ class MPDController: NSObject {
     /// from MPD afterwards.
     /// - Parameter mode: MPDController instance variable that stores the option value.
     /// - parameter modeToggleFunction: libmpdclient function that toggles the option.
-    func toggleMode(mode: Bool, modeToggleFunction: (COpaquePointer, Bool) -> Bool) {
+    func toggleMode(_ mode: Bool, modeToggleFunction: (OpaquePointer, Bool) -> Bool) {
         idleExit()
         modeToggleFunction(mpdConnection!, !mode)
         reloadOptions()

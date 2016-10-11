@@ -18,17 +18,17 @@ class Controls: NSViewController {
 
     var appDelegate: AppDelegate?
 
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(Controls.onConnect),
-                                       name: Constants.Notifications.connected, object: nil)
+                                       name: NSNotification.Name(rawValue: Constants.Notifications.connected), object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.onDisconnect),
-                                       name: Constants.Notifications.disconnected, object: nil)
+                                       name: NSNotification.Name(rawValue: Constants.Notifications.disconnected), object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.updateModeSelections),
-                                       name: Constants.Notifications.optionsRefresh, object: nil)
+                                       name: NSNotification.Name(rawValue: Constants.Notifications.optionsRefresh), object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.updatePlayerStatus),
-                                       name: Constants.Notifications.playerRefresh, object: nil)
+                                       name: NSNotification.Name(rawValue: Constants.Notifications.playerRefresh), object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -37,12 +37,12 @@ class Controls: NSViewController {
 
     override func viewDidLoad() {
         // Set the button images to templates to play nice with dark mode.
-        playPauseButton.image?.template = true
-        nextButton.image?.template = true
-        menuButton.image?.template = true
+        playPauseButton.image?.isTemplate = true
+        nextButton.image?.isTemplate = true
+        menuButton.image?.isTemplate = true
     }
 
-    @IBAction func connectDisconnectWasClicked(sender: AnyObject) {
+    @IBAction func connectDisconnectWasClicked(_ sender: AnyObject) {
         if MPDController.sharedController.connected {
             MPDController.sharedController.disconnect()
         } else {
@@ -50,29 +50,29 @@ class Controls: NSViewController {
         }
     }
 
-    @IBAction func consumeModeWasClicked(sender: AnyObject) {
+    @IBAction func consumeModeWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.consumeModeToggle()
     }
 
     /// Toggles all the menu controls that are dependent on a MPD connection.
     /// - Parameter enabled: Boolean indicating whether or not controls are enabled.
-    func enableControls(enabled: Bool) {
-        playPauseMenuButton.enabled = enabled
-        stopButton.enabled = enabled
-        nextMenuButton.enabled = enabled
-        previousButton.enabled = enabled
-        consumeMode.enabled = enabled
-        randomMode.enabled = enabled
-        repeatMode.enabled = enabled
-        singleMode.enabled = enabled
+    func enableControls(_ enabled: Bool) {
+        playPauseMenuButton.isEnabled = enabled
+        stopButton.isEnabled = enabled
+        nextMenuButton.isEnabled = enabled
+        previousButton.isEnabled = enabled
+        consumeMode.isEnabled = enabled
+        randomMode.isEnabled = enabled
+        repeatMode.isEnabled = enabled
+        singleMode.isEnabled = enabled
     }
 
     func onDisconnect() {
-        let bundle = NSBundle.mainBundle()
-        let playButtonImage = bundle.imageForResource("PlayIconDisabled")!
-        let nextButtonImage = bundle.imageForResource("NextIconDisabled")!
-        playButtonImage.template = true
-        nextButtonImage.template = true
+        let bundle = Bundle.main
+        let playButtonImage = bundle.image(forResource: "PlayIconDisabled")!
+        let nextButtonImage = bundle.image(forResource: "NextIconDisabled")!
+        playButtonImage.isTemplate = true
+        nextButtonImage.isTemplate = true
         playPauseButton.image = playButtonImage
         playPauseButton.alternateImage = playButtonImage
         nextButton.image = nextButtonImage
@@ -83,9 +83,9 @@ class Controls: NSViewController {
     }
 
     func onConnect() {
-        let bundle = NSBundle.mainBundle()
-        let nextButtonImage = bundle.imageForResource("NextIcon")!
-        nextButtonImage.template = true
+        let bundle = Bundle.main
+        let nextButtonImage = bundle.image(forResource: "NextIcon")!
+        nextButtonImage.isTemplate = true
         nextButton.image = nextButtonImage
         nextButton.alternateImage = nextButtonImage
 
@@ -93,51 +93,51 @@ class Controls: NSViewController {
         enableControls(true)
     }
 
-    @IBAction func menuWasClicked(sender: AnyObject) {
+    @IBAction func menuWasClicked(_ sender: AnyObject) {
         guard let delegate = appDelegate else { return }
-        delegate.statusItem.popUpStatusItemMenu(mainMenu)
+        delegate.statusItem.popUpMenu(mainMenu)
         menuButton.state = 0
     }
 
-    @IBAction func nextWasClicked(sender: AnyObject) {
+    @IBAction func nextWasClicked(_ sender: AnyObject) {
         if MPDController.sharedController.connected {
             MPDController.sharedController.next()
         }
         nextButton.state = 0
     }
 
-    @IBAction func nextMenuWasClicked(sender: AnyObject) {
+    @IBAction func nextMenuWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.next()
     }
 
-    @IBAction func playPauseWasClicked(sender: AnyObject) {
+    @IBAction func playPauseWasClicked(_ sender: AnyObject) {
         if MPDController.sharedController.connected {
             MPDController.sharedController.playPause()
         }
         playPauseButton.state = 0
     }
 
-    @IBAction func playPauseMenuWasClicked(sender: AnyObject) {
+    @IBAction func playPauseMenuWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.playPause()
     }
 
-    @IBAction func previousWasClicked(sender: AnyObject) {
+    @IBAction func previousWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.previous()
     }
 
-    @IBAction func randomModeWasClicked(sender: AnyObject) {
+    @IBAction func randomModeWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.randomModeToggle()
     }
 
-    @IBAction func repeatModeWasClicked(sender: AnyObject) {
+    @IBAction func repeatModeWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.repeatModeToggle()
     }
 
-    @IBAction func singleModeWasClicked(sender: AnyObject) {
+    @IBAction func singleModeWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.singleModeToggle()
     }
 
-    @IBAction func stopWasClicked(sender: AnyObject) {
+    @IBAction func stopWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.stop()
     }
 
@@ -154,12 +154,12 @@ class Controls: NSViewController {
         var mainButtonImage: NSImage
         if MPDController.sharedController.playerState == MPD_STATE_PLAY {
             playPauseMenuButton.title = "Pause"
-            mainButtonImage = NSBundle.mainBundle().imageForResource("PauseIcon")!
+            mainButtonImage = Bundle.main.image(forResource: "PauseIcon")!
         } else {
             playPauseMenuButton.title = "Play"
-            mainButtonImage = NSBundle.mainBundle().imageForResource("PlayIcon")!
+            mainButtonImage = Bundle.main.image(forResource: "PlayIcon")!
         }
-        mainButtonImage.template = true
+        mainButtonImage.isTemplate = true
         playPauseButton.image = mainButtonImage
         playPauseButton.alternateImage = mainButtonImage
     }
