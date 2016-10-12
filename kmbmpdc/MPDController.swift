@@ -3,8 +3,8 @@ import libmpdclient
 
 class MPDController: NSObject {
     static let sharedController = MPDController()
-    static var idleMask: mpd_idle = mpd_idle(rawValue: MPD_IDLE_PLAYER.rawValue |
-                                                        MPD_IDLE_OPTIONS.rawValue)
+    static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_PLAYER.rawValue | MPD_IDLE_OPTIONS.rawValue)
+
     var mpdConnection: OpaquePointer?
 
     var connected: Bool = false
@@ -17,6 +17,8 @@ class MPDController: NSObject {
     var repeatMode: Bool = false
     var singleMode: Bool = false
 
+    typealias mpdSettingToggle = (OpaquePointer, Bool) -> Bool
+
     /// Attemps connection to the MPD server and sets connected to true if connection is successful.
     func connect() {
         mpdConnection = mpd_connection_new("127.0.0.1", 0, 0)
@@ -28,7 +30,7 @@ class MPDController: NSObject {
             reloadOptions()
             idleEnter()
 
-            let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.connected), object: nil)
+            let notification = Notification(name: Constants.Notifications.connected, object: nil)
             NotificationCenter.default.post(notification)
         }
     }
@@ -49,7 +51,7 @@ class MPDController: NSObject {
         mpd_connection_free(mpdConnection!)
         connected = false
 
-        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.disconnected), object: nil)
+        let notification = Notification(name: Constants.Notifications.disconnected, object: nil)
         NotificationCenter.default.post(notification)
     }
 
@@ -86,11 +88,11 @@ class MPDController: NSObject {
 
         let notification = NSUserNotification()
         notification.title = trackName
-        if trackAlbum != nil && trackArtist != nil {
+        if !trackAlbum.isEmpty && !trackArtist.isEmpty {
             notification.informativeText = "\(trackArtist) - \(trackAlbum)"
-        } else if trackAlbum != nil {
+        } else if !trackAlbum.isEmpty {
             notification.informativeText = "null - \(trackAlbum)"
-        } else if trackArtist != nil {
+        } else if !trackArtist.isEmpty {
             notification.informativeText = "\(trackArtist) - null"
         }
         NSUserNotificationCenter.default.deliver(notification)
@@ -153,7 +155,7 @@ class MPDController: NSObject {
             if showNotification { notifyTrackChange() }
         }
 
-        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.playerRefresh), object: nil)
+        let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)
         NotificationCenter.default.post(notification)
     }
 
@@ -167,7 +169,7 @@ class MPDController: NSObject {
         singleMode = mpd_status_get_single(status)
         mpd_status_free(status)
 
-        let notification = Notification(name: Notification.Name(rawValue: Constants.Notifications.optionsRefresh), object: nil)
+        let notification = Notification(name: Constants.Notifications.optionsRefresh, object: nil)
         NotificationCenter.default.post(notification)
     }
 
@@ -192,9 +194,9 @@ class MPDController: NSObject {
     /// from MPD afterwards.
     /// - Parameter mode: MPDController instance variable that stores the option value.
     /// - parameter modeToggleFunction: libmpdclient function that toggles the option.
-    func toggleMode(_ mode: Bool, modeToggleFunction: (OpaquePointer, Bool) -> Bool) {
+    func toggleMode(_ mode: Bool, modeToggleFunction: mpdSettingToggle) {
         idleExit()
-        modeToggleFunction(mpdConnection!, !mode)
+        _ = modeToggleFunction(mpdConnection!, !mode)
         reloadOptions()
         idleEnter()
     }

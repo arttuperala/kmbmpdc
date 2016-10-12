@@ -22,13 +22,13 @@ class Controls: NSViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(Controls.onConnect),
-                                       name: NSNotification.Name(rawValue: Constants.Notifications.connected), object: nil)
+                                       name: Constants.Notifications.connected, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.onDisconnect),
-                                       name: NSNotification.Name(rawValue: Constants.Notifications.disconnected), object: nil)
+                                       name: Constants.Notifications.disconnected, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.updateModeSelections),
-                                       name: NSNotification.Name(rawValue: Constants.Notifications.optionsRefresh), object: nil)
+                                       name: Constants.Notifications.optionsRefresh, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.updatePlayerStatus),
-                                       name: NSNotification.Name(rawValue: Constants.Notifications.playerRefresh), object: nil)
+                                       name: Constants.Notifications.playerRefresh, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -68,9 +68,8 @@ class Controls: NSViewController {
     }
 
     func onDisconnect() {
-        let bundle = Bundle.main
-        let playButtonImage = bundle.image(forResource: "PlayIconDisabled")!
-        let nextButtonImage = bundle.image(forResource: "NextIconDisabled")!
+        let playButtonImage = Bundle.main.image(forResource: "PlayIconDisabled")!
+        let nextButtonImage = Bundle.main.image(forResource: "NextIconDisabled")!
         playButtonImage.isTemplate = true
         nextButtonImage.isTemplate = true
         playPauseButton.image = playButtonImage
@@ -83,8 +82,7 @@ class Controls: NSViewController {
     }
 
     func onConnect() {
-        let bundle = Bundle.main
-        let nextButtonImage = bundle.image(forResource: "NextIcon")!
+        let nextButtonImage = Bundle.main.image(forResource: "NextIcon")!
         nextButtonImage.isTemplate = true
         nextButton.image = nextButtonImage
         nextButton.alternateImage = nextButtonImage
@@ -144,10 +142,10 @@ class Controls: NSViewController {
     /// Listens to KMBMPDCOptionsReload notifications and updates the main menu
     /// items with the correct values from MPDController.
     func updateModeSelections() {
-        consumeMode.state = Int(MPDController.sharedController.consumeMode)
-        randomMode.state = Int(MPDController.sharedController.randomMode)
-        repeatMode.state = Int(MPDController.sharedController.repeatMode)
-        singleMode.state = Int(MPDController.sharedController.singleMode)
+        consumeMode.state = MPDController.sharedController.consumeMode ? 1 : 0
+        randomMode.state = MPDController.sharedController.randomMode ? 1 : 0
+        repeatMode.state = MPDController.sharedController.repeatMode ? 1 : 0
+        singleMode.state = MPDController.sharedController.singleMode ? 1 : 0
     }
 
     func updatePlayerStatus() {
