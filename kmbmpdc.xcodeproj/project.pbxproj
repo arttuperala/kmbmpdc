@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8107F3D71DAE786B0088E0ED /* MediaKeyTap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */; };
+		8107F3D81DAE786B0088E0ED /* MediaKeyTap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		811E38C81D4D16310099BF4C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811E38C71D4D16310099BF4C /* Constants.swift */; };
 		81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7BFC1D48B13D00416934 /* AppDelegate.swift */; };
 		81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7BFE1D48B13D00416934 /* Assets.xcassets */; };
@@ -36,7 +38,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8107F3D91DAE786B0088E0ED /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8107F3D81DAE786B0088E0ED /* MediaKeyTap.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaKeyTap.framework; path = Carthage/Build/Mac/MediaKeyTap.framework; sourceTree = "<group>"; };
 		811E38C71D4D16310099BF4C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		81AA7BF91D48B13D00416934 /* kmbmpdc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kmbmpdc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AA7BFC1D48B13D00416934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */,
+				8107F3D71DAE786B0088E0ED /* MediaKeyTap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +102,7 @@
 		81AA7BF01D48B13D00416934 = {
 			isa = PBXGroup;
 			children = (
+				8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */,
 				81E20F0E1D4F320400C594C8 /* libmpdclient.a */,
 				81AA7BFB1D48B13D00416934 /* kmbmpdc */,
 				81AA7C0B1D48B13E00416934 /* kmbmpdcTests */,
@@ -145,6 +164,7 @@
 				81AA7BF51D48B13D00416934 /* Sources */,
 				81AA7BF61D48B13D00416934 /* Frameworks */,
 				81AA7BF71D48B13D00416934 /* Resources */,
+				8107F3D91DAE786B0088E0ED /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -402,6 +422,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = kmbmpdc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -409,7 +433,7 @@
 					/usr/local/Cellar/libmpdclient/2.10/lib,
 					"$(PROJECT_DIR)/libmpdclient/src/.libs",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -427,6 +451,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = kmbmpdc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -434,7 +462,7 @@
 					/usr/local/Cellar/libmpdclient/2.10/lib,
 					"$(PROJECT_DIR)/libmpdclient/src/.libs",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
 				PRODUCT_NAME = "$(TARGET_NAME)";

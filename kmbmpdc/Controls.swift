@@ -1,7 +1,8 @@
 import Cocoa
 import libmpdclient
+import MediaKeyTap
 
-class Controls: NSViewController {
+class Controls: NSViewController, MediaKeyTapDelegate {
     @IBOutlet weak var connectDisconnect: NSMenuItem!
     @IBOutlet weak var consumeMode: NSMenuItem!
     @IBOutlet weak var mainMenu: NSMenu!
@@ -17,6 +18,7 @@ class Controls: NSViewController {
     @IBOutlet weak var stopButton: NSMenuItem!
 
     var appDelegate: AppDelegate?
+    var mediaKeyTap: MediaKeyTap?
 
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -36,6 +38,14 @@ class Controls: NSViewController {
     }
 
     override func viewDidLoad() {
+        // Start listening to media key events. Also sends a notification that the application
+        // became active so that the application is properly handed media key events when new
+        // active listener applications exit.
+        mediaKeyTap = MediaKeyTap(delegate: self)
+        mediaKeyTap?.start()
+        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
+        NotificationCenter.default.post(notification)
+
         // Set the button images to templates to play nice with dark mode.
         playPauseButton.image?.isTemplate = true
         nextButton.image?.isTemplate = true
@@ -65,6 +75,19 @@ class Controls: NSViewController {
         randomMode.isEnabled = enabled
         repeatMode.isEnabled = enabled
         singleMode.isEnabled = enabled
+    }
+
+    /// Executes the appropriate MPDController methods when media keys are pressed.
+    func handle(mediaKey: MediaKey, event: KeyEvent) {
+        guard MPDController.sharedController.connected else { return }
+        switch mediaKey {
+        case .playPause:
+            MPDController.sharedController.playPause()
+        case .next, .fastForward:
+            MPDController.sharedController.next()
+        case .previous, .rewind:
+            MPDController.sharedController.previous()
+        }
     }
 
     func onDisconnect() {

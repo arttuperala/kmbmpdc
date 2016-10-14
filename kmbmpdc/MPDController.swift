@@ -22,10 +22,10 @@ class MPDController: NSObject {
     /// Attemps connection to the MPD server and sets connected to true if connection is successful.
     func connect() {
         mpdConnection = mpd_connection_new("127.0.0.1", 0, 0)
-        mpd_connection_set_keepalive(mpdConnection!, true)
         let connectionError = mpd_connection_get_error(mpdConnection!)
         if connectionError == MPD_ERROR_SUCCESS {
             connected = true
+            mpd_connection_set_keepalive(mpdConnection!, true)
             reloadPlayerStatus(false)
             reloadOptions()
             idleEnter()
@@ -116,8 +116,7 @@ class MPDController: NSObject {
     /// idling property is set to false so that operations that wait for idling to be finished can
     /// continue execution.
     func receiveIdleEvents() {
-        let priority = DispatchQueue.GlobalQueuePriority.default
-        DispatchQueue.global(priority: priority).async {
+        DispatchQueue.global(qos: .background).async {
             while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)

@@ -4,9 +4,10 @@ before_install:
   - brew update >/dev/null
   - brew list autoconf || brew install autoconf
   - brew list automake || brew install automake
+  - brew list carthage || brew install carthage
   - brew list doxygen || brew install doxygen
-  - brew uninstall libtool
-  - brew list libtool || brew install libtool
+  - brew uninstall libtool && brew install libtool
+  - carthage bootstrap
   - cd libmpdclient
   - sed -i .bak 's/libtoolize/glibtoolize/g' autogen.sh
   - ./autogen.sh
