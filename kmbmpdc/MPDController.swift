@@ -98,10 +98,21 @@ class MPDController: NSObject {
         NSUserNotificationCenter.default.deliver(notification)
     }
 
-    /// Toggles between play and pause modes.
+    /// Toggles between play and pause modes. If there isn't a song currently playing or paused,
+    /// starts playing the first track on the playlist to make sure there is a change to playback
+    /// when requested.
     func playPause() {
         idleExit()
-        mpd_run_toggle_pause(mpdConnection!)
+        let status = mpd_run_status(mpdConnection!)
+        switch mpd_status_get_state(status) {
+        case MPD_STATE_PLAY:
+            mpd_run_pause(mpdConnection, true)
+        case MPD_STATE_PAUSE:
+            mpd_run_play(mpdConnection!)
+        default:
+            mpd_run_play_pos(mpdConnection!, 0)
+        }
+        mpd_status_free(status)
         idleEnter()
     }
 
