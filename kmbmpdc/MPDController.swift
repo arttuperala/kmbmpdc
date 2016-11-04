@@ -55,6 +55,16 @@ class MPDController: NSObject {
         NotificationCenter.default.post(notification)
     }
 
+    func getIdleEvent(event: mpd_idle) -> MPDIdleEvent {
+        if event.rawValue & MPD_IDLE_PLAYER.rawValue == MPD_IDLE_PLAYER.rawValue {
+            return MPDIdleEvent.player
+        } else if event.rawValue & MPD_IDLE_OPTIONS.rawValue == MPD_IDLE_OPTIONS.rawValue {
+            return MPDIdleEvent.options
+        } else {
+            return MPDIdleEvent.none
+        }
+    }
+
     /// Starts the idling background loop and sets quitIdle to false.
     func idleEnter() {
         quitIdle = false
@@ -135,14 +145,16 @@ class MPDController: NSObject {
             while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
-                if event_mask.rawValue & MPD_IDLE_PLAYER.rawValue == MPD_IDLE_PLAYER.rawValue {
+                switch self.getIdleEvent(event: event_mask) {
+                case .player:
                     self.reloadPlayerStatus()
-                } else if event_mask.rawValue & MPD_IDLE_OPTIONS.rawValue ==
-                          MPD_IDLE_OPTIONS.rawValue {
+                case .options:
                     self.reloadOptions()
-                } else if event_mask.rawValue == 0 && !self.quitIdle {
-                    self.disconnect(false)
-                    break
+                case .none:
+                    if !self.quitIdle {
+                        self.disconnect(false)
+                        break
+                    }
                 }
             }
             self.idling = false
@@ -214,4 +226,10 @@ class MPDController: NSObject {
         reloadOptions()
         idleEnter()
     }
+}
+
+enum MPDIdleEvent: Int {
+    case none = 0
+    case player
+    case options
 }
