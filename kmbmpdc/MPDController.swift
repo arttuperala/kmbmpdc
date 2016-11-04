@@ -110,7 +110,11 @@ class MPDController: NSObject {
         case MPD_STATE_PAUSE:
             mpd_run_play(mpdConnection!)
         default:
-            mpd_run_play_pos(mpdConnection!, 0)
+            mpd_send_list_queue_range_meta(mpdConnection!, 0, 1)
+            if let song = mpd_recv_song(mpdConnection!) {
+                mpd_run_play_pos(mpdConnection!, 0)
+                mpd_song_free(song)
+            }
         }
         mpd_status_free(status)
         idleEnter()
