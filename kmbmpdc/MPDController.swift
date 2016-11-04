@@ -77,7 +77,7 @@ class MPDController: NSObject {
         quitIdle = true
         mpd_send_noidle(mpdConnection!)
         while self.idling {
-            usleep(100)
+            usleep(100 * 1000)
         }
     }
 
