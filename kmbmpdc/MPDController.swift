@@ -23,6 +23,7 @@ class MPDController: NSObject {
     func connect() {
         mpdConnection = mpd_connection_new("127.0.0.1", 0, 0)
         let connectionError = mpd_connection_get_error(mpdConnection!)
+        var notification: Notification?
         if connectionError == MPD_ERROR_SUCCESS {
             connected = true
             mpd_connection_set_keepalive(mpdConnection!, true)
@@ -30,9 +31,11 @@ class MPDController: NSObject {
             reloadOptions()
             idleEnter()
 
-            let notification = Notification(name: Constants.Notifications.connected, object: nil)
-            NotificationCenter.default.post(notification)
+            notification = Notification(name: Constants.Notifications.connected, object: nil)
+        } else {
+            notification = Notification(name: Constants.Notifications.disconnected, object: nil)
         }
+        NotificationCenter.default.post(notification!)
     }
 
     /// Toggles consume mode.
