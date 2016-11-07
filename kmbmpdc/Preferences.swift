@@ -70,8 +70,8 @@ class Preferences: NSViewController {
     }
 
     override func viewWillDisappear() {
-        _ = hostField.stringValue
-        _ = portField.stringValue
+        mpdHost = hostField.stringValue
+        mpdPort = portField.stringValue
     }
 
     override func viewDidDisappear() {
