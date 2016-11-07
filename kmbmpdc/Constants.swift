@@ -7,4 +7,11 @@ struct Constants {
         static let optionsRefresh = Notification.Name("KMBMPDCOptionsReload")
         static let playerRefresh = Notification.Name("KMBMPDCPlayerReload")
     }
+
+    struct Preferences {
+        static let mpdHost = "MPDHost"
+        static let mpdPort = "MPDPort"
+        static let musicDirectory = "MusicDirectoryPath"
+        static let notificationsDisabled = "NotificationsDisabled"
+    }
 }

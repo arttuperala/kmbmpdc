@@ -131,6 +131,12 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         MPDController.sharedController.next()
     }
 
+    @IBAction func openPreferences(_ sender: AnyObject) {
+        if let delegate = NSApplication.shared().delegate as? AppDelegate {
+            delegate.openPreferences()
+        }
+    }
+
     @IBAction func playPauseWasClicked(_ sender: AnyObject) {
         if MPDController.sharedController.connected {
             MPDController.sharedController.playPause()

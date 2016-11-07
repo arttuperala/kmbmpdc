@@ -19,9 +19,30 @@ class MPDController: NSObject {
 
     typealias mpdSettingToggle = (OpaquePointer, Bool) -> Bool
 
+    /// Returns the saved connection host string. If no string is saved in preferences, an empty
+    /// string is returned, which in turns makes mpd_connection_new use the default host.
+    var connectionHost: String {
+        guard let host = UserDefaults.standard.string(forKey: Constants.Preferences.mpdHost) else {
+            return ""
+        }
+        return host
+    }
+
+    /// Returns the saved connection port. If no port is saved in preferences, 0 is returned, which
+    /// in turn makes mpd_connection_new use the default port.
+    var connectionPort: UInt32 {
+        return UInt32(UserDefaults.standard.integer(forKey: Constants.Preferences.mpdPort))
+    }
+
+    /// Returns a `Bool` indicating whether or not the user has user notifications enabled.
+    var notificationsEnabled: Bool {
+        debugPrint(UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled))
+        return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
+    }
+
     /// Attemps connection to the MPD server and sets connected to true if connection is successful.
     func connect() {
-        mpdConnection = mpd_connection_new("127.0.0.1", 0, 0)
+        mpdConnection = mpd_connection_new(connectionHost, connectionPort, 0)
         let connectionError = mpd_connection_get_error(mpdConnection!)
         var notification: Notification?
         if connectionError == MPD_ERROR_SUCCESS {
@@ -181,7 +202,9 @@ class MPDController: NSObject {
 
         if songId != currentTrack && songId > -1 {
             currentTrack = songId
-            if showNotification { notifyTrackChange() }
+            if showNotification && notificationsEnabled {
+                notifyTrackChange()
+            }
         }
 
         let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)

@@ -10,6 +10,8 @@
 		8107F3D71DAE786B0088E0ED /* MediaKeyTap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */; };
 		8107F3D81DAE786B0088E0ED /* MediaKeyTap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		811E38C81D4D16310099BF4C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811E38C71D4D16310099BF4C /* Constants.swift */; };
+		8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8167DBCD1DCE95B7004E9B05 /* Preferences.swift */; };
+		8167DBD01DCE95B7004E9B05 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8167DBCE1DCE95B7004E9B05 /* Preferences.xib */; };
 		81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7BFC1D48B13D00416934 /* AppDelegate.swift */; };
 		81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7BFE1D48B13D00416934 /* Assets.xcassets */; };
 		81AA7C0D1D48B13E00416934 /* kmbmpdcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C0C1D48B13E00416934 /* kmbmpdcTests.swift */; };
@@ -55,6 +57,8 @@
 /* Begin PBXFileReference section */
 		8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaKeyTap.framework; path = Carthage/Build/Mac/MediaKeyTap.framework; sourceTree = "<group>"; };
 		811E38C71D4D16310099BF4C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8167DBCD1DCE95B7004E9B05 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Preferences.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		8167DBCE1DCE95B7004E9B05 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		81AA7BF91D48B13D00416934 /* kmbmpdc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kmbmpdc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AA7BFC1D48B13D00416934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81AA7BFE1D48B13D00416934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -129,9 +133,11 @@
 				811E38C71D4D16310099BF4C /* Constants.swift */,
 				81AA7C2F1D492C5A00416934 /* Controls.swift */,
 				81AA7C2D1D492B1F00416934 /* MPDController.swift */,
+				8167DBCD1DCE95B7004E9B05 /* Preferences.swift */,
 				81AA7BFE1D48B13D00416934 /* Assets.xcassets */,
 				81AA7C301D492C5A00416934 /* Controls.xib */,
 				81C25DAF1D4B300900B53155 /* MainMenu.xib */,
+				8167DBCE1DCE95B7004E9B05 /* Preferences.xib */,
 			);
 			path = kmbmpdc;
 			sourceTree = "<group>";
@@ -264,6 +270,7 @@
 			files = (
 				81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */,
 				81AA7C321D492C5A00416934 /* Controls.xib in Resources */,
+				8167DBD01DCE95B7004E9B05 /* Preferences.xib in Resources */,
 				81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +298,7 @@
 			files = (
 				81AA7C2E1D492B1F00416934 /* MPDController.swift in Sources */,
 				81AA7C311D492C5A00416934 /* Controls.swift in Sources */,
+				8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */,
 				81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */,
 				811E38C81D4D16310099BF4C /* Constants.swift in Sources */,
 			);
