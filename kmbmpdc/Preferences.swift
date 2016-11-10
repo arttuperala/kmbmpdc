@@ -17,7 +17,7 @@ class Preferences: NSViewController {
             defaults.set(stringValue, forKey: Constants.Preferences.mpdHost)
         }
     }
-    
+
     var mpdPort: String {
         get {
             let port = defaults.integer(forKey: Constants.Preferences.mpdPort)
@@ -36,7 +36,7 @@ class Preferences: NSViewController {
             }
         }
     }
-    
+
     var musicDirectory: URL {
         get {
             if let url = defaults.url(forKey: Constants.Preferences.musicDirectory) {
@@ -49,7 +49,7 @@ class Preferences: NSViewController {
             defaults.set(url, forKey: Constants.Preferences.musicDirectory)
         }
     }
-    
+
     var notificationsDisabled: Int {
         get {
             let disabled = defaults.bool(forKey: Constants.Preferences.notificationsDisabled)

@@ -244,7 +244,7 @@ class MPDController: NSObject {
     /// Toggles a MPD option with idle mode cancel and resume, and refreshes the instance variables
     /// from MPD afterwards.
     /// - Parameter mode: MPDController instance variable that stores the option value.
-    /// - parameter modeToggleFunction: libmpdclient function that toggles the option.
+    /// - Parameter modeToggleFunction: libmpdclient function that toggles the option.
     func toggleMode(_ mode: Bool, modeToggleFunction: mpdSettingToggle) {
         idleExit()
         _ = modeToggleFunction(mpdConnection!, !mode)
