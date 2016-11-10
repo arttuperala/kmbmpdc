@@ -36,7 +36,6 @@ class MPDController: NSObject {
 
     /// Returns a `Bool` indicating whether or not the user has user notifications enabled.
     var notificationsEnabled: Bool {
-        debugPrint(UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled))
         return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
     }
 
