@@ -165,7 +165,7 @@ class MPDController: NSObject {
     /// continue execution.
     func receiveIdleEvents() {
         DispatchQueue.global(qos: .background).async {
-            while !self.quitIdle {
+            idleLoop: while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
                 switch self.getIdleEvent(event: event_mask) {
@@ -176,7 +176,7 @@ class MPDController: NSObject {
                 case .none:
                     if !self.quitIdle {
                         self.disconnect(false)
-                        break
+                        break idleLoop
                     }
                 }
             }
