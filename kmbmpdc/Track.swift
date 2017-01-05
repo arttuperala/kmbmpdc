@@ -1,5 +1,6 @@
 import Cocoa
 import libmpdclient
+import Maku
 
 class Track: NSObject {
     let identifier: Int32
@@ -19,13 +20,18 @@ class Track: NSObject {
     }
 
     var coverArt: NSImage? {
-        guard let basePath = self.path?.deletingLastPathComponent() else { return nil }
+        guard let filePath = self.path else { return nil }
 
+        let basePath = filePath.deletingLastPathComponent()
         for filename in ["cover.jpg", "cover.png"] {
             let filePath = basePath.appendingPathComponent(filename)
             if FileManager.default.fileExists(atPath: filePath.path) {
                 return NSImage(byReferencing: filePath)
             }
+        }
+
+        if let tags = try? ID3v2(path: filePath) {
+            return tags.attachedPictures.first?.image
         }
 
         return nil
