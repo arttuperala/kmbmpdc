@@ -11,9 +11,9 @@ class Track: NSObject {
     init(identifier: Int32) {
         self.identifier = identifier
         let trackInfo = MPDController.sharedController.lookupSong(identifier: self.identifier)
-        self.name = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_TITLE, 0))
-        self.album = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ALBUM, 0))
-        self.artist = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ARTIST, 0))
+        self.name = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_TITLE)
+        self.album = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ALBUM)
+        self.artist = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ARTIST)
         self.uri = String(cString: mpd_song_get_uri(trackInfo))
         mpd_song_free(trackInfo)
     }
@@ -29,6 +29,14 @@ class Track: NSObject {
         }
 
         return nil
+    }
+
+    static func getTag(trackInfo: OpaquePointer, tagType: mpd_tag_type) -> String {
+        if let tagData = mpd_song_get_tag(trackInfo, tagType, 0) {
+            return String(cString: tagData)
+        } else {
+            return ""
+        }
     }
 
     var path: URL? {
