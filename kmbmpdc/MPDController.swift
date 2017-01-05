@@ -9,7 +9,7 @@ class MPDController: NSObject {
 
     var connected: Bool = false
     var consumeMode: Bool = false
-    var currentTrack: Int32 = -1
+    var currentTrack: Track?
     var idling: Bool = false
     var playerState: mpd_state = MPD_STATE_UNKNOWN
     var quitIdle: Bool = false
@@ -104,6 +104,10 @@ class MPDController: NSObject {
         }
     }
 
+    func lookupSong(identifier: Int32) -> OpaquePointer {
+        return mpd_run_get_queue_song_id(mpdConnection!, UInt32(identifier))
+    }
+
     /// Goes to the next track on the current playlist.
     func next() {
         idleExit()
@@ -113,22 +117,20 @@ class MPDController: NSObject {
 
     /// Sends a notification with the current track name, artist and album.
     func notifyTrackChange() {
-        let trackInfo = mpd_run_get_queue_song_id(mpdConnection!, UInt32(currentTrack))
-        let trackName = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_TITLE, 0))
-        let trackAlbum = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ALBUM, 0))
-        let trackArtist = String(cString: mpd_song_get_tag(trackInfo, MPD_TAG_ARTIST, 0))
-        mpd_song_free(trackInfo)
-
         let notification = NSUserNotification()
-        notification.title = trackName
-        if !trackAlbum.isEmpty && !trackArtist.isEmpty {
-            notification.informativeText = "\(trackArtist) - \(trackAlbum)"
-        } else if !trackAlbum.isEmpty {
-            notification.informativeText = "null - \(trackAlbum)"
-        } else if !trackArtist.isEmpty {
-            notification.informativeText = "\(trackArtist) - null"
+        notification.identifier = Constants.UserNotifications.trackChange
+        notification.title = currentTrack?.name
+        notification.subtitle = currentTrack?.artist
+        notification.informativeText = currentTrack?.album
+        notification.contentImage = currentTrack?.coverArt
+
+        let center = NSUserNotificationCenter.default
+        for deliveredNotification in center.deliveredNotifications {
+            if deliveredNotification.identifier == Constants.UserNotifications.trackChange {
+                center.removeDeliveredNotification(deliveredNotification)
+            }
         }
-        NSUserNotificationCenter.default.deliver(notification)
+        center.deliver(notification)
     }
 
     /// Toggles between play and pause modes. If there isn't a song currently playing or paused,
@@ -195,12 +197,16 @@ class MPDController: NSObject {
     /// sent out if noticed. Defaults to true.
     func reloadPlayerStatus(_ showNotification: Bool = true) {
         let status = mpd_run_status(mpdConnection!)
-        playerState = mpd_status_get_state(status)
         let songId: Int32 = mpd_status_get_song_id(status)
+        playerState = mpd_status_get_state(status)
         mpd_status_free(status)
 
-        if songId != currentTrack && songId > -1 {
-            currentTrack = songId
+        if songId != currentTrack?.identifier {
+            if songId > -1 {
+                currentTrack = Track(identifier: songId)
+            } else {
+                currentTrack = nil
+            }
             if showNotification && notificationsEnabled {
                 notifyTrackChange()
             }

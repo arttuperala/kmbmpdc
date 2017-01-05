@@ -14,4 +14,8 @@ struct Constants {
         static let musicDirectory = "MusicDirectoryPath"
         static let notificationsDisabled = "NotificationsDisabled"
     }
+
+    struct UserNotifications {
+        static let trackChange = "kmbmpdcTrackChange"
+    }
 }

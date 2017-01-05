@@ -20,6 +20,7 @@
 		81AA7C311D492C5A00416934 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C2F1D492C5A00416934 /* Controls.swift */; };
 		81AA7C321D492C5A00416934 /* Controls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7C301D492C5A00416934 /* Controls.xib */; };
 		81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81C25DAF1D4B300900B53155 /* MainMenu.xib */; };
+		81D1DD801E1AE138008CD3F9 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1DD7F1E1AE138008CD3F9 /* Track.swift */; };
 		81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E20F0E1D4F320400C594C8 /* libmpdclient.a */; };
 /* End PBXBuildFile section */
 
@@ -57,8 +58,8 @@
 /* Begin PBXFileReference section */
 		8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaKeyTap.framework; path = Carthage/Build/Mac/MediaKeyTap.framework; sourceTree = "<group>"; };
 		811E38C71D4D16310099BF4C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		8167DBCD1DCE95B7004E9B05 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Preferences.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		8167DBCE1DCE95B7004E9B05 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		8167DBCD1DCE95B7004E9B05 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		8167DBCE1DCE95B7004E9B05 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		81AA7BF91D48B13D00416934 /* kmbmpdc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kmbmpdc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AA7BFC1D48B13D00416934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81AA7BFE1D48B13D00416934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -73,6 +74,7 @@
 		81AA7C2F1D492C5A00416934 /* Controls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		81AA7C301D492C5A00416934 /* Controls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Controls.xib; sourceTree = "<group>"; };
 		81C25DAF1D4B300900B53155 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		81D1DD7F1E1AE138008CD3F9 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		81E20F0E1D4F320400C594C8 /* libmpdclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpdclient.a; path = libmpdclient/src/.libs/libmpdclient.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +135,7 @@
 				811E38C71D4D16310099BF4C /* Constants.swift */,
 				81AA7C2F1D492C5A00416934 /* Controls.swift */,
 				81AA7C2D1D492B1F00416934 /* MPDController.swift */,
+				81D1DD7F1E1AE138008CD3F9 /* Track.swift */,
 				8167DBCD1DCE95B7004E9B05 /* Preferences.swift */,
 				81AA7BFE1D48B13D00416934 /* Assets.xcassets */,
 				81AA7C301D492C5A00416934 /* Controls.xib */,
@@ -301,6 +304,7 @@
 				8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */,
 				81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */,
 				811E38C81D4D16310099BF4C /* Constants.swift in Sources */,
+				81D1DD801E1AE138008CD3F9 /* Track.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
