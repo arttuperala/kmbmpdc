@@ -23,3 +23,15 @@ before_script:
 script:
   - cd kmbmpdc
   - swiftlint
+before_deploy:
+  - cd ../build/Release
+  - tar -cvzf kmbmpdc.tar.gz kmbmpdc.app
+deploy:
+  provider: releases
+  file: kmbmpdc.tar.gz
+  skip_cleanup: true
+  api_key:
+    secure: YnlTIxybWkKvkkvvEb+bmkzkDQPgGjvQE/3Ejt/vcGOANDD9HwX6pctHoOevKUUUxhT1QNacAVPf4jAKC3mgNbU47Wf62ppebPvWJjplaSPk5YiQzru5odoxcBA1F1TL3g6S9KEoZ8ZChRnRDBcKfQGU+7aAYt3eC3U4VJOWyO6967EVP4odYlzTQQks22eOC/Y0Mt/xDmpztvjizMzVFbTsFtURX8ZtjHb2LBqXIU6GwMAH3pwAtrH1iidqfEGDltwIB2nHKdLwzrSrAo0HCJ5XVkm1jB8aAX42K5FzlisP7GC0gXF6toQx6n12OtJzV1oY0dLHMAKPNSkUXdfAXP5bJN2pTxXm0aHH6k0+g6zvbQbzTTYunhFvl9B2dbCDS36IUFAbhVO2hUbp+lUJ/aDyrYj6Szy4XqoYDnM5ihYXmFBB5fot0lB6WH2Fzg7tsUfCzbZb9iOJ1044QThOPDRW/YrFywWO8mcZCQHza6PZFbeS0HWOMFOfJEI1CH58vmwjoCzRl6+Lf+r/7b2d+2co+Ov2FmbYJhH+AVZOwv0pMT0+UEGlSQg7sUa7gPr6mxI5lQyVh8GMUWqE15oJJRRUgipo5JDioMuSZyllsLPzjd0SDkt3ax7hnNKoZIfi5e5QQSKjirTVh2HSXZ6GIaxzHAZo5FZ7vYqBiFyH2+8=
+  on:
+    repo: arttuperala/kmbmpdc
+    tags: true
