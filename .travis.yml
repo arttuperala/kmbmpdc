@@ -13,8 +13,8 @@ before_install:
   - make
   - cd ..
 install:
-  - version_number=`git describe --tags --abbrev=0 2>/dev/null || echo 0.0`
-  - if [[ $? != 0 ]]; then version_number="0.0"; fi
+  - version_number=`git describe --tags --abbrev=0 2>/dev/null | sed s/^v//`
+  - if [[ $version_number == "" ]]; then version_number="0.0"; fi
   - agvtool new-version -all $TRAVIS_BUILD_NUMBER
   - agvtool new-marketing-version $version_number
   - xcodebuild -target kmbmpdc -configuration Release
