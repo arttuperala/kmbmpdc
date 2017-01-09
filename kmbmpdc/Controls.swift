@@ -17,7 +17,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     @IBOutlet weak var singleMode: NSMenuItem!
     @IBOutlet weak var stopButton: NSMenuItem!
 
-    var appDelegate: AppDelegate?
+    weak var appDelegate: AppDelegate?
     var mediaKeyTap: MediaKeyTap?
 
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -38,6 +38,8 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Start listening to media key events. Also sends a notification that the application
         // became active so that the application is properly handed media key events when new
         // active listener applications exit.
@@ -79,7 +81,10 @@ class Controls: NSViewController, MediaKeyTapDelegate {
 
     /// Executes the appropriate MPDController methods when media keys are pressed.
     func handle(mediaKey: MediaKey, event: KeyEvent) {
-        guard MPDController.sharedController.connected else { return }
+        guard MPDController.sharedController.connected else {
+            return
+        }
+
         switch mediaKey {
         case .playPause:
             MPDController.sharedController.playPause()
@@ -115,7 +120,10 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func menuWasClicked(_ sender: AnyObject) {
-        guard let delegate = appDelegate else { return }
+        guard let delegate = appDelegate else {
+            return
+        }
+
         delegate.statusItem.popUpMenu(mainMenu)
         menuButton.state = 0
     }

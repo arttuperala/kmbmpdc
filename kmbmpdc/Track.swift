@@ -20,7 +20,9 @@ class Track: NSObject {
     }
 
     var coverArt: NSImage? {
-        guard let filePath = self.path else { return nil }
+        guard let filePath = self.path else {
+            return nil
+        }
 
         let basePath = filePath.deletingLastPathComponent()
         for filename in ["cover.jpg", "cover.png"] {

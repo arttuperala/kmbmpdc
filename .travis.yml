@@ -6,6 +6,7 @@ before_install:
   - brew list automake || brew install automake
   - brew list carthage || brew install carthage
   - brew uninstall libtool && brew install libtool
+  - brew upgrade autoconf automake carthage libtool swiftlint || echo
   - carthage bootstrap
   - cd libmpdclient
   - sed -i .bak 's/libtoolize/glibtoolize/g' autogen.sh
@@ -21,10 +22,9 @@ install:
 before_script:
   - brew list swiftlint || brew install swiftlint
 script:
-  - cd kmbmpdc
   - swiftlint
 before_deploy:
-  - cd ../build/Release
+  - cd build/Release
   - tar -cvzf kmbmpdc.tar.gz kmbmpdc.app
 deploy:
   provider: releases

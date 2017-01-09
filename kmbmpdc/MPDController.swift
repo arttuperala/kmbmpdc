@@ -17,7 +17,7 @@ class MPDController: NSObject {
     var repeatMode: Bool = false
     var singleMode: Bool = false
 
-    typealias mpdSettingToggle = (OpaquePointer, Bool) -> Bool
+    typealias MPDSettingToggle = (OpaquePointer, Bool) -> Bool
 
     /// Returns the saved connection host string. If no string is saved in preferences, an empty
     /// string is returned, which in turns makes mpd_connection_new use the default host.
@@ -251,7 +251,7 @@ class MPDController: NSObject {
     /// from MPD afterwards.
     /// - Parameter mode: MPDController instance variable that stores the option value.
     /// - Parameter modeToggleFunction: libmpdclient function that toggles the option.
-    func toggleMode(_ mode: Bool, modeToggleFunction: mpdSettingToggle) {
+    func toggleMode(_ mode: Bool, modeToggleFunction: MPDSettingToggle) {
         idleExit()
         _ = modeToggleFunction(mpdConnection!, !mode)
         reloadOptions()
