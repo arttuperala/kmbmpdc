@@ -120,6 +120,9 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func menuWasClicked(_ sender: AnyObject) {
+        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
+        NotificationCenter.default.post(notification)
+
         guard let delegate = appDelegate else {
             return
         }
@@ -129,6 +132,9 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func nextWasClicked(_ sender: AnyObject) {
+        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
+        NotificationCenter.default.post(notification)
+
         if MPDController.sharedController.connected {
             MPDController.sharedController.next()
         }
@@ -146,6 +152,9 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func playPauseWasClicked(_ sender: AnyObject) {
+        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
+        NotificationCenter.default.post(notification)
+
         if MPDController.sharedController.connected {
             MPDController.sharedController.playPause()
         }
