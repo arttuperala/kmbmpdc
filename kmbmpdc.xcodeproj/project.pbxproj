@@ -21,8 +21,7 @@
 		81AA7C321D492C5A00416934 /* Controls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7C301D492C5A00416934 /* Controls.xib */; };
 		81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81C25DAF1D4B300900B53155 /* MainMenu.xib */; };
 		81D1DD801E1AE138008CD3F9 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1DD7F1E1AE138008CD3F9 /* Track.swift */; };
-		81D1DDB61E1E90D4008CD3F9 /* Maku.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D1DDB51E1E90D3008CD3F9 /* Maku.framework */; };
-		81D1DDB71E1E90D4008CD3F9 /* Maku.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 81D1DDB51E1E90D3008CD3F9 /* Maku.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		81DD9D711E277E7F0055515E /* imeji.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DD9D701E277E7F0055515E /* imeji.o */; };
 		81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E20F0E1D4F320400C594C8 /* libmpdclient.a */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +49,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				81D1DDB71E1E90D4008CD3F9 /* Maku.framework in Embed Frameworks */,
 				8107F3D81DAE786B0088E0ED /* MediaKeyTap.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -78,7 +76,7 @@
 		81AA7C301D492C5A00416934 /* Controls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Controls.xib; sourceTree = "<group>"; };
 		81C25DAF1D4B300900B53155 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		81D1DD7F1E1AE138008CD3F9 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
-		81D1DDB51E1E90D3008CD3F9 /* Maku.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Maku.framework; path = Carthage/Build/Mac/Maku.framework; sourceTree = "<group>"; };
+		81DD9D701E277E7F0055515E /* imeji.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = imeji.o; path = imeji/imeji.o; sourceTree = "<group>"; };
 		81E20F0E1D4F320400C594C8 /* libmpdclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpdclient.a; path = libmpdclient/src/.libs/libmpdclient.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,8 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81D1DDB61E1E90D4008CD3F9 /* Maku.framework in Frameworks */,
 				81E20F0F1D4F320400C594C8 /* libmpdclient.a in Frameworks */,
+				81DD9D711E277E7F0055515E /* imeji.o in Frameworks */,
 				8107F3D71DAE786B0088E0ED /* MediaKeyTap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,13 +111,13 @@
 		81AA7BF01D48B13D00416934 = {
 			isa = PBXGroup;
 			children = (
-				81D1DDB51E1E90D3008CD3F9 /* Maku.framework */,
 				8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */,
 				81E20F0E1D4F320400C594C8 /* libmpdclient.a */,
 				81AA7BFB1D48B13D00416934 /* kmbmpdc */,
 				81AA7C0B1D48B13E00416934 /* kmbmpdcTests */,
 				81AA7C161D48B13E00416934 /* kmbmpdcUITests */,
 				81AA7BFA1D48B13D00416934 /* Products */,
+				81DD9D6F1E277E7F0055515E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -167,6 +165,14 @@
 				81AA7C191D48B13E00416934 /* Info.plist */,
 			);
 			path = kmbmpdcUITests;
+			sourceTree = "<group>";
+		};
+		81DD9D6F1E277E7F0055515E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				81DD9D701E277E7F0055515E /* imeji.o */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -448,14 +454,14 @@
 				INFOPLIST_FILE = kmbmpdc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/libmpdclient/2.10/lib,
 					"$(PROJECT_DIR)/libmpdclient/src/.libs",
+					"$(PROJECT_DIR)/imeji",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/**";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/** ${SRCROOT}/Frameworks/imeji/**";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -477,14 +483,14 @@
 				INFOPLIST_FILE = kmbmpdc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/libmpdclient/2.10/lib,
 					"$(PROJECT_DIR)/libmpdclient/src/.libs",
+					"$(PROJECT_DIR)/imeji",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.perala.kmbmpdc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/**";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/Frameworks/libmpdclient/** ${SRCROOT}/Frameworks/imeji/**";
 				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -1,0 +1,4 @@
+module imeji {
+  header "imeji/src/imeji.h"
+  export *
+}

@@ -13,6 +13,9 @@ before_install:
   - ./autogen.sh --disable-documentation
   - make
   - cd ..
+  - cd imeji
+  - make
+  - cd ..
 install:
   - version_number=`git describe --tags --abbrev=0 2>/dev/null | sed s/^v//`
   - if [[ $version_number == "" ]]; then version_number="0.0"; fi

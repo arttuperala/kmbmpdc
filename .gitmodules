@@ -1,3 +1,6 @@
 [submodule "libmpdclient"]
 	path = libmpdclient
 	url = git://git.musicpd.org/master/libmpdclient.git
+[submodule "imeji"]
+	path = imeji
+	url = https://github.com/arttuperala/imeji.git

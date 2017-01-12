@@ -1,6 +1,6 @@
 import Cocoa
 import libmpdclient
-import Maku
+import imeji
 
 class Track: NSObject {
     let identifier: Int32
@@ -32,11 +32,26 @@ class Track: NSObject {
             }
         }
 
-        if let tags = try? ID3v2(path: filePath) {
-            return tags.attachedPictures.first?.image
+        if let image = Track.getID3CoverArt(filePath.path) {
+            return image
         }
 
         return nil
+    }
+
+    static func getID3CoverArt(_ path: String) -> NSImage? {
+        guard check_id3_identifier(path) == 1 else {
+            return nil
+        }
+
+        let apic = get_id3_picture_data(path)
+        var image: NSImage?
+        if apic.size > 0 {
+            let imageData = Data(bytesNoCopy: apic.data, count: apic.size, deallocator: .none)
+            image = NSImage(data: imageData)
+        }
+        free_picture_data(apic)
+        return image
     }
 
     static func getTag(trackInfo: OpaquePointer, tagType: mpd_tag_type) -> String {
