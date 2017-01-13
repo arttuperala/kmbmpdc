@@ -1,0 +1,10 @@
+module imeji {
+  header "imeji/src/imeji.h"
+  export *
+}
+
+module libmpdclient {
+  header "libmpdclient/include/mpd/async.h"
+  header "libmpdclient/include/mpd/client.h"
+  export *
+}

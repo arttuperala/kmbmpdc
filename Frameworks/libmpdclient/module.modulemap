@@ -1,5 +1,0 @@
-module libmpdclient {
-  header "include/mpd/async.h"
-  header "include/mpd/client.h"
-  export *
-}
