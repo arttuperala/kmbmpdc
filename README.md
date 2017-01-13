@@ -41,8 +41,8 @@ The following priority is used for cover art images:
 
 #### Dependencies
 
+* [imeji](https://github.com/arttuperala/imeji)
 * [libmpdclient](https://www.musicpd.org/libs/libmpdclient/)
-* [Maku](https://github.com/arttuperala/Maku)
 * [MediaKeyTap](https://github.com/nhurden/MediaKeyTap)
 
 #### Requirements
@@ -67,14 +67,20 @@ The following tools/packages are required for building kmbmpdc and its dependenc
 
 3. Build libmpdclient
 
-        cd libmpdclient
+        cd Frameworks/libmpdclient
         ./autogen.sh --disable-documentation
         make
-        cd ..
+        cd ../..
 
     **Note:** if you are using libtool installed with Homebrew, you'll want to change `libtoolize` commands in *autogen.sh* to `glibtoolize`, since the Homebrew version prepends *"g"* in front of the tools to prevent conflicts with system tools.
 
-4. Build kmbmpdc
+4. Build imeji
+
+        cd Frameworks/imeji
+        make
+        cd ../..
+
+5. Build kmbmpdc
 
         xcodebuild -target kmbmpdc -configuration Release
 
