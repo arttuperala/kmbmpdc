@@ -201,7 +201,9 @@ class MPDController: NSObject {
         playerState = mpd_status_get_state(status)
         mpd_status_free(status)
 
-        if songId != currentTrack?.identifier {
+        if playerState.rawValue < 2 {
+            currentTrack = nil
+        } else if songId != currentTrack?.identifier {
             if songId > -1 {
                 currentTrack = Track(identifier: songId)
             } else {

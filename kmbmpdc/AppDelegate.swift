@@ -1,13 +1,16 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
     let statusItem = NSStatusBar.system().statusItem(withLength: -1)
     let menuBarControls = Controls(nibName: "Controls", bundle: Bundle.main)
 
     var preferenceWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        NSUserNotificationCenter.default.delegate = self
+        NSUserNotificationCenter.default.removeAllDeliveredNotifications()
+
         menuBarControls?.appDelegate = self
         statusItem.view = menuBarControls?.view
         statusItem.menu = menuBarControls?.mainMenu
@@ -27,6 +30,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         preferenceWindow!.makeKeyAndOrderFront(self)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func userNotificationCenter(_ center: NSUserNotificationCenter,
+                                shouldPresent notification: NSUserNotification) -> Bool {
+        return true
     }
 
 }
