@@ -16,6 +16,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     @IBOutlet weak var repeatMode: NSMenuItem!
     @IBOutlet weak var singleMode: NSMenuItem!
     @IBOutlet weak var stopButton: NSMenuItem!
+    @IBOutlet weak var stopAfterCurrentButton: NSMenuItem!
 
     weak var appDelegate: AppDelegate?
     var mediaKeyTap: MediaKeyTap?
@@ -185,6 +186,12 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         MPDController.sharedController.stop()
     }
 
+    @IBAction func stopAfterCurrentWasClicked(_ sender: Any) {
+        let state = stopAfterCurrentButton.state == 1 ? true : false
+        stopAfterCurrentButton.state = state ? 0 : 1
+        MPDController.sharedController.stopAfterCurrent = !state
+    }
+
     /// Listens to KMBMPDCOptionsReload notifications and updates the main menu
     /// items with the correct values from MPDController.
     func updateModeSelections() {
@@ -206,5 +213,6 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         mainButtonImage.isTemplate = true
         playPauseButton.image = mainButtonImage
         playPauseButton.alternateImage = mainButtonImage
+        stopAfterCurrentButton.state = MPDController.sharedController.stopAfterCurrent ? 1 : 0
     }
 }

@@ -16,6 +16,7 @@ class MPDController: NSObject {
     var randomMode: Bool = false
     var repeatMode: Bool = false
     var singleMode: Bool = false
+    var stopAfterCurrent: Bool = false
 
     typealias MPDSettingToggle = (OpaquePointer, Bool) -> Bool
 
@@ -196,22 +197,31 @@ class MPDController: NSObject {
     /// - Parameter showNotification: Boolean indicating if a track change notification should be
     /// sent out if noticed. Defaults to true.
     func reloadPlayerStatus(_ showNotification: Bool = true) {
+        var changedTrack: Bool = false
+        var displayNotification: Bool = showNotification && notificationsEnabled
+
         let status = mpd_run_status(mpdConnection!)
         let songId: Int32 = mpd_status_get_song_id(status)
         playerState = mpd_status_get_state(status)
         mpd_status_free(status)
 
-        if playerState.rawValue < 2 {
+        // Current track is changed only if the player is playing or paused, track ID differs from
+        // the one stored in memory and the track ID is valid.
+        if playerState.rawValue > 1 && songId != currentTrack?.identifier && songId > -1 {
+            currentTrack = Track(identifier: songId)
+            changedTrack = true
+        } else {
             currentTrack = nil
-        } else if songId != currentTrack?.identifier {
-            if songId > -1 {
-                currentTrack = Track(identifier: songId)
-            } else {
-                currentTrack = nil
-            }
-            if showNotification && notificationsEnabled {
-                notifyTrackChange()
-            }
+        }
+
+        if stopAfterCurrent && changedTrack {
+            mpd_run_stop(mpdConnection!)
+            stopAfterCurrent = false
+            displayNotification = false
+        }
+
+        if displayNotification && changedTrack {
+            notifyTrackChange()
         }
 
         let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)

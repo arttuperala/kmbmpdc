@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,6 +20,7 @@
                 <outlet property="randomMode" destination="gE9-0E-faZ" id="iA2-dA-3Qp"/>
                 <outlet property="repeatMode" destination="j2D-pm-zLg" id="KcE-gP-DF3"/>
                 <outlet property="singleMode" destination="1gy-Gb-WVd" id="Igk-TS-5E1"/>
+                <outlet property="stopAfterCurrentButton" destination="vKo-4K-AZE" id="HnZ-0w-SBr"/>
                 <outlet property="stopButton" destination="fyh-oL-LqB" id="eUj-d0-dsd"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -95,6 +96,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="previousWasClicked:" target="-2" id="2Xl-wE-C8o"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Stop after current" id="vKo-4K-AZE">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="stopAfterCurrentWasClicked:" target="-2" id="GQM-Ix-bZR"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="YuU-HE-VJR"/>
