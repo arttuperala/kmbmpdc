@@ -1,4 +1,7 @@
-![kmbmpdc](http://perala.me/kmbmpdc/header.png)
+[![kmbmpdc](http://perala.me/kmbmpdc/header.png)](https://github.com/arttuperala/kmbmpdc)
+[![Travis](https://img.shields.io/travis/arttuperala/kmbmpdc.svg?maxAge=3600)](https://travis-ci.org/arttuperala/kmbmpdc)
+[![GitHub release](https://img.shields.io/github/release/arttuperala/kmbmpdc.svg?maxAge=43200)](https://github.com/arttuperala/kmbmpdc/releases/latest)
+[![Github All Releases](https://img.shields.io/github/downloads/arttuperala/kmbmpdc/total.svg?maxAge=28800)](https://github.com/arttuperala/kmbmpdc/releases)
 
 kmbmpdc is a macOS menubar application for controlling [music player daemon](https://www.musicpd.org/) playback.
 
@@ -15,7 +18,7 @@ kmbmpdc requires 10.11 or newer.
 
 ## Download
 
-Official builds can be found in Github releases. The releases are unsigned.
+Official builds can be found in [Github releases](https://github.com/arttuperala/kmbmpdc/releases). The releases are unsigned.
 
 ## Usage
 
