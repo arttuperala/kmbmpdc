@@ -205,13 +205,14 @@ class MPDController: NSObject {
         playerState = mpd_status_get_state(status)
         mpd_status_free(status)
 
-        // Current track is changed only if the player is playing or paused, track ID differs from
-        // the one stored in memory and the track ID is valid.
-        if playerState.rawValue > 1 && songId != currentTrack?.identifier && songId > -1 {
+        // If the player state stopped or unknown, or mpd returns -1 as current track ID, the track
+        // is set to nil. Else if the song ID differs from the stored song ID, currentTrack is
+        // replaced and boolean flag `changedTrack` is set `true`.
+        if playerState.rawValue < 2 || songId < 0 {
+            currentTrack = nil
+        } else if songId != currentTrack?.identifier {
             currentTrack = Track(identifier: songId)
             changedTrack = true
-        } else {
-            currentTrack = nil
         }
 
         if stopAfterCurrent && changedTrack {
