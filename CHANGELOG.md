@@ -10,4 +10,7 @@
 - Notifications are displayed even if kmbmpdc is considered to be the active application.
 - Track change notification is presented when playback is restarted after a stop.
 
+### Fixed
+- Application won't crash on start when libmpdclient is not installed locally.
+
 [Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v1.0.0...HEAD
