@@ -74,6 +74,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         stopButton.isEnabled = enabled
         nextMenuButton.isEnabled = enabled
         previousButton.isEnabled = enabled
+        stopAfterCurrentButton.isEnabled = enabled
         consumeMode.isEnabled = enabled
         randomMode.isEnabled = enabled
         repeatMode.isEnabled = enabled
