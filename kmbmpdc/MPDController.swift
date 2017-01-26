@@ -222,7 +222,9 @@ class MPDController: NSObject {
         }
 
         if displayNotification && changedTrack {
-            notifyTrackChange()
+            DispatchQueue.main.async {
+                self.notifyTrackChange()
+            }
         }
 
         let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)
