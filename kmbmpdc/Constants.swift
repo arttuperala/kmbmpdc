@@ -10,6 +10,7 @@ struct Constants {
 
     struct Preferences {
         static let mpdHost = "MPDHost"
+        static let mpdPass = "MPDPassword"
         static let mpdPort = "MPDPort"
         static let musicDirectory = "MusicDirectoryPath"
         static let notificationsDisabled = "NotificationsDisabled"

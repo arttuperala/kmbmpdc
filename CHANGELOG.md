@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Playback can be stopped after the current track finishes with the "Stop after current" menu item.
+- Server password can be specified in preferences.
 
 ### Changed
 - Clicking the menubar buttons now sends `NSWorkspaceDidActivateApplication` notifications to ensure [MediaKeyTap](https://github.com/nhurden/MediaKeyTap) switches kmbmpdc to most recently active application.
@@ -12,5 +13,6 @@
 
 ### Fixed
 - Application won't crash on start when libmpdclient is not installed locally.
+- Application won't crash if client has insufficient permissions due to incorrect server password.
 
 [Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v1.0.0...HEAD

@@ -3,6 +3,7 @@ import Cocoa
 class Preferences: NSViewController {
     @IBOutlet weak var hostField: NSTextField!
     @IBOutlet weak var portField: NSTextField!
+    @IBOutlet weak var passwordField: NSSecureTextField!
     @IBOutlet weak var musicDirectoryPath: NSPathControl!
     @IBOutlet weak var notificationEnableButton: NSButton!
 
@@ -15,6 +16,19 @@ class Preferences: NSViewController {
         }
         set(stringValue) {
             defaults.set(stringValue, forKey: Constants.Preferences.mpdHost)
+        }
+    }
+
+    var mpdPassword: String {
+        get {
+            return defaults.string(forKey: Constants.Preferences.mpdPass) ?? ""
+        }
+        set(stringValue) {
+            if stringValue.isEmpty {
+                defaults.set(nil, forKey: Constants.Preferences.mpdPass)
+            } else {
+                defaults.set(stringValue, forKey: Constants.Preferences.mpdPass)
+            }
         }
     }
 
@@ -65,6 +79,7 @@ class Preferences: NSViewController {
         super.viewDidLoad()
         hostField.stringValue = mpdHost
         portField.stringValue = mpdPort
+        passwordField.stringValue = mpdPassword
         musicDirectoryPath.url = musicDirectory
         notificationEnableButton.state = notificationsDisabled
     }
@@ -72,6 +87,7 @@ class Preferences: NSViewController {
     override func viewWillDisappear() {
         mpdHost = hostField.stringValue
         mpdPort = portField.stringValue
+        mpdPassword = passwordField.stringValue
     }
 
     override func viewDidDisappear() {
@@ -81,6 +97,10 @@ class Preferences: NSViewController {
 
     @IBAction func changedHost(_ sender: NSTextField) {
         mpdHost = sender.stringValue
+    }
+
+    @IBAction func changedPassword(_ sender: NSTextField) {
+        mpdPassword = sender.stringValue
     }
 
     @IBAction func changedPort(_ sender: NSTextField) {

@@ -22,11 +22,13 @@ Official builds can be found in [Github releases](https://github.com/arttuperala
 
 ## Usage
 
-If you are running mpd on the local machine with the default port, kmbmpdc should connect automatically to the server on initial start. If this is not the case, you can edit the host and port in the application preferences.
+If you are running mpd on the local machine with the default port and without a password, kmbmpdc should connect automatically to the server on initial start. If this is not the case, you can edit the host, port and password in the application preferences.
 
 Controlling mpd is done via the menubar. Play/pause and track skip can be found directly on the menubar. Further options can be opened with the right-most menu button. It also contains preferences, connect/disconnect and exit. Play/pause, next track and previous track are also available via the Mac media keys.
 
 Track change notifications are enabled by default. They can be disabled in the preferences. To enable cover art, specify the media library root that is being used by mpd, as the cover art is obtained from the media files themselves.
+
+If you are connecting to a password-protected server, make sure that the client has `read` and `control` permissions.
 
 ### Cover art in notifications
 

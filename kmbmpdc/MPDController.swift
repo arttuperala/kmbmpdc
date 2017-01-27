@@ -29,6 +29,15 @@ class MPDController: NSObject {
         return host
     }
 
+    /// Returns the saved connection password string. If no string is saved in preferences, nil is
+    /// returned.
+    var connectionPassword: String? {
+        guard let pass = UserDefaults.standard.string(forKey: Constants.Preferences.mpdPass) else {
+            return nil
+        }
+        return pass
+    }
+
     /// Returns the saved connection port. If no port is saved in preferences, 0 is returned, which
     /// in turn makes mpd_connection_new use the default port.
     var connectionPort: UInt32 {
@@ -40,23 +49,57 @@ class MPDController: NSObject {
         return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
     }
 
+    /// Checks that the controller has some kind of permission to message the server. Returns `true`
+    /// if MPDController can access enough  server commands.
+    ///
+    /// The permissions that MPDController looks for are _"play"_ (for control) and _"currentsong"_
+    /// (for reading the server).
+    func checkPermissions() -> Bool {
+        var currentSongPermission = false
+        var playPermission = false
+
+        mpd_send_allowed_commands(mpdConnection!)
+        while true {
+            let commandPair = mpd_recv_pair(mpdConnection!)
+            if commandPair == nil {
+                break
+            }
+            switch String(cString: (commandPair?.pointee.value)!) {
+            case "currentsong":
+                currentSongPermission = true
+            case "play":
+                playPermission = true
+            default:
+                break
+            }
+            mpd_return_pair(mpdConnection!, commandPair)
+        }
+        return currentSongPermission && playPermission
+    }
+
     /// Attemps connection to the MPD server and sets connected to true if connection is successful.
     func connect() {
         mpdConnection = mpd_connection_new(connectionHost, connectionPort, 0)
         let connectionError = mpd_connection_get_error(mpdConnection!)
-        var notification: Notification?
-        if connectionError == MPD_ERROR_SUCCESS {
+        var notificationName: NSNotification.Name = Constants.Notifications.disconnected
+        initializeConnection: if connectionError == MPD_ERROR_SUCCESS {
+            if connectionPassword != nil {
+                mpd_run_password(mpdConnection!, connectionPassword)
+            }
+            if !checkPermissions() {
+                break initializeConnection
+            }
+
             connected = true
             mpd_connection_set_keepalive(mpdConnection!, true)
             reloadPlayerStatus(false)
             reloadOptions()
             idleEnter()
 
-            notification = Notification(name: Constants.Notifications.connected, object: nil)
-        } else {
-            notification = Notification(name: Constants.Notifications.disconnected, object: nil)
+            notificationName = Constants.Notifications.connected
         }
-        NotificationCenter.default.post(notification!)
+
+        NotificationCenter.default.post(Notification(name: notificationName, object: nil))
     }
 
     /// Toggles consume mode.
