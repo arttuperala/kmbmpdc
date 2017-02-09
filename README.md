@@ -48,7 +48,7 @@ The following priority is used for cover art images:
 
 * [imeji](https://github.com/arttuperala/imeji)
 * [libmpdclient](https://www.musicpd.org/libs/libmpdclient/)
-* [MediaKeyTap](https://github.com/nhurden/MediaKeyTap)
+* forked [MediaKeyTap](https://github.com/arttuperala/MediaKeyTap)
 
 #### Requirements
 

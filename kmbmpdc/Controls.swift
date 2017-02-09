@@ -46,8 +46,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         // active listener applications exit.
         mediaKeyTap = MediaKeyTap(delegate: self)
         mediaKeyTap?.start()
-        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
-        NotificationCenter.default.post(notification)
+        mediaKeyTap?.activate()
 
         // Set the button images to templates to play nice with dark mode.
         playPauseButton.image?.isTemplate = true
@@ -122,8 +121,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func menuWasClicked(_ sender: AnyObject) {
-        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
-        NotificationCenter.default.post(notification)
+        mediaKeyTap?.activate()
 
         guard let delegate = appDelegate else {
             return
@@ -134,8 +132,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func nextWasClicked(_ sender: AnyObject) {
-        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
-        NotificationCenter.default.post(notification)
+        mediaKeyTap?.activate()
 
         if MPDController.sharedController.connected {
             MPDController.sharedController.next()
@@ -154,8 +151,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     }
 
     @IBAction func playPauseWasClicked(_ sender: AnyObject) {
-        let notification = Notification(name: NSNotification.Name.NSWorkspaceDidActivateApplication)
-        NotificationCenter.default.post(notification)
+        mediaKeyTap?.activate()
 
         if MPDController.sharedController.connected {
             MPDController.sharedController.playPause()
