@@ -11,6 +11,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
     @IBOutlet weak var nextMenuButton: NSMenuItem!
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var playPauseMenuButton: NSMenuItem!
+    @IBOutlet weak var playlistMenu: NSMenu!
     @IBOutlet weak var previousButton: NSMenuItem!
     @IBOutlet weak var randomMode: NSMenuItem!
     @IBOutlet weak var repeatMode: NSMenuItem!
@@ -32,6 +33,8 @@ class Controls: NSViewController, MediaKeyTapDelegate {
                                        name: Constants.Notifications.optionsRefresh, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controls.updatePlayerStatus),
                                        name: Constants.Notifications.playerRefresh, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(Controls.updatePlaylists),
+                                       name: Constants.Notifications.playlistRefresh, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -96,6 +99,11 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         }
     }
 
+    func loadPlaylist(_ sender: NSMenuItem) {
+        let playlistName = sender.title
+        MPDController.sharedController.loadPlaylist(playlistName)
+    }
+
     func onDisconnect() {
         let playButtonImage = Bundle.main.image(forResource: "PlayIconDisabled")!
         let nextButtonImage = Bundle.main.image(forResource: "NextIconDisabled")!
@@ -105,6 +113,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         playPauseButton.alternateImage = playButtonImage
         nextButton.image = nextButtonImage
         nextButton.alternateImage = nextButtonImage
+        playlistMenu.removeAllItems()
 
         connectDisconnect.title = "Connect"
         enableControls(false)
@@ -211,5 +220,15 @@ class Controls: NSViewController, MediaKeyTapDelegate {
         playPauseButton.image = mainButtonImage
         playPauseButton.alternateImage = mainButtonImage
         stopAfterCurrentButton.state = MPDController.sharedController.stopAfterCurrent ? 1 : 0
+    }
+
+    func updatePlaylists() {
+        playlistMenu.removeAllItems()
+        let loadPlaylist = #selector(Controls.loadPlaylist(_:))
+        for playlist in MPDController.sharedController.playlists {
+            let menuItem = NSMenuItem(title: playlist, action: loadPlaylist, keyEquivalent: "")
+            menuItem.target = self
+            playlistMenu.addItem(menuItem)
+        }
     }
 }

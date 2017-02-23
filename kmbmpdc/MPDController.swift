@@ -3,7 +3,9 @@ import libmpdclient
 
 class MPDController: NSObject {
     static let sharedController = MPDController()
-    static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_PLAYER.rawValue | MPD_IDLE_OPTIONS.rawValue)
+    static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_STORED_PLAYLIST.rawValue |
+                                             MPD_IDLE_PLAYER.rawValue |
+                                             MPD_IDLE_OPTIONS.rawValue)
 
     var mpdConnection: OpaquePointer?
 
@@ -12,6 +14,7 @@ class MPDController: NSObject {
     var currentTrack: Track?
     var idling: Bool = false
     var playerState: mpd_state = MPD_STATE_UNKNOWN
+    var playlists: [String] = []
     var quitIdle: Bool = false
     var randomMode: Bool = false
     var repeatMode: Bool = false
@@ -94,6 +97,7 @@ class MPDController: NSObject {
             mpd_connection_set_keepalive(mpdConnection!, true)
             reloadPlayerStatus(false)
             reloadOptions()
+            reloadPlaylists()
             idleEnter()
 
             notificationName = Constants.Notifications.connected
@@ -123,7 +127,9 @@ class MPDController: NSObject {
     }
 
     func getIdleEvent(event: mpd_idle) -> MPDIdleEvent {
-        if event.rawValue & MPD_IDLE_PLAYER.rawValue == MPD_IDLE_PLAYER.rawValue {
+        if event.rawValue & MPD_IDLE_STORED_PLAYLIST.rawValue == MPD_IDLE_STORED_PLAYLIST.rawValue {
+            return MPDIdleEvent.playlist
+        } else if event.rawValue & MPD_IDLE_PLAYER.rawValue == MPD_IDLE_PLAYER.rawValue {
             return MPDIdleEvent.player
         } else if event.rawValue & MPD_IDLE_OPTIONS.rawValue == MPD_IDLE_OPTIONS.rawValue {
             return MPDIdleEvent.options
@@ -146,6 +152,17 @@ class MPDController: NSObject {
         while self.idling {
             usleep(100 * 1000)
         }
+    }
+
+    /// Loads playlist with given name and starts playback at first item based on queue length.
+    func loadPlaylist(_ name: String) {
+        idleExit()
+        let status = mpd_run_status(mpdConnection!)
+        let queueLength = mpd_status_get_queue_length(status)
+        mpd_status_free(status)
+        mpd_run_load(mpdConnection!, name)
+        mpd_run_play_pos(mpdConnection!, queueLength)
+        idleEnter()
     }
 
     func lookupSong(identifier: Int32) -> OpaquePointer {
@@ -215,6 +232,8 @@ class MPDController: NSObject {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
                 switch self.getIdleEvent(event: event_mask) {
+                case .playlist:
+                    self.reloadPlaylists()
                 case .player:
                     self.reloadPlayerStatus()
                 case .options:
@@ -274,6 +293,28 @@ class MPDController: NSObject {
         NotificationCenter.default.post(notification)
     }
 
+    /// Fetches the current playlists and adds the playlist names to `playlists` array.
+    /// Sends a KMBMPDCPlaylistReload notification when the operation is finished.
+    func reloadPlaylists() {
+        let success: Bool = mpd_send_list_playlists(mpdConnection!)
+        guard success else {
+            return
+        }
+        playlists.removeAll()
+        while true {
+            let playlist = mpd_recv_playlist(mpdConnection!)
+            if playlist == nil {
+                break
+            }
+            let path = String(cString: mpd_playlist_get_path(playlist))
+            playlists.append(path)
+            mpd_playlist_free(playlist)
+        }
+
+        let notification = Notification(name: Constants.Notifications.playlistRefresh, object: nil)
+        NotificationCenter.default.post(notification)
+    }
+
     /// Fetches the current options of MPD and updates the instance variables with the new data.
     /// Sends a KMBMPDCOptionsReload notification when the operation is finished.
     func reloadOptions() {
@@ -319,6 +360,7 @@ class MPDController: NSObject {
 
 enum MPDIdleEvent: Int {
     case none = 0
+    case playlist
     case player
     case options
 }

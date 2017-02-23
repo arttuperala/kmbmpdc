@@ -6,6 +6,7 @@ struct Constants {
         static let disconnected = Notification.Name("KMBMPDCDisconnected")
         static let optionsRefresh = Notification.Name("KMBMPDCOptionsReload")
         static let playerRefresh = Notification.Name("KMBMPDCPlayerReload")
+        static let playlistRefresh = Notification.Name("KMBMPDCPlaylistReload")
     }
 
     struct Preferences {

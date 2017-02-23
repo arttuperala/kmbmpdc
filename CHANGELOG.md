@@ -1,11 +1,14 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Playlists can be loaded and played from the playlists submenu.
+
 ### Changed
-- MediaKeyTap switched a forked version to manually update kmbmpdc as the active listener application
+- MediaKeyTap switched a forked version to manually update kmbmpdc as the active listener application.
 
 ### Fixed
-- Pressing any of the menubar buttons now properly sets kmbmpdc as the active listener
+- Pressing any of the menubar buttons now properly sets kmbmpdc as the active listener.
 
 ## [1.1.0] - 2017-01-29
 ### Added

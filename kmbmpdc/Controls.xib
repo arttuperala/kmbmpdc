@@ -16,6 +16,7 @@
                 <outlet property="nextMenuButton" destination="bIR-MJ-D9h" id="NRy-CX-g4i"/>
                 <outlet property="playPauseButton" destination="cqU-vf-95C" id="bBf-KI-Vvv"/>
                 <outlet property="playPauseMenuButton" destination="oKl-Gb-vMx" id="Nej-Kr-nNq"/>
+                <outlet property="playlistMenu" destination="Mfl-Wb-V8W" id="MJG-Og-ndR"/>
                 <outlet property="previousButton" destination="sII-ht-ban" id="KD0-O0-0Wv"/>
                 <outlet property="randomMode" destination="gE9-0E-faZ" id="iA2-dA-3Qp"/>
                 <outlet property="repeatMode" destination="j2D-pm-zLg" id="KcE-gP-DF3"/>
@@ -103,6 +104,10 @@
                     <connections>
                         <action selector="stopAfterCurrentWasClicked:" target="-2" id="GQM-Ix-bZR"/>
                     </connections>
+                </menuItem>
+                <menuItem title="Playlists" id="7Qt-SP-v1l">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Playlists" id="Mfl-Wb-V8W"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="YuU-HE-VJR"/>
                 <menuItem title="Consume mode" id="O1s-DZ-rSs">
