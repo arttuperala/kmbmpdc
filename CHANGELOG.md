@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Client reconnects automatically to the server after getting disconnected.
 - Playlists can be loaded and played from the playlists submenu.
 
 ### Changed

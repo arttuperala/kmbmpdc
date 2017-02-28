@@ -21,6 +21,8 @@ class Controls: NSViewController, MediaKeyTapDelegate {
 
     weak var appDelegate: AppDelegate?
     var mediaKeyTap: MediaKeyTap?
+    var reconnectDisable: Bool = false
+    var reconnectTimer: Double = 2.0
 
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -59,6 +61,7 @@ class Controls: NSViewController, MediaKeyTapDelegate {
 
     @IBAction func connectDisconnectWasClicked(_ sender: AnyObject) {
         if MPDController.sharedController.connected {
+            reconnectDisable = true
             MPDController.sharedController.disconnect()
         } else {
             MPDController.sharedController.connect()
@@ -117,6 +120,12 @@ class Controls: NSViewController, MediaKeyTapDelegate {
 
         connectDisconnect.title = "Connect"
         enableControls(false)
+
+        if reconnectDisable {
+            reconnectDisable = false
+        } else {
+            reconnectSchedule()
+        }
     }
 
     func onConnect() {
@@ -178,6 +187,27 @@ class Controls: NSViewController, MediaKeyTapDelegate {
 
     @IBAction func randomModeWasClicked(_ sender: AnyObject) {
         MPDController.sharedController.randomModeToggle()
+    }
+
+    /// Reconnects to the MPD server. If connection is successful, the reconnection time is reset.
+    func reconnect() {
+        MPDController.sharedController.connect()
+        if MPDController.sharedController.connected {
+            reconnectTimer = 2.0
+        }
+    }
+
+    /// Schedules a `Timer` object for reconnecting to the MPD server, adds it to the main loop and
+    /// doubles the wait time until next reconnect attempt (capped at 60 seconds).
+    func reconnectSchedule() {
+        let timer = Timer(timeInterval: reconnectTimer, target: self,
+                          selector: #selector(Controls.reconnect), userInfo: nil, repeats: false)
+        RunLoop.main.add(timer, forMode: .commonModes)
+
+        reconnectTimer *= 2
+        if reconnectTimer > 60.0 {
+            reconnectTimer = 60.0
+        }
     }
 
     @IBAction func repeatModeWasClicked(_ sender: AnyObject) {
