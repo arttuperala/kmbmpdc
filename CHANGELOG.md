@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.2.0] - 2017-03-01
 ### Added
 - Client reconnects automatically to the server after getting disconnected.
 - Playlists can be loaded and played from the playlists submenu.
@@ -27,5 +29,6 @@
 - Application won't crash on start when libmpdclient is not installed locally.
 - Application won't crash if client has insufficient permissions due to incorrect server password.
 
-[Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/arttuperala/kmbmpdc/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/arttuperala/kmbmpdc/compare/v1.0.0...v1.1.0
