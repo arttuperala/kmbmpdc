@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="Controller" customModule="kmbmpdc" customModuleProvider="target">
+            <connections>
+                <outlet property="consumeModeButton" destination="hhj-12-CRk" id="clH-V7-du5"/>
+                <outlet property="currentTrackArtist" destination="aPe-0s-wWo" id="IH6-kd-Q3T"/>
+                <outlet property="currentTrackCover" destination="S1u-LG-S6N" id="cuJ-WX-oxE"/>
+                <outlet property="currentTrackTitle" destination="n0X-Ap-HND" id="Uwa-2t-ihD"/>
+                <outlet property="nextButton" destination="Z4Q-Oi-6Ww" id="TIS-HU-mNg"/>
+                <outlet property="playPauseButton" destination="Lbs-TV-Qr3" id="Zdw-X2-K0z"/>
+                <outlet property="playlistButton" destination="rtf-dt-rMT" id="vJ7-LP-mZN"/>
+                <outlet property="previousButton" destination="BhJ-LM-f95" id="gCB-3P-VhP"/>
+                <outlet property="randomModeButton" destination="zce-e9-A7N" id="LEr-Ra-aK9"/>
+                <outlet property="repeatModeButton" destination="NZ4-rV-i85" id="KQP-ik-g43"/>
+                <outlet property="singleModeButton" destination="hte-pt-0Yz" id="E5X-IT-CY2"/>
+                <outlet property="stopAfterCurrentButton" destination="Pc2-T4-228" id="eFP-Gw-TuA"/>
+                <outlet property="stopButton" destination="VrC-7X-aWX" id="YgS-wk-bfd"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView wantsLayer="YES" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="379"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n0X-Ap-HND">
+                    <rect key="frame" x="18" y="354" width="264" height="17"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingMiddle" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="" id="Ob5-Fp-dqc">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aPe-0s-wWo">
+                    <rect key="frame" x="6" y="337" width="288" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="" id="GEN-sh-2fa">
+                        <font key="font" metaFont="cellTitle"/>
+                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <stackView distribution="equalSpacing" orientation="horizontal" alignment="top" spacing="18" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-pd-ie3">
+                    <rect key="frame" x="21" y="7" width="259" height="17"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hhj-12-CRk">
+                            <rect key="frame" x="0.0" y="0.0" width="62" height="17"/>
+                            <buttonCell key="cell" type="smallSquare" title="Consume" bezelStyle="smallSquare" imagePosition="left" alignment="center" inset="2" id="0z2-hp-rBe">
+                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="toggleConsumeMode:" target="-2" id="Td9-Yu-DHT"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zce-e9-A7N">
+                            <rect key="frame" x="80" y="0.0" width="54" height="17"/>
+                            <buttonCell key="cell" type="smallSquare" title="Random" bezelStyle="smallSquare" imagePosition="left" alignment="center" inset="2" id="4nU-bo-NNS">
+                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="toggleRandomMode:" target="-2" id="NOh-kt-hTq"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NZ4-rV-i85">
+                            <rect key="frame" x="152" y="0.0" width="47" height="17"/>
+                            <buttonCell key="cell" type="smallSquare" title="Repeat" bezelStyle="smallSquare" imagePosition="left" alignment="center" inset="2" id="vs2-qb-hyj">
+                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="toggleRepeatMode:" target="-2" id="43p-Xu-qic"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hte-pt-0Yz">
+                            <rect key="frame" x="217" y="0.0" width="42" height="17"/>
+                            <buttonCell key="cell" type="smallSquare" title="Single" bezelStyle="smallSquare" imagePosition="left" alignment="center" inset="2" id="T5K-0e-P6S">
+                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="toggleSingleMode:" target="-2" id="We8-a8-eFL"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J2Z-0Z-OFc">
+                    <rect key="frame" x="285" y="364" width="10" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="10" id="B85-zH-Aq5"/>
+                        <constraint firstAttribute="height" constant="10" id="BdI-bo-PK8"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSActionTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="b6t-bi-dPv">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="openSubmenu:" target="-2" id="bIz-gp-ARD"/>
+                    </connections>
+                </button>
+                <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="33P-I9-Whk">
+                    <rect key="frame" x="0.0" y="29" width="300" height="300"/>
+                    <view key="contentView" id="6s5-E2-BaG">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S1u-LG-S6N">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="89T-nH-0ry"/>
+                                    <constraint firstAttribute="height" constant="300" id="qVI-wz-i8f"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="aKk-X4-gkC"/>
+                            </imageView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dnp-9Y-4Dd">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="89"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="BottomGradient" id="Pgv-32-CsA"/>
+                            </imageView>
+                            <button toolTip="Play" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lbs-TV-Qr3">
+                                <rect key="frame" x="131" y="14" width="38" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="bAc-cR-XQB"/>
+                                    <constraint firstAttribute="width" constant="38" id="wus-wx-3ar"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="PlayButton" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="fq7-xq-mfG">
+                                    <behavior key="behavior" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="playPauseWasClicked:" target="-2" id="wvv-N2-de2"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Next" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Q-Oi-6Ww">
+                                <rect key="frame" x="184" y="22" width="29" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="bmU-gs-cVs"/>
+                                    <constraint firstAttribute="width" constant="29" id="iTb-QH-wkK"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NextButton" imagePosition="only" alignment="center" alternateImage="NextButtonAlt" imageScaling="proportionallyDown" inset="2" id="4lp-eh-roK">
+                                    <behavior key="behavior" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="nextWasClicked:" target="-2" id="vBG-ZH-HNf"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Previous" verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BhJ-LM-f95">
+                                <rect key="frame" x="87" y="22" width="29" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="29" id="CUu-fy-ljy"/>
+                                    <constraint firstAttribute="height" constant="23" id="mP1-i0-hz5"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="PreviousButton" imagePosition="only" alignment="center" alternateImage="PreviousButtonAlt" imageScaling="proportionallyDown" inset="2" id="aqf-vK-1EH">
+                                    <behavior key="behavior" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="previousWasClicked:" target="-2" id="4xe-Ia-Nib"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Stop" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VrC-7X-aWX">
+                                <rect key="frame" x="52" y="20" width="27" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="ZVC-ln-TGu"/>
+                                    <constraint firstAttribute="width" constant="27" id="cKF-Me-3Dh"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="StopButton" imagePosition="overlaps" alignment="center" alternateImage="StopButtonAlt" imageScaling="proportionallyDown" inset="2" id="IHJ-lR-loX">
+                                    <behavior key="behavior" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="stopWasClicked:" target="-2" id="ZjE-pJ-vnP"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Playlists" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rtf-dt-rMT">
+                                <rect key="frame" x="259" y="23" width="19" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="19" id="04J-hp-itb"/>
+                                    <constraint firstAttribute="height" constant="20" id="SuA-ez-b9e"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="PlaylistButton" imagePosition="only" alignment="center" alternateImage="PlaylistButtonAlt" imageScaling="proportionallyDown" inset="2" id="StT-Hp-fOj">
+                                    <behavior key="behavior" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="playlistWasClicked:" target="-2" id="8Yh-j5-9Lz"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Stop after current" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pc2-T4-228">
+                                <rect key="frame" x="221" y="18" width="29" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="29" id="uBH-ke-pA6"/>
+                                    <constraint firstAttribute="height" constant="29" id="xnr-8e-LtZ"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="StopAfterButton" imagePosition="overlaps" alignment="center" alternateImage="StopAfterButtonAlt" imageScaling="proportionallyDown" inset="2" id="TM1-NF-Oec">
+                                    <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="stopAfterCurrentWasClicked:" target="-2" id="sT4-kc-yHv"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="dnp-9Y-4Dd" secondAttribute="trailing" id="0SQ-im-xla"/>
+                            <constraint firstItem="Pc2-T4-228" firstAttribute="leading" secondItem="Z4Q-Oi-6Ww" secondAttribute="trailing" constant="8" id="0tr-II-y07"/>
+                            <constraint firstItem="Lbs-TV-Qr3" firstAttribute="leading" secondItem="6s5-E2-BaG" secondAttribute="leading" constant="131" id="36N-S7-n8F"/>
+                            <constraint firstItem="BhJ-LM-f95" firstAttribute="leading" secondItem="VrC-7X-aWX" secondAttribute="trailing" constant="8" id="HSc-wD-dQ5"/>
+                            <constraint firstAttribute="bottom" secondItem="S1u-LG-S6N" secondAttribute="bottom" id="JUf-NK-a9E"/>
+                            <constraint firstAttribute="bottom" secondItem="VrC-7X-aWX" secondAttribute="bottom" constant="20" id="JW7-Ev-EnY"/>
+                            <constraint firstAttribute="bottom" secondItem="Lbs-TV-Qr3" secondAttribute="bottom" constant="14" id="Js5-1s-K0n"/>
+                            <constraint firstAttribute="bottom" secondItem="Z4Q-Oi-6Ww" secondAttribute="bottom" constant="22" id="N0D-CV-YAV"/>
+                            <constraint firstAttribute="trailing" secondItem="S1u-LG-S6N" secondAttribute="trailing" id="Roe-sK-yLz"/>
+                            <constraint firstItem="S1u-LG-S6N" firstAttribute="leading" secondItem="6s5-E2-BaG" secondAttribute="leading" id="RyO-sJ-1W2"/>
+                            <constraint firstItem="rtf-dt-rMT" firstAttribute="leading" secondItem="Pc2-T4-228" secondAttribute="trailing" constant="9" id="SOi-8r-9s5"/>
+                            <constraint firstAttribute="bottom" secondItem="rtf-dt-rMT" secondAttribute="bottom" constant="23" id="TCC-H2-wFT"/>
+                            <constraint firstItem="Lbs-TV-Qr3" firstAttribute="leading" secondItem="BhJ-LM-f95" secondAttribute="trailing" constant="15" id="TQb-fV-ees"/>
+                            <constraint firstItem="S1u-LG-S6N" firstAttribute="top" secondItem="6s5-E2-BaG" secondAttribute="top" id="XU9-9j-Boh"/>
+                            <constraint firstAttribute="bottom" secondItem="BhJ-LM-f95" secondAttribute="bottom" constant="22" id="YLd-eL-2ep"/>
+                            <constraint firstItem="Z4Q-Oi-6Ww" firstAttribute="leading" secondItem="Lbs-TV-Qr3" secondAttribute="trailing" constant="15" id="hXy-zu-JA3"/>
+                            <constraint firstAttribute="bottom" secondItem="Pc2-T4-228" secondAttribute="bottom" constant="18" id="njR-ME-1Il"/>
+                            <constraint firstAttribute="bottom" secondItem="dnp-9Y-4Dd" secondAttribute="bottom" id="sYS-fM-w52"/>
+                            <constraint firstItem="dnp-9Y-4Dd" firstAttribute="leading" secondItem="6s5-E2-BaG" secondAttribute="leading" id="yHx-tA-vmo"/>
+                        </constraints>
+                    </view>
+                    <color key="borderColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="33P-I9-Whk" secondAttribute="bottom" constant="29" id="9zn-M4-SaW"/>
+                <constraint firstItem="n0X-Ap-HND" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="A7e-qV-u0S"/>
+                <constraint firstItem="oRB-pd-ie3" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="GMr-Ks-L0u"/>
+                <constraint firstItem="J2Z-0Z-OFc" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="5" id="IKj-oa-a5B"/>
+                <constraint firstItem="aPe-0s-wWo" firstAttribute="top" secondItem="n0X-Ap-HND" secondAttribute="bottom" constant="1" id="IVR-hp-SNm"/>
+                <constraint firstAttribute="trailing" secondItem="33P-I9-Whk" secondAttribute="trailing" id="UnX-Ye-Q15"/>
+                <constraint firstItem="33P-I9-Whk" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="evr-63-peh"/>
+                <constraint firstItem="n0X-Ap-HND" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="f6D-1z-vUO"/>
+                <constraint firstItem="33P-I9-Whk" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="50" id="hQn-tb-86Q"/>
+                <constraint firstItem="aPe-0s-wWo" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="8" id="kPb-nG-mex"/>
+                <constraint firstAttribute="trailing" secondItem="n0X-Ap-HND" secondAttribute="trailing" constant="20" id="lCC-VC-MF9"/>
+                <constraint firstAttribute="bottom" secondItem="oRB-pd-ie3" secondAttribute="bottom" constant="7" id="u8s-qL-npd"/>
+                <constraint firstAttribute="trailing" secondItem="aPe-0s-wWo" secondAttribute="trailing" constant="8" id="uw5-91-Irv"/>
+                <constraint firstAttribute="trailing" secondItem="J2Z-0Z-OFc" secondAttribute="trailing" constant="5" id="vXW-Yp-eV7"/>
+            </constraints>
+            <point key="canvasLocation" x="53" y="113.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="BottomGradient" width="300" height="89"/>
+        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NextButton" width="29" height="23"/>
+        <image name="NextButtonAlt" width="29" height="23"/>
+        <image name="PlayButton" width="38" height="38"/>
+        <image name="PlaylistButton" width="19" height="19"/>
+        <image name="PlaylistButtonAlt" width="19" height="19"/>
+        <image name="PreviousButton" width="29" height="23"/>
+        <image name="PreviousButtonAlt" width="29" height="23"/>
+        <image name="StopAfterButton" width="29" height="29"/>
+        <image name="StopAfterButtonAlt" width="29" height="29"/>
+        <image name="StopButton" width="27" height="27"/>
+        <image name="StopButtonAlt" width="27" height="27"/>
+    </resources>
+</document>

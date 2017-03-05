@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- Added a graphical controller popout that can be accessed by clicking on the kmbmpdc icon in the menubar.
+
+### Changed
+- The three-button menubar controls have been replaced with a single menubar icon indicating current playback status.
 
 ## [1.2.0] - 2017-03-01
 ### Added
