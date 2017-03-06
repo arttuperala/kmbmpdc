@@ -6,6 +6,7 @@
 
 ### Changed
 - The three-button menubar controls have been replaced with a single menubar icon indicating current playback status.
+- Clicking on the track change notification opens up the controller.
 
 ## [1.2.0] - 2017-03-01
 ### Added

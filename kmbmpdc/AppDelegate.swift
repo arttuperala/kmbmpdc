@@ -104,4 +104,11 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         return true
     }
 
+    func userNotificationCenter(_ center: NSUserNotificationCenter,
+                                didActivate notification: NSUserNotification) {
+        if !popover.isShown {
+            togglePopover()
+        }
+    }
+
 }
