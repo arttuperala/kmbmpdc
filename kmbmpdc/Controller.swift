@@ -16,6 +16,12 @@ class Controller: NSViewController {
     @IBOutlet weak var singleModeButton: NSButton!
     @IBOutlet weak var stopButton: NSButton!
     @IBOutlet weak var stopAfterCurrentButton: NSButton!
+    @IBOutlet weak var trackQueueTable: NSTableView!
+
+    @IBOutlet weak var trackQueueTableHeight: NSLayoutConstraint!
+    @IBOutlet weak var trackQueueTableBottom: NSLayoutConstraint!
+
+    @IBOutlet var trackQueueObject: TrackQueue!
 
     weak var appDelegate: AppDelegate?
     var reconnectDisable: Bool = false
@@ -33,6 +39,8 @@ class Controller: NSViewController {
                                        name: Constants.Notifications.optionsRefresh, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controller.updatePlayerStatus),
                                        name: Constants.Notifications.playerRefresh, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(Controller.updateQueue),
+                                       name: Constants.Notifications.queueRefresh, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -41,6 +49,7 @@ class Controller: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        trackQueueObject = TrackQueue.global
     }
 
     /// Perform tasks after client connects to the server.
@@ -217,6 +226,12 @@ class Controller: NSViewController {
             MPDController.sharedController.consumeModeToggle()
         }
     }
+    @IBAction func toggleQueue(_ sender: NSButton) {
+        // If display is toggled on, `sender.state` equals 1 and if not, 0. When the queue view is
+        // toggled on, it's 200 points high and has 4 point bottom margin.
+        trackQueueTableBottom.animator().constant = CGFloat(sender.state * 4)
+        trackQueueTableHeight.animator().constant = CGFloat(sender.state * 200)
+    }
 
     @IBAction func toggleRandomMode(_ sender: NSButton) {
         DispatchQueue.global().async {
@@ -262,6 +277,13 @@ class Controller: NSViewController {
             self.currentTrackTitle.stringValue = trackTitle
             self.setCover(trackCover)
             self.stopAfterCurrentButton.state = MPDController.sharedController.stopAfterCurrent ? 1 : 0
+        }
+    }
+
+    /// Updates the track queue table when the global `TrackQueue` is updated.
+    func updateQueue() {
+        DispatchQueue.main.async {
+            self.trackQueueTable.reloadData()
         }
     }
 

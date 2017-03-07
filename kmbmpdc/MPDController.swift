@@ -4,6 +4,7 @@ import libmpdclient
 class MPDController: NSObject {
     static let sharedController = MPDController()
     static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_STORED_PLAYLIST.rawValue |
+                                             MPD_IDLE_QUEUE.rawValue |
                                              MPD_IDLE_PLAYER.rawValue |
                                              MPD_IDLE_OPTIONS.rawValue)
 
@@ -98,6 +99,7 @@ class MPDController: NSObject {
             reloadPlayerStatus(false)
             reloadOptions()
             reloadPlaylists()
+            reloadQueue()
             idleEnter()
 
             notificationName = Constants.Notifications.connected
@@ -124,18 +126,6 @@ class MPDController: NSObject {
 
         let notification = Notification(name: Constants.Notifications.disconnected, object: nil)
         NotificationCenter.default.post(notification)
-    }
-
-    func getIdleEvent(event: mpd_idle) -> MPDIdleEvent {
-        if event.rawValue & MPD_IDLE_STORED_PLAYLIST.rawValue == MPD_IDLE_STORED_PLAYLIST.rawValue {
-            return MPDIdleEvent.playlist
-        } else if event.rawValue & MPD_IDLE_PLAYER.rawValue == MPD_IDLE_PLAYER.rawValue {
-            return MPDIdleEvent.player
-        } else if event.rawValue & MPD_IDLE_OPTIONS.rawValue == MPD_IDLE_OPTIONS.rawValue {
-            return MPDIdleEvent.options
-        } else {
-            return MPDIdleEvent.none
-        }
     }
 
     /// Starts the idling background loop and sets quitIdle to false.
@@ -169,6 +159,10 @@ class MPDController: NSObject {
         return mpd_run_get_queue_song_id(mpdConnection!, UInt32(identifier))
     }
 
+    func matchIdle(event: mpd_idle, mask: mpd_idle) -> Bool {
+        return event.rawValue & mask.rawValue == mask.rawValue
+    }
+    
     /// Goes to the next track on the current playlist.
     func next() {
         idleExit()
@@ -231,18 +225,26 @@ class MPDController: NSObject {
             idleLoop: while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
-                switch self.getIdleEvent(event: event_mask) {
-                case .playlist:
-                    self.reloadPlaylists()
-                case .player:
-                    self.reloadPlayerStatus()
-                case .options:
-                    self.reloadOptions()
-                case .none:
+                
+                // Received no data; disconnect if not peacefully exiting idle.
+                if event_mask.rawValue == 0 {
                     if !self.quitIdle {
                         self.disconnect(false)
                         break idleLoop
                     }
+                }
+                
+                if self.matchIdle(event: event_mask, mask: MPD_IDLE_STORED_PLAYLIST) {
+                    self.reloadPlaylists()
+                }
+                if self.matchIdle(event: event_mask, mask: MPD_IDLE_PLAYER) {
+                    self.reloadPlayerStatus()
+                }
+                if self.matchIdle(event: event_mask, mask: MPD_IDLE_QUEUE) {
+                    self.reloadQueue()
+                }
+                if self.matchIdle(event: event_mask, mask: MPD_IDLE_OPTIONS) {
+                    self.reloadOptions()
                 }
             }
             self.idling = false
@@ -276,6 +278,8 @@ class MPDController: NSObject {
             currentTrack = Track(identifier: songId)
             changedTrack = true
         }
+
+        reloadQueue()
 
         if stopAfterCurrent && changedTrack {
             mpd_run_stop(mpdConnection!)
@@ -329,6 +333,32 @@ class MPDController: NSObject {
         NotificationCenter.default.post(notification)
     }
 
+    /// Fetches the queue not including the currently playing track and saves it to the global
+    /// `TrackQueue` object.
+    func reloadQueue() {
+        TrackQueue.global.tracks.removeAll()
+        let success = mpd_send_list_queue_meta(mpdConnection!)
+        while success {
+            guard let song = mpd_recv_song(mpdConnection!) else {
+                break
+            }
+            let track = Track(trackInfo: song)
+            TrackQueue.global.tracks.append(track)
+        }
+        
+        // Crop the queue to ensure it only contains upcoming tracks using the current track
+        // position or 0, whichever is larger.
+        if currentTrack != nil {
+            let status = mpd_run_status(mpdConnection!)
+            let currentTrackPosition: Int32 = mpd_status_get_song_pos(status)
+            mpd_status_free(status)
+            TrackQueue.global.tracks.removeSubrange(0...Int(currentTrackPosition))
+        }
+
+        let notification = Notification(name: Constants.Notifications.queueRefresh, object: nil)
+        NotificationCenter.default.post(notification)
+    }
+
     /// Toggles repeat mode.
     func repeatModeToggle() {
         toggleMode(repeatMode, modeToggleFunction: mpd_run_repeat)
@@ -356,11 +386,4 @@ class MPDController: NSObject {
         reloadOptions()
         idleEnter()
     }
-}
-
-enum MPDIdleEvent: Int {
-    case none = 0
-    case playlist
-    case player
-    case options
 }

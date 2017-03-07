@@ -7,6 +7,7 @@ struct Constants {
         static let optionsRefresh = Notification.Name("KMBMPDCOptionsReload")
         static let playerRefresh = Notification.Name("KMBMPDCPlayerReload")
         static let playlistRefresh = Notification.Name("KMBMPDCPlaylistReload")
+        static let queueRefresh = Notification.Name("KMBMPDCQueueReload")
     }
 
     struct Preferences {

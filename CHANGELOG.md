@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Added a graphical controller popout that can be accessed by clicking on the kmbmpdc icon in the menubar.
+- List of upcoming tracks is visible in the controller and the visbility of that list can be toggled on and off.
 
 ### Changed
 - The three-button menubar controls have been replaced with a single menubar icon indicating current playback status.

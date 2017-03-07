@@ -9,9 +9,13 @@ class Track: NSObject {
     let album: String
     let artist: String
 
-    init(identifier: Int32) {
-        self.identifier = identifier
-        let trackInfo = MPDController.sharedController.lookupSong(identifier: self.identifier)
+    convenience init(identifier: Int32) {
+        let trackInfo = MPDController.sharedController.lookupSong(identifier: identifier)
+        self.init(trackInfo: trackInfo)
+    }
+
+    init(trackInfo: OpaquePointer) {
+        self.identifier = Int32(exactly: mpd_song_get_id(trackInfo))!
         self.name = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_TITLE)
         self.album = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ALBUM)
         self.artist = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ARTIST)
