@@ -45,7 +45,9 @@ class Controller: NSViewController {
 
     /// Perform tasks after client connects to the server.
     func clientConnected() {
-        enableControls(true)
+        DispatchQueue.main.async {
+            self.enableControls(true)
+        }
         appDelegate?.statusItem.button?.appearsDisabled = false
     }
 
@@ -55,9 +57,9 @@ class Controller: NSViewController {
             self.currentTrackArtist.stringValue = ""
             self.currentTrackTitle.stringValue = "kmbmpdc"
             self.setCover(nil)
+            self.enableControls(false)
         }
 
-        enableControls(false)
         appDelegate?.statusItem.button?.appearsDisabled = true
 
         if reconnectDisable {
@@ -245,9 +247,6 @@ class Controller: NSViewController {
 
     /// Updates user interface when MPD state or current track changes.
     func updatePlayerStatus() {
-        changeImageAssets()
-
-        // Populate current track details in the user interface.
         var trackArtist: String = ""
         var trackCover: NSImage? = nil
         var trackTitle: String = "kmbmpdc"
@@ -256,7 +255,9 @@ class Controller: NSViewController {
             trackCover = currentTrack.coverArt
             trackTitle = currentTrack.name
         }
+
         DispatchQueue.main.async {
+            self.changeImageAssets()
             self.currentTrackArtist.stringValue = trackArtist
             self.currentTrackTitle.stringValue = trackTitle
             self.setCover(trackCover)
