@@ -22,6 +22,8 @@ class MPDController: NSObject {
     var singleMode: Bool = false
     var stopAfterCurrent: Bool = false
 
+    private var queueBusy: Bool = false
+
     typealias MPDSettingToggle = (OpaquePointer, Bool) -> Bool
 
     /// Returns the saved connection host string. If no string is saved in preferences, an empty
@@ -162,7 +164,7 @@ class MPDController: NSObject {
     func matchIdle(event: mpd_idle, mask: mpd_idle) -> Bool {
         return event.rawValue & mask.rawValue == mask.rawValue
     }
-    
+
     /// Goes to the next track on the current playlist.
     func next() {
         idleExit()
@@ -225,7 +227,7 @@ class MPDController: NSObject {
             idleLoop: while !self.quitIdle {
                 self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
-                
+
                 // Received no data; disconnect if not peacefully exiting idle.
                 if event_mask.rawValue == 0 {
                     if !self.quitIdle {
@@ -233,7 +235,7 @@ class MPDController: NSObject {
                         break idleLoop
                     }
                 }
-                
+
                 if self.matchIdle(event: event_mask, mask: MPD_IDLE_STORED_PLAYLIST) {
                     self.reloadPlaylists()
                 }
@@ -336,24 +338,32 @@ class MPDController: NSObject {
     /// Fetches the queue not including the currently playing track and saves it to the global
     /// `TrackQueue` object.
     func reloadQueue() {
-        TrackQueue.global.tracks.removeAll()
+        while self.queueBusy {
+            usleep(100 * 1000)
+        }
+        self.queueBusy = true
+
         let success = mpd_send_list_queue_meta(mpdConnection!)
+        var newQueue: [Track] = []
         while success {
             guard let song = mpd_recv_song(mpdConnection!) else {
                 break
             }
             let track = Track(trackInfo: song)
-            TrackQueue.global.tracks.append(track)
+            newQueue.append(track)
         }
-        
+
         // Crop the queue to ensure it only contains upcoming tracks using the current track
         // position or 0, whichever is larger.
         if currentTrack != nil {
             let status = mpd_run_status(mpdConnection!)
             let currentTrackPosition: Int32 = mpd_status_get_song_pos(status)
             mpd_status_free(status)
-            TrackQueue.global.tracks.removeSubrange(0...Int(currentTrackPosition))
+            newQueue.removeSubrange(0...Int(currentTrackPosition))
         }
+
+        TrackQueue.global.tracks = newQueue
+        self.queueBusy = false
 
         let notification = Notification(name: Constants.Notifications.queueRefresh, object: nil)
         NotificationCenter.default.post(notification)
