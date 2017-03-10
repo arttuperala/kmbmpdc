@@ -16,10 +16,11 @@ class Controller: NSViewController {
     @IBOutlet weak var singleModeButton: NSButton!
     @IBOutlet weak var stopButton: NSButton!
     @IBOutlet weak var stopAfterCurrentButton: NSButton!
+    @IBOutlet weak var trackQueueButton: NSButton!
+    @IBOutlet weak var trackQueueSeparator: NSBox!
     @IBOutlet weak var trackQueueTable: NSTableView!
 
     @IBOutlet weak var trackQueueTableHeight: NSLayoutConstraint!
-    @IBOutlet weak var trackQueueTableBottom: NSLayoutConstraint!
 
     @IBOutlet var trackQueueObject: TrackQueue!
 
@@ -50,6 +51,7 @@ class Controller: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         trackQueueObject = TrackQueue.global
+        toggleQueue(trackQueueButton)
     }
 
     /// Perform tasks after client connects to the server.
@@ -228,9 +230,9 @@ class Controller: NSViewController {
     }
     @IBAction func toggleQueue(_ sender: NSButton) {
         // If display is toggled on, `sender.state` equals 1 and if not, 0. When the queue view is
-        // toggled on, it's 200 points high and has 4 point bottom margin.
-        trackQueueTableBottom.animator().constant = CGFloat(sender.state * 4)
-        trackQueueTableHeight.animator().constant = CGFloat(sender.state * 200)
+        // toggled on, it's 201 points high and the separator horizontal line is displayed.
+        trackQueueSeparator.isHidden = sender.state == 1 ? false : true
+        trackQueueTableHeight.animator().constant = CGFloat(sender.state * 201)
     }
 
     @IBAction func toggleRandomMode(_ sender: NSButton) {

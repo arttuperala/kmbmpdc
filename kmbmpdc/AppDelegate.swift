@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         NSUserNotificationCenter.default.removeAllDeliveredNotifications()
 
         controller!.loadView()
+        controller!.viewDidLoad()
         controller!.appDelegate = self
         popover.contentViewController = controller
 
