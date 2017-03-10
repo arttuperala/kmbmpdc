@@ -5,3 +5,5 @@ opt_in_rules:
   - conditional_returns_on_newline
 included:
   - kmbmpdc
+
+line_length: 110

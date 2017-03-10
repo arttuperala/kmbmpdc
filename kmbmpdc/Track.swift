@@ -10,7 +10,7 @@ class Track: NSObject {
     let artist: String
 
     convenience init(identifier: Int32) {
-        let trackInfo = MPDController.sharedController.lookupSong(identifier: identifier)
+        let trackInfo = MPDClient.shared.lookupSong(identifier: identifier)
         self.init(trackInfo: trackInfo)
     }
 

@@ -21,7 +21,7 @@
 		81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81AA7BFE1D48B13D00416934 /* Assets.xcassets */; };
 		81AA7C0D1D48B13E00416934 /* kmbmpdcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C0C1D48B13E00416934 /* kmbmpdcTests.swift */; };
 		81AA7C181D48B13E00416934 /* kmbmpdcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C171D48B13E00416934 /* kmbmpdcUITests.swift */; };
-		81AA7C2E1D492B1F00416934 /* MPDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C2D1D492B1F00416934 /* MPDController.swift */; };
+		81AA7C2E1D492B1F00416934 /* MPDClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C2D1D492B1F00416934 /* MPDClient.swift */; };
 		81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81C25DAF1D4B300900B53155 /* MainMenu.xib */; };
 		81D1DD801E1AE138008CD3F9 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1DD7F1E1AE138008CD3F9 /* Track.swift */; };
 		81DD9D731E28B9250055515E /* imeji.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DD9D721E28B9250055515E /* imeji.o */; };
@@ -78,7 +78,7 @@
 		81AA7C131D48B13E00416934 /* kmbmpdcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kmbmpdcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AA7C171D48B13E00416934 /* kmbmpdcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kmbmpdcUITests.swift; sourceTree = "<group>"; };
 		81AA7C191D48B13E00416934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		81AA7C2D1D492B1F00416934 /* MPDController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPDController.swift; sourceTree = "<group>"; };
+		81AA7C2D1D492B1F00416934 /* MPDClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPDClient.swift; sourceTree = "<group>"; };
 		81C25DAF1D4B300900B53155 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		81D1DD7F1E1AE138008CD3F9 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		81DD9D721E28B9250055515E /* imeji.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = imeji.o; path = Frameworks/imeji/imeji.o; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 				81AA7BFC1D48B13D00416934 /* AppDelegate.swift */,
 				811E38C71D4D16310099BF4C /* Constants.swift */,
 				819BFCF91E6861E4006CADF0 /* Controller.swift */,
-				81AA7C2D1D492B1F00416934 /* MPDController.swift */,
+				81AA7C2D1D492B1F00416934 /* MPDClient.swift */,
 				8167DBCD1DCE95B7004E9B05 /* Preferences.swift */,
 				81D1DD7F1E1AE138008CD3F9 /* Track.swift */,
 				815B410B1E6EFA26000E519E /* TrackCell.swift */,
@@ -317,7 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AA7C2E1D492B1F00416934 /* MPDController.swift in Sources */,
+				81AA7C2E1D492B1F00416934 /* MPDClient.swift in Sources */,
 				815B410A1E6EF43A000E519E /* TrackQueue.swift in Sources */,
 				8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */,
 				81AA7BFD1D48B13D00416934 /* AppDelegate.swift in Sources */,

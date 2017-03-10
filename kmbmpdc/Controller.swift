@@ -84,7 +84,7 @@ class Controller: NSViewController {
         var playPauseImage: NSImage
         var playPauseTooltip: String
         var statusItemImage: NSImage
-        if MPDController.sharedController.playerState == MPD_STATE_PLAY {
+        if MPDClient.shared.playerState == MPD_STATE_PLAY {
             playPauseAltImage = Bundle.main.image(forResource: "PauseButtonAlt")!
             playPauseImage = Bundle.main.image(forResource: "PauseButton")!
             playPauseTooltip = "Pause"
@@ -121,20 +121,20 @@ class Controller: NSViewController {
     func loadPlaylist(_ sender: NSMenuItem) {
         let playlistName = sender.title
         DispatchQueue.global().async {
-            MPDController.sharedController.loadPlaylist(playlistName)
+            MPDClient.shared.loadPlaylist(playlistName)
         }
     }
 
     @IBAction func nextWasClicked(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.next()
+            MPDClient.shared.next()
         }
     }
 
     @IBAction func openSubmenu(_ sender: NSButton) {
         let submenu = NSMenu()
         var connectionToggleTitle: String = "Disconnect"
-        if !MPDController.sharedController.connected {
+        if !MPDClient.shared.connected {
             connectionToggleTitle = "Connect"
         }
         submenu.addItem(withTitle: connectionToggleTitle,
@@ -148,14 +148,14 @@ class Controller: NSViewController {
 
     @IBAction func playPauseWasClicked(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.playPause()
+            MPDClient.shared.playPause()
         }
     }
 
     @IBAction func playlistWasClicked(_ sender: NSButton) {
         let playlistMenu = NSMenu()
         let selector = #selector(Controller.loadPlaylist(_:))
-        for playlist in MPDController.sharedController.playlists {
+        for playlist in MPDClient.shared.playlists {
             let menuItem = NSMenuItem(title: playlist, action: selector, keyEquivalent: "")
             playlistMenu.addItem(menuItem)
         }
@@ -164,14 +164,14 @@ class Controller: NSViewController {
 
     @IBAction func previousWasClicked(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.previous()
+            MPDClient.shared.previous()
         }
     }
 
     /// Reconnects to the MPD server. If connection is successful, the reconnection time is reset.
     func reconnect() {
-        MPDController.sharedController.connect()
-        if MPDController.sharedController.connected {
+        MPDClient.shared.connect()
+        if MPDClient.shared.connected {
             reconnectTimer = 2.0
         }
     }
@@ -202,28 +202,28 @@ class Controller: NSViewController {
 
     @IBAction func stopWasClicked(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.stop()
+            MPDClient.shared.stop()
         }
     }
 
-    /// Sets the `MPDController` boolean flag to stop after current track to the button's value.
+    /// Sets the `MPDClient` boolean flag to stop after current track to the button's value.
     @IBAction func stopAfterCurrentWasClicked(_ sender: NSButton) {
-        MPDController.sharedController.stopAfterCurrent = sender.state > 0 ? true : false
+        MPDClient.shared.stopAfterCurrent = sender.state > 0 ? true : false
     }
 
     /// Connects to/disconnects from the server.
     func toggleConnection() {
-        if MPDController.sharedController.connected {
+        if MPDClient.shared.connected {
             reconnectDisable = true
-            MPDController.sharedController.disconnect()
+            MPDClient.shared.disconnect()
         } else {
-            MPDController.sharedController.connect()
+            MPDClient.shared.connect()
         }
     }
 
     @IBAction func toggleConsumeMode(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.consumeModeToggle()
+            MPDClient.shared.consumeModeToggle()
         }
     }
     @IBAction func toggleQueue(_ sender: NSButton) {
@@ -235,29 +235,29 @@ class Controller: NSViewController {
 
     @IBAction func toggleRandomMode(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.randomModeToggle()
+            MPDClient.shared.randomModeToggle()
         }
     }
 
     @IBAction func toggleRepeatMode(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.repeatModeToggle()
+            MPDClient.shared.repeatModeToggle()
         }
     }
 
     @IBAction func toggleSingleMode(_ sender: NSButton) {
         DispatchQueue.global().async {
-            MPDController.sharedController.singleModeToggle()
+            MPDClient.shared.singleModeToggle()
         }
     }
 
     /// Listens to KMBMPDCOptionsReload notifications and updates the main menu
-    /// items with the correct values from MPDController.
+    /// items with the correct values from `MPDClient`.
     func updateModeSelections() {
-        consumeModeButton.state = MPDController.sharedController.consumeMode ? 1 : 0
-        randomModeButton.state = MPDController.sharedController.randomMode ? 1 : 0
-        repeatModeButton.state = MPDController.sharedController.repeatMode ? 1 : 0
-        singleModeButton.state = MPDController.sharedController.singleMode ? 1 : 0
+        consumeModeButton.state = MPDClient.shared.consumeMode ? 1 : 0
+        randomModeButton.state = MPDClient.shared.randomMode ? 1 : 0
+        repeatModeButton.state = MPDClient.shared.repeatMode ? 1 : 0
+        singleModeButton.state = MPDClient.shared.singleMode ? 1 : 0
     }
 
     /// Updates user interface when MPD state or current track changes.
@@ -265,7 +265,7 @@ class Controller: NSViewController {
         var trackArtist: String = ""
         var trackCover: NSImage? = nil
         var trackTitle: String = "kmbmpdc"
-        if let currentTrack = MPDController.sharedController.currentTrack {
+        if let currentTrack = MPDClient.shared.currentTrack {
             trackArtist = currentTrack.artist
             trackCover = currentTrack.coverArt
             trackTitle = currentTrack.name
@@ -276,7 +276,7 @@ class Controller: NSViewController {
             self.currentTrackArtist.stringValue = trackArtist
             self.currentTrackTitle.stringValue = trackTitle
             self.setCover(trackCover)
-            self.stopAfterCurrentButton.state = MPDController.sharedController.stopAfterCurrent ? 1 : 0
+            self.stopAfterCurrentButton.state = MPDClient.shared.stopAfterCurrent ? 1 : 0
         }
     }
 

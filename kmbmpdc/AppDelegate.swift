@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         mediaKeyTap?.start()
         mediaKeyTap?.activate()
 
-        MPDController.sharedController.connect()
+        MPDClient.shared.connect()
     }
 
     /// Close the controller popover and remove dismiss monitoring.
@@ -42,19 +42,19 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         }
     }
 
-    /// Executes the appropriate MPDController methods when media keys are pressed.
+    /// Executes the appropriate MPDClient methods when media keys are pressed.
     func handle(mediaKey: MediaKey, event: KeyEvent) {
-        guard MPDController.sharedController.connected else {
+        guard MPDClient.shared.connected else {
             return
         }
 
         switch mediaKey {
         case .playPause:
-            MPDController.sharedController.playPause()
+            MPDClient.shared.playPause()
         case .next, .fastForward:
-            MPDController.sharedController.next()
+            MPDClient.shared.next()
         case .previous, .rewind:
-            MPDController.sharedController.previous()
+            MPDClient.shared.previous()
         }
     }
 

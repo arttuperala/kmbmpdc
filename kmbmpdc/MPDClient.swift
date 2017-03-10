@@ -1,8 +1,8 @@
 import Cocoa
 import libmpdclient
 
-class MPDController: NSObject {
-    static let sharedController = MPDController()
+class MPDClient: NSObject {
+    static let shared = MPDClient()
     static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_STORED_PLAYLIST.rawValue |
                                              MPD_IDLE_QUEUE.rawValue |
                                              MPD_IDLE_PLAYER.rawValue |
@@ -56,9 +56,9 @@ class MPDController: NSObject {
     }
 
     /// Checks that the controller has some kind of permission to message the server. Returns `true`
-    /// if MPDController can access enough  server commands.
+    /// if `MPDClient` can access enough  server commands.
     ///
-    /// The permissions that MPDController looks for are _"play"_ (for control) and _"currentsong"_
+    /// The permissions that `MPDClient` looks for are _"play"_ (for control) and _"currentsong"_
     /// (for reading the server).
     func checkPermissions() -> Bool {
         var currentSongPermission = false
@@ -225,7 +225,7 @@ class MPDController: NSObject {
     func receiveIdleEvents() {
         DispatchQueue.global(qos: .background).async {
             idleLoop: while !self.quitIdle {
-                self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDController.idleMask)
+                self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDClient.idleMask)
                 let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
 
                 // Received no data; disconnect if not peacefully exiting idle.
@@ -388,7 +388,7 @@ class MPDController: NSObject {
 
     /// Toggles a MPD option with idle mode cancel and resume, and refreshes the instance variables
     /// from MPD afterwards.
-    /// - Parameter mode: MPDController instance variable that stores the option value.
+    /// - Parameter mode: MPDClient instance variable that stores the option value.
     /// - Parameter modeToggleFunction: libmpdclient function that toggles the option.
     func toggleMode(_ mode: Bool, modeToggleFunction: MPDSettingToggle) {
         idleExit()
