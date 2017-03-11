@@ -20,6 +20,7 @@ class Controller: NSViewController {
     @IBOutlet weak var trackQueueSeparator: NSBox!
     @IBOutlet weak var trackQueueTable: NSTableView!
 
+    @IBOutlet weak var currentTrackCoverHeight: NSLayoutConstraint!
     @IBOutlet weak var trackQueueTableHeight: NSLayoutConstraint!
 
     @IBOutlet var trackQueueObject: TrackQueue!
@@ -192,14 +193,35 @@ class Controller: NSViewController {
     }
 
     /// Set the main cover art in the interface. If the image is `nil`, placeholder art is used
-    /// instead.
+    /// instead. The `NSImageView` displaying the cover art is then resized to fit the aspect ratio
+    /// of the image, with 89 points being the minimum value and 600 points being the maximum value.
     /// - Parameter image: New cover image to display or `nil` to display kmbmpdc placeholder.
-    func setCover(_ image: NSImage?) {
-        if image == nil {
-            currentTrackCover.image = Bundle.main.image(forResource: "PlaceholderCover")!
+    func setCover(_ cover: NSImage?) {
+        var source: NSImage
+        if cover == nil {
+            source = Bundle.main.image(forResource: "PlaceholderCover")!
         } else {
-            currentTrackCover.image = image
+            source = cover!
         }
+
+        // Produce a scaled version of the given cover art to fit the target NSImageView.
+        // `NSImageInterpolation.high` is used to produce better quality scaling, especially when
+        // downscaling bigger cover art scans.
+        let height = floor(source.size.height / source.size.width * 300.0)
+        let image = NSImage(size: NSSize(width: 300.0, height: height))
+        let inRect = NSRect(x: 0.0, y: 0.0, width: 300.0, height: height)
+        let fromRect = NSRect(x: 0.0, y: 0.0, width: source.size.width, height: source.size.height)
+        image.lockFocus()
+        NSGraphicsContext.current()?.imageInterpolation = NSImageInterpolation.high
+        source.draw(in: inRect, from: fromRect, operation: .sourceOver, fraction: 1.0)
+        image.unlockFocus()
+
+        let coverHeight = min(max(height, 89), 600)
+        currentTrackCover.image = image
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.current().duration = 0.25
+        currentTrackCoverHeight.animator().constant = coverHeight
+        NSAnimationContext.endGrouping()
     }
 
     @IBAction func stopWasClicked(_ sender: NSButton) {

@@ -13,6 +13,7 @@
                 <outlet property="consumeModeButton" destination="hhj-12-CRk" id="clH-V7-du5"/>
                 <outlet property="currentTrackArtist" destination="aPe-0s-wWo" id="IH6-kd-Q3T"/>
                 <outlet property="currentTrackCover" destination="S1u-LG-S6N" id="cuJ-WX-oxE"/>
+                <outlet property="currentTrackCoverHeight" destination="qVI-wz-i8f" id="qM5-3d-lFK"/>
                 <outlet property="currentTrackTitle" destination="n0X-Ap-HND" id="Uwa-2t-ihD"/>
                 <outlet property="nextButton" destination="Z4Q-Oi-6Ww" id="TIS-HU-mNg"/>
                 <outlet property="playPauseButton" destination="Lbs-TV-Qr3" id="Zdw-X2-K0z"/>
