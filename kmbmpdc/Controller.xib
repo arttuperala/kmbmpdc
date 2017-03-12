@@ -25,7 +25,6 @@
                 <outlet property="stopAfterCurrentButton" destination="Pc2-T4-228" id="eFP-Gw-TuA"/>
                 <outlet property="stopButton" destination="VrC-7X-aWX" id="YgS-wk-bfd"/>
                 <outlet property="trackQueueButton" destination="c7J-Bo-4Ty" id="rir-Vh-9D5"/>
-                <outlet property="trackQueueObject" destination="Z2q-Qg-MBG" id="XFc-UI-Akf"/>
                 <outlet property="trackQueueSeparator" destination="toG-w6-gQM" id="esC-co-tKU"/>
                 <outlet property="trackQueueTable" destination="vE3-k2-Kp2" id="BbE-yf-Kx6"/>
                 <outlet property="trackQueueTableHeight" destination="4l5-AR-qJd" id="1fV-77-fTd"/>
@@ -342,10 +341,6 @@
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
-                                <connections>
-                                    <outlet property="dataSource" destination="Z2q-Qg-MBG" id="JKw-ad-1AJ"/>
-                                    <outlet property="delegate" destination="Z2q-Qg-MBG" id="DaF-40-Oxl"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
@@ -391,7 +386,6 @@
             </constraints>
             <point key="canvasLocation" x="52" y="267"/>
         </customView>
-        <customObject id="Z2q-Qg-MBG" customClass="TrackQueue" customModule="kmbmpdc" customModuleProvider="target"/>
         <userDefaultsController representsSharedInstance="YES" id="xLs-YH-dpZ"/>
     </objects>
     <resources>

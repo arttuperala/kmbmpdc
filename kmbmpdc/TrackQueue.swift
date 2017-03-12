@@ -6,7 +6,7 @@ class TrackQueue: NSObject, NSTableViewDelegate, NSTableViewDataSource {
     var tracks: [Track] = []
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return TrackQueue.global.tracks.count
+        return tracks.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -14,7 +14,7 @@ class TrackQueue: NSObject, NSTableViewDelegate, NSTableViewDataSource {
             return nil
         }
 
-        let track = TrackQueue.global.tracks[row]
+        let track = tracks[row]
         if let cell: TrackCell = tableView.make(withIdentifier: tableColumn!.identifier,
                                                 owner: self) as? TrackCell {
             cell.generate(for: track)

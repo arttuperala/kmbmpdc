@@ -23,8 +23,6 @@ class Controller: NSViewController {
     @IBOutlet weak var currentTrackCoverHeight: NSLayoutConstraint!
     @IBOutlet weak var trackQueueTableHeight: NSLayoutConstraint!
 
-    @IBOutlet var trackQueueObject: TrackQueue!
-
     weak var appDelegate: AppDelegate?
     var reconnectDisable: Bool = false
     var reconnectTimer: Double = 2.0
@@ -51,7 +49,8 @@ class Controller: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        trackQueueObject = TrackQueue.global
+        trackQueueTable.dataSource = TrackQueue.global
+        trackQueueTable.delegate = TrackQueue.global
         toggleQueue(trackQueueButton)
     }
 
