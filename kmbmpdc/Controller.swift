@@ -27,6 +27,11 @@ class Controller: NSViewController {
     var reconnectDisable: Bool = false
     var reconnectTimer: Double = 2.0
 
+    /// Returns a `Bool` indicating whether or not the user has user notifications enabled.
+    var notificationsEnabled: Bool {
+        return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
+    }
+
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
@@ -35,6 +40,8 @@ class Controller: NSViewController {
                                        name: Constants.Notifications.connected, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controller.clientDisconnected),
                                        name: Constants.Notifications.disconnected, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(Controller.notifyTrackChange),
+                                       name: Constants.Notifications.changedTrack, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controller.updateModeSelections),
                                        name: Constants.Notifications.optionsRefresh, object: nil)
         notificationCenter.addObserver(self, selector: #selector(Controller.updatePlayerStatus),
@@ -130,6 +137,30 @@ class Controller: NSViewController {
     @IBAction func nextWasClicked(_ sender: NSButton) {
         DispatchQueue.global().async {
             MPDClient.shared.next()
+        }
+    }
+
+    /// Sends a notification with the current track name, artist, album and cover art.
+    func notifyTrackChange() {
+        guard notificationsEnabled, let track = MPDClient.shared.currentTrack else {
+            return
+        }
+
+        let notification = NSUserNotification()
+        notification.identifier = Constants.UserNotifications.trackChange
+        notification.title = track.name
+        notification.subtitle = track.artist
+        notification.informativeText = track.album
+        notification.contentImage = track.coverArt
+
+        DispatchQueue.main.async {
+            let center = NSUserNotificationCenter.default
+            for deliveredNotification in center.deliveredNotifications {
+                if deliveredNotification.identifier == Constants.UserNotifications.trackChange {
+                    center.removeDeliveredNotification(deliveredNotification)
+                }
+            }
+            center.deliver(notification)
         }
     }
 

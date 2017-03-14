@@ -50,11 +50,6 @@ class MPDClient: NSObject {
         return UInt32(UserDefaults.standard.integer(forKey: Constants.Preferences.mpdPort))
     }
 
-    /// Returns a `Bool` indicating whether or not the user has user notifications enabled.
-    var notificationsEnabled: Bool {
-        return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
-    }
-
     /// Checks that the controller has some kind of permission to message the server. Returns `true`
     /// if `MPDClient` can access enough  server commands.
     ///
@@ -98,7 +93,7 @@ class MPDClient: NSObject {
 
             connected = true
             mpd_connection_set_keepalive(mpdConnection!, true)
-            reloadPlayerStatus(false)
+            reloadPlayerStatus()
             reloadOptions()
             reloadPlaylists()
             reloadQueue()
@@ -172,24 +167,6 @@ class MPDClient: NSObject {
         idleEnter()
     }
 
-    /// Sends a notification with the current track name, artist and album.
-    func notifyTrackChange() {
-        let notification = NSUserNotification()
-        notification.identifier = Constants.UserNotifications.trackChange
-        notification.title = currentTrack?.name
-        notification.subtitle = currentTrack?.artist
-        notification.informativeText = currentTrack?.album
-        notification.contentImage = currentTrack?.coverArt
-
-        let center = NSUserNotificationCenter.default
-        for deliveredNotification in center.deliveredNotifications {
-            if deliveredNotification.identifier == Constants.UserNotifications.trackChange {
-                center.removeDeliveredNotification(deliveredNotification)
-            }
-        }
-        center.deliver(notification)
-    }
-
     /// Toggles between play and pause modes. If there isn't a song currently playing or paused,
     /// starts playing the first track on the playlist to make sure there is a change to playback
     /// when requested.
@@ -260,12 +237,8 @@ class MPDClient: NSObject {
 
     /// Checks MPD playing state and looks for potential track changes for notifications. Sends a
     /// KMBMPDCPlayerReload notification upon completion.
-    /// - Parameter showNotification: Boolean indicating if a track change notification should be
-    /// sent out if noticed. Defaults to true.
-    func reloadPlayerStatus(_ showNotification: Bool = true) {
+    func reloadPlayerStatus() {
         var changedTrack: Bool = false
-        var displayNotification: Bool = showNotification && notificationsEnabled
-
         let status = mpd_run_status(mpdConnection!)
         let songId: Int32 = mpd_status_get_song_id(status)
         playerState = mpd_status_get_state(status)
@@ -284,15 +257,16 @@ class MPDClient: NSObject {
         reloadQueue()
 
         if stopAfterCurrent && changedTrack {
-            mpd_run_stop(mpdConnection!)
-            stopAfterCurrent = false
-            displayNotification = false
+            let stopped = mpd_run_stop(mpdConnection!)
+            if stopped {
+                currentTrack = nil
+                stopAfterCurrent = false
+            }
         }
 
-        if displayNotification && changedTrack {
-            DispatchQueue.main.async {
-                self.notifyTrackChange()
-            }
+        if changedTrack {
+            let notification = Notification(name: Constants.Notifications.changedTrack, object: nil)
+            NotificationCenter.default.post(notification)
         }
 
         let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)

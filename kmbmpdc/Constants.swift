@@ -2,6 +2,7 @@ import Foundation
 
 struct Constants {
     struct Notifications {
+        static let changedTrack = Notification.Name("KMBMPDCChangedTrack")
         static let connected = Notification.Name("KMBMPDCConnected")
         static let disconnected = Notification.Name("KMBMPDCDisconnected")
         static let optionsRefresh = Notification.Name("KMBMPDCOptionsReload")
