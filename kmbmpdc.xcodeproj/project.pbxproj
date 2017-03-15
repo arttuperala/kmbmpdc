@@ -11,6 +11,8 @@
 		8107F3D81DAE786B0088E0ED /* MediaKeyTap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		811E38C81D4D16310099BF4C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811E38C71D4D16310099BF4C /* Constants.swift */; };
 		81309D2C1E374CB7003F4517 /* libmpdclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81309D2B1E374CB7003F4517 /* libmpdclient.a */; };
+		8131E92B1E7887BA00F6C45B /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131E9291E7887BA00F6C45B /* Search.swift */; };
+		8131E92C1E7887BA00F6C45B /* Search.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131E92A1E7887BA00F6C45B /* Search.xib */; };
 		815B410A1E6EF43A000E519E /* TrackQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815B41091E6EF43A000E519E /* TrackQueue.swift */; };
 		815B410C1E6EFA26000E519E /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815B410B1E6EFA26000E519E /* TrackCell.swift */; };
 		8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8167DBCD1DCE95B7004E9B05 /* Preferences.swift */; };
@@ -62,6 +64,8 @@
 		8107F3D61DAE786B0088E0ED /* MediaKeyTap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaKeyTap.framework; path = Carthage/Build/Mac/MediaKeyTap.framework; sourceTree = "<group>"; };
 		811E38C71D4D16310099BF4C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		81309D2B1E374CB7003F4517 /* libmpdclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpdclient.a; path = Frameworks/libmpdclient.a; sourceTree = "<group>"; };
+		8131E9291E7887BA00F6C45B /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		8131E92A1E7887BA00F6C45B /* Search.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Search.xib; sourceTree = "<group>"; };
 		815B41091E6EF43A000E519E /* TrackQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackQueue.swift; sourceTree = "<group>"; };
 		815B410B1E6EFA26000E519E /* TrackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
 		8167DBCD1DCE95B7004E9B05 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				819BFCF91E6861E4006CADF0 /* Controller.swift */,
 				81AA7C2D1D492B1F00416934 /* MPDClient.swift */,
 				8167DBCD1DCE95B7004E9B05 /* Preferences.swift */,
+				8131E9291E7887BA00F6C45B /* Search.swift */,
 				81D1DD7F1E1AE138008CD3F9 /* Track.swift */,
 				815B410B1E6EFA26000E519E /* TrackCell.swift */,
 				815B41091E6EF43A000E519E /* TrackQueue.swift */,
@@ -150,6 +155,7 @@
 				819BFCFA1E6861E4006CADF0 /* Controller.xib */,
 				81C25DAF1D4B300900B53155 /* MainMenu.xib */,
 				8167DBCE1DCE95B7004E9B05 /* Preferences.xib */,
+				8131E92A1E7887BA00F6C45B /* Search.xib */,
 			);
 			path = kmbmpdc;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 				81AA7BFF1D48B13D00416934 /* Assets.xcassets in Resources */,
 				819BFCFC1E6861E4006CADF0 /* Controller.xib in Resources */,
 				8167DBD01DCE95B7004E9B05 /* Preferences.xib in Resources */,
+				8131E92C1E7887BA00F6C45B /* Search.xib in Resources */,
 				81C25DB01D4B300900B53155 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8131E92B1E7887BA00F6C45B /* Search.swift in Sources */,
 				81AA7C2E1D492B1F00416934 /* MPDClient.swift in Sources */,
 				815B410A1E6EF43A000E519E /* TrackQueue.swift in Sources */,
 				8167DBCF1DCE95B7004E9B05 /* Preferences.swift in Sources */,

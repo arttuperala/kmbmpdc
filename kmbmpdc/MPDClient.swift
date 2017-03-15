@@ -50,6 +50,15 @@ class MPDClient: NSObject {
         return UInt32(UserDefaults.standard.integer(forKey: Constants.Preferences.mpdPort))
     }
 
+    /// Adds an array of `Track` objects at the end of the queue.
+    func append(_ tracks: [Track]) {
+        idleExit()
+        for track in tracks {
+            mpd_run_add(mpdConnection!, track.uri)
+        }
+        idleEnter()
+    }
+
     /// Checks that the controller has some kind of permission to message the server. Returns `true`
     /// if `MPDClient` can access enough  server commands.
     ///
@@ -139,6 +148,20 @@ class MPDClient: NSObject {
         while self.idling {
             usleep(100 * 1000)
         }
+    }
+
+    func insert(_ tracks: [Track], at beginning: UInt32) {
+        var position = beginning
+        for track in tracks {
+            mpd_run_add_id_to(mpdConnection!, track.uri, position)
+            position += 1
+        }
+    }
+
+    func insertAtBeginning(_ tracks: [Track]) {
+        idleExit()
+        insert(tracks, at: 0)
+        idleEnter()
     }
 
     /// Loads playlist with given name and starts playback at first item based on queue length.
@@ -346,6 +369,24 @@ class MPDClient: NSObject {
     /// Toggles repeat mode.
     func repeatModeToggle() {
         toggleMode(repeatMode, modeToggleFunction: mpd_run_repeat)
+    }
+
+    func search(for searchString: String) -> [Track] {
+        idleExit()
+        var tracks: [Track] = []
+        mpd_search_db_songs(mpdConnection!, false)
+        mpd_search_add_any_tag_constraint(mpdConnection!, MPD_OPERATOR_DEFAULT, searchString)
+        let success = mpd_search_commit(mpdConnection!)
+        while success {
+            let song = mpd_recv_song(mpdConnection!)
+            if song == nil {
+                break
+            }
+            let track = Track(trackInfo: song!)
+            tracks.append(track)
+        }
+        idleEnter()
+        return tracks
     }
 
     /// Toggles single mode.

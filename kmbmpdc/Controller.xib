@@ -59,9 +59,12 @@
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WyJ-rz-ybh">
                             <rect key="frame" x="0.0" y="1" width="14" height="14"/>
                             <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSRevealFreestandingTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="hVl-vF-N2h">
-                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="openSearch:" target="-2" id="BI2-K2-ynr"/>
+                            </connections>
                         </button>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hhj-12-CRk">
                             <rect key="frame" x="23" y="0.0" width="62" height="17"/>

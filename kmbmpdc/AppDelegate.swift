@@ -66,6 +66,10 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         if popoverDismissMonitor == nil {
             let eventHandler: (NSEvent) -> Void = {_ in
+                if self.controller?.searchPopover?.isShown ?? false {
+                    return
+                }
+
                 self.closePopover()
             }
             let eventMask = NSEventMask.leftMouseDown.union(NSEventMask.rightMouseDown)

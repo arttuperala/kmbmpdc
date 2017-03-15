@@ -8,6 +8,8 @@ class Track: NSObject {
     let uri: String
     let album: String
     let artist: String
+    let number: Int?
+    let duration: Int?
 
     convenience init(identifier: Int32) {
         let trackInfo = MPDClient.shared.lookupSong(identifier: identifier)
@@ -19,6 +21,8 @@ class Track: NSObject {
         self.name = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_TITLE)
         self.album = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ALBUM)
         self.artist = Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_ARTIST)
+        self.number = Int(Track.getTag(trackInfo: trackInfo, tagType: MPD_TAG_TRACK))
+        self.duration = Int(exactly: mpd_song_get_duration(trackInfo))
         self.uri = String(cString: mpd_song_get_uri(trackInfo))
         mpd_song_free(trackInfo)
     }
@@ -41,6 +45,16 @@ class Track: NSObject {
         }
 
         return nil
+    }
+
+    var durationString: String {
+        guard let duration = self.duration else {
+            return ""
+        }
+        let minutes = String(duration / 60)
+        let seconds = String(format: "%02d", duration % 60)
+
+        return "\(minutes):\(seconds)"
     }
 
     static func getID3CoverArt(_ path: String) -> NSImage? {

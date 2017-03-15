@@ -1,5 +1,6 @@
 disabled_rules:
   - type_body_length
+  - file_length
 opt_in_rules:
   - overridden_super_call
   - conditional_returns_on_newline

@@ -24,6 +24,7 @@ class Controller: NSViewController {
     @IBOutlet weak var trackQueueTableHeight: NSLayoutConstraint!
 
     weak var appDelegate: AppDelegate?
+    var searchPopover: NSPopover?
     var reconnectDisable: Bool = false
     var reconnectTimer: Double = 2.0
 
@@ -162,6 +163,16 @@ class Controller: NSViewController {
             }
             center.deliver(notification)
         }
+    }
+
+    @IBAction func openSearch(_ sender: NSButton) {
+        if searchPopover == nil {
+            let searchView = Search(nibName: "Search", bundle: Bundle.main)
+            searchPopover = NSPopover()
+            searchPopover!.contentViewController = searchView
+            searchPopover!.behavior = .transient
+        }
+        searchPopover!.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxX)
     }
 
     @IBAction func openSubmenu(_ sender: NSButton) {

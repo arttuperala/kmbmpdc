@@ -10,6 +10,8 @@ kmbmpdc is a macOS menubar application for controlling [music player daemon](htt
 - [x] Menubar icon indicating playback
 - [x] Popout window with playback controls and cover art
 - [x] Media key support
+- [x] Upcoming track queue
+- [x] Track search
 - [x] Playlist support
 - [x] Stop after current track
 - [x] Track change notifications with cover art
@@ -27,6 +29,8 @@ Official builds can be found in [Github releases](https://github.com/arttuperala
 If you are running MPD on the local machine with the default port and without a password, kmbmpdc should connect automatically to the server on initial start. If this is not the case, you can edit the host, port and password in the application preferences.
 
 Controlling MPD is done via the media keys or by opening the controller from the menubar icon. Media keys support play/pause, next track and previous track. The menubar controller supports the same functions as the media keys plus stop, stop after current track, playlists and different MPD modes.
+
+Track search is opened by clicking on the magnifying glass icon in the controller. The search is performed when the input field on the top of the UI is given a string and Enter is pressed. Individual tracks can be appended at the end of the queue by double-clicking on them. Multiple selections can be added to the beginning or end of the queue by right-clicking the selection and choosing the appropriate action.
 
 Track change notifications are enabled by default. They can be disabled in the preferences. To enable cover art, specify the media library root that is being used by mpd, as the cover art is obtained from the media files themselves.
 
