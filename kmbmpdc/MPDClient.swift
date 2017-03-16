@@ -264,6 +264,7 @@ class MPDClient: NSObject {
         var changedTrack: Bool = false
         let status = mpd_run_status(mpdConnection!)
         let songId: Int32 = mpd_status_get_song_id(status)
+        let performQueueReload: Bool = songId != currentTrack?.identifier
         playerState = mpd_status_get_state(status)
         mpd_status_free(status)
 
@@ -277,8 +278,6 @@ class MPDClient: NSObject {
             changedTrack = true
         }
 
-        reloadQueue()
-
         if stopAfterCurrent && changedTrack {
             let stopped = mpd_run_stop(mpdConnection!)
             if stopped {
@@ -290,6 +289,10 @@ class MPDClient: NSObject {
         if changedTrack {
             let notification = Notification(name: Constants.Notifications.changedTrack, object: nil)
             NotificationCenter.default.post(notification)
+        }
+
+        if performQueueReload {
+            reloadQueue()
         }
 
         let notification = Notification(name: Constants.Notifications.playerRefresh, object: nil)
