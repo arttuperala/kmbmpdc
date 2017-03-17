@@ -294,8 +294,14 @@ class Controller: NSViewController {
     @IBAction func toggleQueue(_ sender: NSButton) {
         // If display is toggled on, `sender.state` equals 1 and if not, 0. When the queue view is
         // toggled on, it's 201 points high and the separator horizontal line is displayed.
-        trackQueueSeparator.isHidden = sender.state == 1 ? false : true
-        trackQueueTableHeight.animator().constant = CGFloat(sender.state * 201)
+        trackQueueSeparator.isHidden = false
+        NSAnimationContext.runAnimationGroup({ _ in
+            trackQueueTableHeight.animator().constant = CGFloat(sender.state * 201)
+        }) {
+            if sender.state == 0 {
+                self.trackQueueSeparator.isHidden = true
+            }
+        }
     }
 
     @IBAction func toggleRandomMode(_ sender: NSButton) {

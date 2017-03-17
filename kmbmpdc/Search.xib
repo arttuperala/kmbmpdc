@@ -139,7 +139,7 @@
                         <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                     </buttonCell>
                     <connections>
-                        <action selector="selectText:" target="GRY-7D-7Tb" id="Y3x-Iw-tfQ"/>
+                        <action selector="selectAll:" target="-1" id="N8d-46-5NA"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NHj-Ep-n7P">
