@@ -62,6 +62,10 @@ class Controller: NSViewController {
         toggleQueue(trackQueueButton)
     }
 
+    override func cancelOperation(_ sender: Any?) {
+        appDelegate?.closePopover()
+    }
+
     /// Perform tasks after client connects to the server.
     func clientConnected() {
         DispatchQueue.main.async {

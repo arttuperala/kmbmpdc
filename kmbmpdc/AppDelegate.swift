@@ -64,6 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
     func openPopover(_ button: NSStatusBarButton) {
         mediaKeyTap?.activate()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        NSApplication.shared().activate(ignoringOtherApps: true)
         if popoverDismissMonitor == nil {
             let eventHandler: (NSEvent) -> Void = {_ in
                 if self.controller?.searchPopover?.isShown ?? false {
