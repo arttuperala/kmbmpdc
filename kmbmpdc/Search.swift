@@ -17,10 +17,22 @@ class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     /// Returns an array of `Track` objects based on what rows are selected in the table.
     var selectedRows: [Track] {
         var tracks: [Track] = []
-        for index in resultTable.selectedRowIndexes {
-            tracks.append(results[index])
+        if resultTable.selectedRowIndexes.isEmpty {
+            tracks.append(results[resultTable.clickedRow])
+        } else {
+            for index in resultTable.selectedRowIndexes {
+                tracks.append(results[index])
+            }
         }
         return tracks
+    }
+
+    @IBAction func addAfterCurrentAlbum(_ sender: Any) {
+        MPDClient.shared.insertAfterCurrentAlbum(selectedRows)
+    }
+
+    @IBAction func addAfterCurrentSong(_ sender: Any) {
+        MPDClient.shared.insertAfterCurrentTrack(selectedRows)
     }
 
     @IBAction func addToEnd(_ sender: Any) {

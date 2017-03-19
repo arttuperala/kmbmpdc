@@ -204,8 +204,20 @@
                         <action selector="addToBeginning:" target="-2" id="qfZ-BB-3Iq"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Add after current song" id="uzK-Y0-QES">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="addAfterCurrentSong:" target="-2" id="p2g-Hv-rLD"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Add after current album" id="bNt-Sd-dg7">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="addAfterCurrentAlbum:" target="-2" id="dDV-bu-hnM"/>
+                    </connections>
+                </menuItem>
             </items>
-            <point key="canvasLocation" x="-37" y="449"/>
+            <point key="canvasLocation" x="-37" y="468"/>
         </menu>
     </objects>
 </document>

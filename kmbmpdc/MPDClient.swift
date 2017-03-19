@@ -150,6 +150,7 @@ class MPDClient: NSObject {
         }
     }
 
+    /// Inserts given tracks at the given position.
     func insert(_ tracks: [Track], at beginning: UInt32) {
         var position = beginning
         for track in tracks {
@@ -158,6 +159,44 @@ class MPDClient: NSObject {
         }
     }
 
+    /// Inserts given tracks before the first track with a different album name compared to the
+    /// current track album name.
+    func insertAfterCurrentAlbum(_ tracks: [Track]) {
+        idleExit()
+        let status = mpd_run_status(mpdConnection!)
+        var position = UInt32(mpd_status_get_song_pos(status) + 1)
+        if let albumName = currentTrack?.album {
+            let queueLength = mpd_status_get_queue_length(status)
+            while position < queueLength {
+                let song = mpd_run_get_queue_song_pos(mpdConnection!, position)
+                if song == nil {
+                    break
+                }
+                let track = Track(trackInfo: song!)
+
+                if track.album == albumName {
+                    position += 1
+                } else {
+                    break
+                }
+            }
+        }
+        insert(tracks, at: position)
+        mpd_status_free(status)
+        idleEnter()
+    }
+
+    /// Inserts given tracks after currently playing song.
+    func insertAfterCurrentTrack(_ tracks: [Track]) {
+        idleExit()
+        let status = mpd_run_status(mpdConnection!)
+        let position = UInt32(mpd_status_get_song_pos(status) + 1)
+        insert(tracks, at: position)
+        mpd_status_free(status)
+        idleEnter()
+    }
+
+    /// Inserts given tracks to the beginning of the queue.
     func insertAtBeginning(_ tracks: [Track]) {
         idleExit()
         insert(tracks, at: 0)
