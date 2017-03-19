@@ -16,7 +16,12 @@ kmbmpdc is a macOS menubar application for controlling [music player daemon](htt
 
 kmbmpdc requires 10.11 or newer.
 
-## Download
+## Installation
+
+To install with [homebrew-cask](https://github.com/caskroom/homebrew-cask) use:
+```
+brew cask install kmbmpdc
+```
 
 Official builds can be found in [Github releases](https://github.com/arttuperala/kmbmpdc/releases). The releases are unsigned.
 
