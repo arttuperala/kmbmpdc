@@ -22,12 +22,11 @@ kmbmpdc requires 10.11 or newer.
 
 ## Installation
 
-To install with [homebrew-cask](https://github.com/caskroom/homebrew-cask) use:
-```
-brew cask install kmbmpdc
-```
-
 Official builds can be found in [Github releases](https://github.com/arttuperala/kmbmpdc/releases). The releases are unsigned.
+
+If you are using [Homebrew-Cask](https://github.com/caskroom/homebrew-cask), you can install the official build with the command:
+
+    brew cask install kmbmpdc
 
 ## Usage
 
