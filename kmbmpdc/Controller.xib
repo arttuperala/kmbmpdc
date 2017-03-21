@@ -344,6 +344,9 @@
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <outlet property="menu" destination="bHj-fX-OER" id="WVi-rJ-dik"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
@@ -390,6 +393,23 @@
             <point key="canvasLocation" x="52" y="267"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="xLs-YH-dpZ"/>
+        <menu id="bHj-fX-OER">
+            <items>
+                <menuItem title="Play next" id="tE7-y6-KNl">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="queuePlayNext:" target="-2" id="Ofp-01-clo"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Remove" id="WOM-0T-5bh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="queueRemove:" target="-2" id="ntB-zU-19h"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="291" y="381"/>
+        </menu>
     </objects>
     <resources>
         <image name="BottomGradient" width="300" height="89"/>

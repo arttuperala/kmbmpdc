@@ -5,6 +5,14 @@ class TrackQueue: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
     var tracks: [Track] = []
 
+    /// Returns the track for the given index or nil if index is not found.
+    func get(_ index: Int) -> Track? {
+        guard index >= 0, index < tracks.count else {
+            return nil
+        }
+        return tracks[index]
+    }
+
     func numberOfRows(in tableView: NSTableView) -> Int {
         return tracks.count
     }

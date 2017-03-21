@@ -216,6 +216,18 @@ class Controller: NSViewController {
         }
     }
 
+    @IBAction func queuePlayNext(_ sender: NSMenuItem) {
+        if let track = TrackQueue.global.get(trackQueueTable.clickedRow) {
+            MPDClient.shared.moveAfterCurrent(track)
+        }
+    }
+
+    @IBAction func queueRemove(_ sender: NSMenuItem) {
+        if let track = TrackQueue.global.get(trackQueueTable.clickedRow) {
+            MPDClient.shared.remove(track)
+        }
+    }
+
     /// Reconnects to the MPD server. If connection is successful, the reconnection time is reset.
     func reconnect() {
         MPDClient.shared.connect()

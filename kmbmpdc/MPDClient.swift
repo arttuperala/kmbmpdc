@@ -222,6 +222,16 @@ class MPDClient: NSObject {
         return event.rawValue & mask.rawValue == mask.rawValue
     }
 
+    /// Moves given track after the currently playing track.
+    func moveAfterCurrent(_ track: Track) {
+        idleExit()
+        let status = mpd_run_status(mpdConnection!)
+        let position: UInt32 = UInt32(mpd_status_get_song_pos(status) + 1)
+        mpd_status_free(status)
+        mpd_run_move_id(mpdConnection!, UInt32(track.identifier), position)
+        idleEnter()
+    }
+
     /// Goes to the next track on the current playlist.
     func next() {
         idleExit()
@@ -406,6 +416,13 @@ class MPDClient: NSObject {
 
         let notification = Notification(name: Constants.Notifications.queueRefresh, object: nil)
         NotificationCenter.default.post(notification)
+    }
+
+    /// Removes a track from the queue.
+    func remove(_ track: Track) {
+        idleExit()
+        mpd_run_delete_id(mpdConnection!, UInt32(track.identifier))
+        idleEnter()
     }
 
     /// Toggles repeat mode.
