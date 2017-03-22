@@ -9,6 +9,7 @@
 ### Changed
 - The three-button menubar controls have been replaced with a single menubar icon indicating current playback status.
 - Clicking on the track change notification opens up the controller.
+- Updated libmpdclient to v2.11.
 
 ## [1.2.0] - 2017-03-01
 ### Added
