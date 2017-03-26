@@ -175,6 +175,7 @@ class Controller: NSViewController {
             searchPopover = NSPopover()
             searchPopover!.contentViewController = searchView
             searchPopover!.behavior = .transient
+            searchPopover!.appearance = NSAppearance(named: NSAppearanceNameAqua)
         }
         searchPopover!.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxX)
     }

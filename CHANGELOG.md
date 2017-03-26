@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Style fixes for translucent mode.
 
 ## [2.0.0] - 2017-03-24
 ### Added

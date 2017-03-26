@@ -49,7 +49,7 @@
                     <rect key="frame" x="6" y="537" width="288" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="" id="GEN-sh-2fa">
                         <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -323,7 +323,7 @@
                                                         <rect key="frame" x="6" y="5" width="288" height="14"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="32S-p0-0BB">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
