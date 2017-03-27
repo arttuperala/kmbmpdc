@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [2.0.1] - 2017-03-27
 ### Fixed
 - Style fixes for translucent mode.
 
@@ -42,7 +44,8 @@
 - Application won't crash on start when libmpdclient is not installed locally.
 - Application won't crash if client has insufficient permissions due to incorrect server password.
 
-[Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/arttuperala/kmbmpdc/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/arttuperala/kmbmpdc/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/arttuperala/kmbmpdc/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/arttuperala/kmbmpdc/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/arttuperala/kmbmpdc/compare/v1.0.0...v1.1.0
