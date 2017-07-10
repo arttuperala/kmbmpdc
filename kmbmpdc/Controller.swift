@@ -262,19 +262,36 @@ class Controller: NSViewController {
             source = cover!
         }
 
-        // Produce a scaled version of the given cover art to fit the target NSImageView.
+        // Produce a scaled version of the given cover art to fit the target `NSImageView`.
+        // `NSImage` is produced by creating two different sized bitmap representations, one 300
+        // pixels wide and other 600 pixels wide, in order to display good quality cover art on
+        // regular PPI displays and Apple's Retina displays.
         // `NSImageInterpolation.high` is used to produce better quality scaling, especially when
         // downscaling bigger cover art scans.
         let height = floor(source.size.height / source.size.width * 300.0)
         let image = NSImage(size: NSSize(width: 300.0, height: height))
-        let inRect = NSRect(x: 0.0, y: 0.0, width: 300.0, height: height)
-        let fromRect = NSRect(x: 0.0, y: 0.0, width: source.size.width, height: source.size.height)
-        image.lockFocus()
-        NSGraphicsContext.current()?.imageInterpolation = NSImageInterpolation.high
-        source.draw(in: inRect, from: fromRect, operation: .sourceOver, fraction: 1.0)
-        image.unlockFocus()
+        for i: CGFloat in [1, 2] {
+            let pixelsWide: Int = 300 * Int(i)
+            let pixelsHigh: Int = Int(height * i)
+            if let bitmapRep = NSBitmapImageRep(bitmapDataPlanes: nil,
+                                                pixelsWide: pixelsWide, pixelsHigh: pixelsHigh,
+                                                bitsPerSample: 8, samplesPerPixel: 4,
+                                                hasAlpha: true, isPlanar: false,
+                                                colorSpaceName: NSCalibratedRGBColorSpace,
+                                                bytesPerRow: 0, bitsPerPixel: 0) {
+                let context = NSGraphicsContext(bitmapImageRep: bitmapRep)
+                let inRect = NSRect(x: 0.0, y: 0.0, width: 300.0 * i, height: height * i)
 
-        let coverHeight = min(max(height, 89), 600)
+                NSGraphicsContext.saveGraphicsState()
+                NSGraphicsContext.setCurrent(context)
+                NSGraphicsContext.current()?.imageInterpolation = NSImageInterpolation.high
+                source.draw(in: inRect, from: NSRect.zero, operation: .sourceOver, fraction: 1.0)
+                NSGraphicsContext.restoreGraphicsState()
+                image.addRepresentation(bitmapRep)
+            }
+        }
+
+        let coverHeight = min(max(image.size.height, 89), 600)
         currentTrackCover.image = image
         NSAnimationContext.beginGrouping()
         NSAnimationContext.current().duration = 0.25

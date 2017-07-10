@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Cover art scaling mechanism now produces two image representations, one for Retina displays and one for non-Retina displays.
 
 ## [2.0.1] - 2017-03-27
 ### Fixed
