@@ -1,5 +1,6 @@
 [![kmbmpdc](https://kmbmpdc.perala.me/static/githubheader.png)](https://github.com/arttuperala/kmbmpdc)
 [![Travis](https://img.shields.io/travis/arttuperala/kmbmpdc.svg?maxAge=3600)](https://travis-ci.org/arttuperala/kmbmpdc)
+[![Meido](https://meido.perala.me/kmbmpdc/badge.svg?maxAge=3600)](https://meido.perala.me/kmbmpdc)
 [![GitHub release](https://img.shields.io/github/release/arttuperala/kmbmpdc.svg?maxAge=43200)](https://github.com/arttuperala/kmbmpdc/releases/latest)
 [![Github All Releases](https://img.shields.io/github/downloads/arttuperala/kmbmpdc/total.svg?maxAge=28800)](https://github.com/arttuperala/kmbmpdc/releases)
 [![Website](https://img.shields.io/website-up-down-green-red/https/kmbmpdc.perala.me.svg?maxAge=3600)](https://kmbmpdc.perala.me)
