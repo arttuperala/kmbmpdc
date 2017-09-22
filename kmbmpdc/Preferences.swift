@@ -64,13 +64,13 @@ class Preferences: NSViewController {
         }
     }
 
-    var notificationsDisabled: Int {
+    var notificationsDisabled: NSControl.StateValue {
         get {
             let disabled = defaults.bool(forKey: Constants.Preferences.notificationsDisabled)
-            return disabled ? 0 : 1
+            return disabled ? .off : .on
         }
         set(state) {
-            let disabled = state == 0 ? true : false
+            let disabled = state == .off ? true : false
             defaults.set(disabled, forKey: Constants.Preferences.notificationsDisabled)
         }
     }
@@ -118,7 +118,7 @@ class Preferences: NSViewController {
         panel.canChooseFiles = false
         panel.directoryURL = musicDirectoryPath.url
         let panelAction = panel.runModal()
-        if panelAction == NSFileHandlingPanelOKButton {
+        if panelAction == .OK {
             musicDirectoryPath.url = panel.url
             musicDirectory = panel.url!
         }

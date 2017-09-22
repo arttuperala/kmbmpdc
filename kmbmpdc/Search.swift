@@ -1,5 +1,13 @@
 import Cocoa
 
+struct Identifiers {
+    static let searchTrackAlbum = NSUserInterfaceItemIdentifier("searchTrackAlbum")
+    static let searchTrackArtist = NSUserInterfaceItemIdentifier("searchTrackArtist")
+    static let searchTrackLength = NSUserInterfaceItemIdentifier("searchTrackLength")
+    static let searchTrackNumber = NSUserInterfaceItemIdentifier("searchTrackNumber")
+    static let searchTrackTitle = NSUserInterfaceItemIdentifier("searchTrackTitle")
+}
+
 class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     @IBOutlet weak var resultTable: NSTableView!
 
@@ -69,15 +77,15 @@ class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     /// Resizes the table columns to their predefined widths.
     func resetTableSize() {
         for column in resultTable.tableColumns {
-            if column.identifier == "searchTrackAlbum" {
+            if column.identifier == Identifiers.searchTrackAlbum {
                 column.width = 170
-            } else if column.identifier == "searchTrackArtist" {
+            } else if column.identifier == Identifiers.searchTrackArtist {
                 column.width = 170
-            } else if column.identifier == "searchTrackLength" {
+            } else if column.identifier == Identifiers.searchTrackLength {
                 column.width = 43
-            } else if column.identifier == "searchTrackNumber" {
+            } else if column.identifier == Identifiers.searchTrackNumber {
                 column.width = 29
-            } else if column.identifier == "searchTrackTitle" {
+            } else if column.identifier == Identifiers.searchTrackTitle {
                 column.width = 255
             }
         }
@@ -85,16 +93,19 @@ class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
 
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
                    row: Int) -> Any? {
-        switch tableColumn?.identifier {
-        case "searchTrackAlbum"?:
+        guard let identifier = tableColumn?.identifier else {
+            return nil
+        }
+        switch identifier {
+        case Identifiers.searchTrackAlbum:
             return results[row].album
-        case "searchTrackArtist"?:
+        case Identifiers.searchTrackArtist:
             return results[row].artist
-        case "searchTrackLength"?:
+        case Identifiers.searchTrackLength:
             return results[row].durationString
-        case "searchTrackNumber"?:
+        case Identifiers.searchTrackNumber:
             return results[row].number
-        case "searchTrackTitle"?:
+        case Identifiers.searchTrackTitle:
             return results[row].name
         default:
             return nil

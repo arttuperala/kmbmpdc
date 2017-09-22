@@ -33,7 +33,7 @@ class Controller: NSViewController {
         return !UserDefaults.standard.bool(forKey: Constants.Preferences.notificationsDisabled)
     }
 
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
         let notificationCenter = NotificationCenter.default
@@ -67,7 +67,7 @@ class Controller: NSViewController {
     }
 
     /// Perform tasks after client connects to the server.
-    func clientConnected() {
+    @objc func clientConnected() {
         DispatchQueue.main.async {
             self.enableControls(true)
         }
@@ -75,7 +75,7 @@ class Controller: NSViewController {
     }
 
     /// Perform tasks after client disconnects from the server.
-    func clientDisconnected() {
+    @objc func clientDisconnected() {
         DispatchQueue.main.async {
             self.currentTrackArtist.stringValue = ""
             self.currentTrackTitle.stringValue = "kmbmpdc"
@@ -99,15 +99,15 @@ class Controller: NSViewController {
         var playPauseTooltip: String
         var statusItemImage: NSImage
         if MPDClient.shared.playerState == MPD_STATE_PLAY {
-            playPauseAltImage = Bundle.main.image(forResource: "PauseButtonAlt")!
-            playPauseImage = Bundle.main.image(forResource: "PauseButton")!
+            playPauseAltImage = Bundle.main.image(forResource: Constants.Images.pauseButtonAlt)!
+            playPauseImage = Bundle.main.image(forResource: Constants.Images.pauseButton)!
             playPauseTooltip = "Pause"
-            statusItemImage = Bundle.main.image(forResource: "StatusPlaying")!
+            statusItemImage = Bundle.main.image(forResource: Constants.Images.statusPlaying)!
         } else {
-            playPauseAltImage = Bundle.main.image(forResource: "PlayButtonAlt")!
-            playPauseImage = Bundle.main.image(forResource: "PlayButton")!
+            playPauseAltImage = Bundle.main.image(forResource: Constants.Images.playButtonAlt)!
+            playPauseImage = Bundle.main.image(forResource: Constants.Images.playButton)!
             playPauseTooltip = "Play"
-            statusItemImage = Bundle.main.image(forResource: "StatusPaused")!
+            statusItemImage = Bundle.main.image(forResource: Constants.Images.statusPaused)!
         }
         playPauseButton.alternateImage = playPauseAltImage
         playPauseButton.image = playPauseImage
@@ -132,7 +132,7 @@ class Controller: NSViewController {
     }
 
     /// Loads a playlist by a `NSMenuItem` title.
-    func loadPlaylist(_ sender: NSMenuItem) {
+    @objc func loadPlaylist(_ sender: NSMenuItem) {
         let playlistName = sender.title
         DispatchQueue.global().async {
             MPDClient.shared.loadPlaylist(playlistName)
@@ -146,7 +146,7 @@ class Controller: NSViewController {
     }
 
     /// Sends a notification with the current track name, artist, album and cover art.
-    func notifyTrackChange() {
+    @objc func notifyTrackChange() {
         guard notificationsEnabled, let track = MPDClient.shared.currentTrack else {
             return
         }
@@ -171,11 +171,11 @@ class Controller: NSViewController {
 
     @IBAction func openSearch(_ sender: NSButton) {
         if searchPopover == nil {
-            let searchView = Search(nibName: "Search", bundle: Bundle.main)
+            let searchView = Search(nibName: Constants.Nibs.search, bundle: Bundle.main)
             searchPopover = NSPopover()
             searchPopover!.contentViewController = searchView
             searchPopover!.behavior = .transient
-            searchPopover!.appearance = NSAppearance(named: NSAppearanceNameAqua)
+            searchPopover!.appearance = NSAppearance(named: NSAppearance.Name.aqua)
         }
         searchPopover!.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxX)
     }
@@ -230,7 +230,7 @@ class Controller: NSViewController {
     }
 
     /// Reconnects to the MPD server. If connection is successful, the reconnection time is reset.
-    func reconnect() {
+    @objc func reconnect() {
         MPDClient.shared.connect()
         if MPDClient.shared.connected {
             reconnectTimer = 2.0
@@ -257,7 +257,7 @@ class Controller: NSViewController {
     func setCover(_ cover: NSImage?) {
         var source: NSImage
         if cover == nil {
-            source = Bundle.main.image(forResource: "PlaceholderCover")!
+            source = Bundle.main.image(forResource: Constants.Images.placeholderCover)!
         } else {
             source = cover!
         }
@@ -277,14 +277,14 @@ class Controller: NSViewController {
                                                 pixelsWide: pixelsWide, pixelsHigh: pixelsHigh,
                                                 bitsPerSample: 8, samplesPerPixel: 4,
                                                 hasAlpha: true, isPlanar: false,
-                                                colorSpaceName: NSCalibratedRGBColorSpace,
+                                                colorSpaceName: NSColorSpaceName.calibratedRGB,
                                                 bytesPerRow: 0, bitsPerPixel: 0) {
                 let context = NSGraphicsContext(bitmapImageRep: bitmapRep)
                 let inRect = NSRect(x: 0.0, y: 0.0, width: 300.0 * i, height: height * i)
 
                 NSGraphicsContext.saveGraphicsState()
-                NSGraphicsContext.setCurrent(context)
-                NSGraphicsContext.current()?.imageInterpolation = NSImageInterpolation.high
+                NSGraphicsContext.current = context
+                NSGraphicsContext.current?.imageInterpolation = NSImageInterpolation.high
                 source.draw(in: inRect, from: NSRect.zero, operation: .sourceOver, fraction: 1.0)
                 NSGraphicsContext.restoreGraphicsState()
                 image.addRepresentation(bitmapRep)
@@ -294,7 +294,7 @@ class Controller: NSViewController {
         let coverHeight = min(max(image.size.height, 89), 600)
         currentTrackCover.image = image
         NSAnimationContext.beginGrouping()
-        NSAnimationContext.current().duration = 0.25
+        NSAnimationContext.current.duration = 0.25
         currentTrackCoverHeight.animator().constant = coverHeight
         NSAnimationContext.endGrouping()
     }
@@ -307,11 +307,11 @@ class Controller: NSViewController {
 
     /// Sets the `MPDClient` boolean flag to stop after current track to the button's value.
     @IBAction func stopAfterCurrentWasClicked(_ sender: NSButton) {
-        MPDClient.shared.stopAfterCurrent = sender.state > 0 ? true : false
+        MPDClient.shared.stopAfterCurrent = sender.state == .on
     }
 
     /// Connects to/disconnects from the server.
-    func toggleConnection() {
+    @objc func toggleConnection() {
         if MPDClient.shared.connected {
             reconnectDisable = true
             MPDClient.shared.disconnect()
@@ -330,9 +330,9 @@ class Controller: NSViewController {
         // toggled on, it's 201 points high and the separator horizontal line is displayed.
         trackQueueSeparator.isHidden = false
         NSAnimationContext.runAnimationGroup({ _ in
-            trackQueueTableHeight.animator().constant = CGFloat(sender.state * 201)
+            trackQueueTableHeight.animator().constant = sender.state == .on ? 201 : 0
         }) {
-            if sender.state == 0 {
+            if sender.state == .off {
                 self.trackQueueSeparator.isHidden = true
             }
         }
@@ -358,15 +358,15 @@ class Controller: NSViewController {
 
     /// Listens to KMBMPDCOptionsReload notifications and updates the main menu
     /// items with the correct values from `MPDClient`.
-    func updateModeSelections() {
-        consumeModeButton.state = MPDClient.shared.consumeMode ? 1 : 0
-        randomModeButton.state = MPDClient.shared.randomMode ? 1 : 0
-        repeatModeButton.state = MPDClient.shared.repeatMode ? 1 : 0
-        singleModeButton.state = MPDClient.shared.singleMode ? 1 : 0
+    @objc func updateModeSelections() {
+        consumeModeButton.state = MPDClient.shared.consumeMode ? .on : .off
+        randomModeButton.state = MPDClient.shared.randomMode ? .on : .off
+        repeatModeButton.state = MPDClient.shared.repeatMode ? .on : .off
+        singleModeButton.state = MPDClient.shared.singleMode ? .on : .off
     }
 
     /// Updates user interface when MPD state or current track changes.
-    func updatePlayerStatus() {
+    @objc func updatePlayerStatus() {
         var trackArtist: String = ""
         var trackCover: NSImage? = nil
         var trackTitle: String = "kmbmpdc"
@@ -381,12 +381,12 @@ class Controller: NSViewController {
             self.currentTrackArtist.stringValue = trackArtist
             self.currentTrackTitle.stringValue = trackTitle
             self.setCover(trackCover)
-            self.stopAfterCurrentButton.state = MPDClient.shared.stopAfterCurrent ? 1 : 0
+            self.stopAfterCurrentButton.state = MPDClient.shared.stopAfterCurrent ? .on : .off
         }
     }
 
     /// Updates the track queue table when the global `TrackQueue` is updated.
-    func updateQueue() {
+    @objc func updateQueue() {
         DispatchQueue.main.async {
             self.trackQueueTable.reloadData()
         }

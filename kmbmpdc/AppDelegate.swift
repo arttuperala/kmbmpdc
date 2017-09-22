@@ -4,9 +4,9 @@ import MediaKeyTap
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate,
                    NSUserNotificationCenterDelegate, MediaKeyTapDelegate {
-    let controller = Controller(nibName: "Controller", bundle: Bundle.main)
+    let controller = Controller(nibName: NSNib.Name("Controller"), bundle: Bundle.main)
     let popover = NSPopover()
-    let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
     var mediaKeyTap: MediaKeyTap?
     var popoverDismissMonitor: Any?
@@ -16,12 +16,12 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         NSUserNotificationCenter.default.delegate = self
         NSUserNotificationCenter.default.removeAllDeliveredNotifications()
 
-        controller!.loadView()
-        controller!.viewDidLoad()
-        controller!.appDelegate = self
+        controller.loadView()
+        controller.viewDidLoad()
+        controller.appDelegate = self
         popover.contentViewController = controller
 
-        let playButtonImage = Bundle.main.image(forResource: "StatusPaused")!
+        let playButtonImage = Bundle.main.image(forResource: Constants.Images.statusPaused)!
         playButtonImage.isTemplate = true
         statusItem.image = playButtonImage
         statusItem.action = #selector(AppDelegate.togglePopover)
@@ -64,30 +64,30 @@ class AppDelegate: NSObject, NSApplicationDelegate,
     func openPopover(_ button: NSStatusBarButton) {
         mediaKeyTap?.activate()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-        NSApplication.shared().activate(ignoringOtherApps: true)
+        NSApplication.shared.activate(ignoringOtherApps: true)
         if popoverDismissMonitor == nil {
             let eventHandler: (NSEvent) -> Void = {_ in
-                if self.controller?.searchPopover?.isShown ?? false {
+                if self.controller.searchPopover?.isShown ?? false {
                     return
                 }
 
                 self.closePopover()
             }
-            let eventMask = NSEventMask.leftMouseDown.union(NSEventMask.rightMouseDown)
+            let eventMask = NSEvent.EventTypeMask.leftMouseDown.union(NSEvent.EventTypeMask.rightMouseDown)
             popoverDismissMonitor = NSEvent.addGlobalMonitorForEvents(matching: eventMask,
                                                                       handler: eventHandler)
         }
     }
 
     /// Create a preference window object, tie it to the AppDelegate and launch it.
-    func openPreferences() {
+    @objc func openPreferences() {
         if preferenceWindow == nil {
             let viewController = Preferences()
             viewController.owner = self
             preferenceWindow = NSWindow(contentViewController: viewController)
             let nonResizableMask: UInt = preferenceWindow!.styleMask.rawValue &
-                ~NSWindowStyleMask.resizable.rawValue
-            preferenceWindow!.styleMask = NSWindowStyleMask(rawValue: nonResizableMask)
+                ~NSWindow.StyleMask.resizable.rawValue
+            preferenceWindow!.styleMask = NSWindow.StyleMask(rawValue: nonResizableMask)
             preferenceWindow!.title = "kmbmpdc Preferences"
         }
         preferenceWindow!.makeKeyAndOrderFront(self)
@@ -95,7 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
     }
 
     /// Opens or closes the popover depending on its current state.
-    func togglePopover() {
+    @objc func togglePopover() {
         if let button = statusItem.button {
             if popover.isShown {
                 closePopover()

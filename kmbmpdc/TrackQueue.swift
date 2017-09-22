@@ -23,7 +23,7 @@ class TrackQueue: NSObject, NSTableViewDelegate, NSTableViewDataSource {
         }
 
         let track = tracks[row]
-        if let cell: TrackCell = tableView.make(withIdentifier: tableColumn!.identifier,
+        if let cell: TrackCell = tableView.makeView(withIdentifier: tableColumn!.identifier,
                                                 owner: self) as? TrackCell {
             cell.generate(for: track)
             return cell
