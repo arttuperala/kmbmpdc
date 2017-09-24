@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Fixed
+- Fixed kmbmpdc crashing when no cover art is supplied.
+
 ### Changed
 - Cover art scaling mechanism now produces two image representations, one for Retina displays and one for non-Retina displays.
 

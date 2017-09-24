@@ -24,7 +24,7 @@ kmbmpdc requires 10.11 or newer.
 
 ## Installation
 
-Official builds can be found in [Github releases](https://github.com/arttuperala/kmbmpdc/releases). The releases are unsigned.
+Release builds can be found in [Github releases](https://github.com/arttuperala/kmbmpdc/releases). Development builds based on the master branch are uploaded to [Meido](https://meido.perala.me/kmbmpdc). All builds are unsigned.
 
 If you are using [Homebrew-Cask](https://github.com/caskroom/homebrew-cask), you can install the official build with the command:
 
