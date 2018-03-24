@@ -208,7 +208,9 @@ class Controller: NSViewController {
             let menuItem = NSMenuItem(title: playlist, action: selector, keyEquivalent: "")
             playlistMenu.addItem(menuItem)
         }
-        playlistMenu.popUp(positioning: nil, at: sender.frame.origin, in: sender)
+        // Under the playlist button
+        let point = NSPoint(x: 0, y: sender.frame.height)
+        playlistMenu.popUp(positioning: nil, at: point, in: sender)
     }
 
     @IBAction func previousWasClicked(_ sender: NSButton) {
