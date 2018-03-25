@@ -11,9 +11,12 @@ class Track: NSObject {
     let number: Int?
     let duration: Int?
 
+    var coverArt: NSImage?
+
     convenience init(identifier: Int32) {
         let trackInfo = MPDClient.shared.lookupSong(identifier: identifier)
         self.init(trackInfo: trackInfo)
+        self.coverArt = self.getCoverArt()
     }
 
     init(trackInfo: OpaquePointer) {
@@ -27,7 +30,7 @@ class Track: NSObject {
         mpd_song_free(trackInfo)
     }
 
-    var coverArt: NSImage? {
+    func getCoverArt() -> NSImage? {
         guard let filePath = self.path else {
             return nil
         }
@@ -61,11 +64,10 @@ class Track: NSObject {
         guard check_id3_identifier(path) == 1 else {
             return nil
         }
-
         let apic = get_id3_picture_data(path)
         var image: NSImage?
         if apic.size > 0 {
-            let imageData = Data(bytesNoCopy: apic.data, count: apic.size, deallocator: .none)
+            let imageData = Data(bytes: apic.data, count: apic.size)
             image = NSImage(data: imageData)
         }
         free_picture_data(apic)

@@ -4,6 +4,7 @@
 ### Fixed
 - Fixed kmbmpdc crashing when no cover art is supplied.
 - Fixed playlist menu positioning.
+- Improved ID3v2 cover art fetching.
 
 ### Changed
 - Cover art scaling mechanism now produces two image representations, one for Retina displays and one for non-Retina displays.
