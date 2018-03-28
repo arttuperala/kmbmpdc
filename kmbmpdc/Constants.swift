@@ -10,11 +10,11 @@ struct Constants {
         static let statusPaused = NSImage.Name("StatusPaused")
         static let statusPlaying = NSImage.Name("StatusPlaying")
     }
-    
+
     struct Nibs {
         static let search = NSNib.Name("Search")
     }
-    
+
     struct Notifications {
         static let changedTrack = Notification.Name("KMBMPDCChangedTrack")
         static let connected = Notification.Name("KMBMPDCConnected")

@@ -160,10 +160,11 @@ class Controller: NSViewController {
 
         DispatchQueue.main.async {
             let center = NSUserNotificationCenter.default
-            for deliveredNotification in center.deliveredNotifications {
-                if deliveredNotification.identifier == Constants.UserNotifications.trackChange {
-                    center.removeDeliveredNotification(deliveredNotification)
-                }
+            let trackNotifications = center.deliveredNotifications.filter {
+                $0.identifier == Constants.UserNotifications.trackChange
+            }
+            for trackNotification in trackNotifications {
+                center.removeDeliveredNotification(trackNotification)
             }
             center.deliver(notification)
         }
@@ -264,12 +265,11 @@ class Controller: NSViewController {
             source = cover!
         }
 
-        // Produce a scaled version of the given cover art to fit the target `NSImageView`.
-        // `NSImage` is produced by creating two different sized bitmap representations, one 300
-        // pixels wide and other 600 pixels wide, in order to display good quality cover art on
-        // regular PPI displays and Apple's Retina displays.
-        // `NSImageInterpolation.high` is used to produce better quality scaling, especially when
-        // downscaling bigger cover art scans.
+        // Produce a scaled version of the given cover art to fit the target `NSImageView`. `NSImage` is produced by
+        // creating two different sized bitmap representations, one 300 pixels wide and other 600 pixels wide, in order
+        // to display good quality cover art on regular PPI displays and Apple's Retina displays.
+        // `NSImageInterpolation.high` is used to produce better quality scaling, especially when downscaling bigger
+        // cover art scans.
         let height = floor(source.size.height / source.size.width * 300.0)
         let image = NSImage(size: NSSize(width: 300.0, height: height))
         for i: CGFloat in [1, 2] {
@@ -331,13 +331,15 @@ class Controller: NSViewController {
         // If display is toggled on, `sender.state` equals 1 and if not, 0. When the queue view is
         // toggled on, it's 201 points high and the separator horizontal line is displayed.
         trackQueueSeparator.isHidden = false
-        NSAnimationContext.runAnimationGroup({ _ in
-            trackQueueTableHeight.animator().constant = sender.state == .on ? 201 : 0
-        }) {
+        let animation: (NSAnimationContext) -> Void = { _ in
+            self.trackQueueTableHeight.animator().constant = sender.state == .on ? 201 : 0
+        }
+        let callback = {
             if sender.state == .off {
                 self.trackQueueSeparator.isHidden = true
             }
         }
+        NSAnimationContext.runAnimationGroup(animation, completionHandler: callback)
     }
 
     @IBAction func toggleRandomMode(_ sender: NSButton) {

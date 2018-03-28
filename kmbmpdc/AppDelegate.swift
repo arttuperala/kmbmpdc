@@ -2,8 +2,7 @@ import Cocoa
 import MediaKeyTap
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate,
-                   NSUserNotificationCenterDelegate, MediaKeyTapDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate, MediaKeyTapDelegate {
     let controller = Controller(nibName: NSNib.Name("Controller"), bundle: Bundle.main)
     let popover = NSPopover()
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -59,8 +58,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         }
     }
 
-    /// Open the controller popover and monitor when user clicks outside kmbmpdc UI to dismiss the
-    /// popover.
+    /// Open the controller popover and monitor when user clicks outside kmbmpdc UI to dismiss the popover.
     func openPopover(_ button: NSStatusBarButton) {
         mediaKeyTap?.activate()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
@@ -74,8 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
                 self.closePopover()
             }
             let eventMask = NSEvent.EventTypeMask.leftMouseDown.union(NSEvent.EventTypeMask.rightMouseDown)
-            popoverDismissMonitor = NSEvent.addGlobalMonitorForEvents(matching: eventMask,
-                                                                      handler: eventHandler)
+            popoverDismissMonitor = NSEvent.addGlobalMonitorForEvents(matching: eventMask, handler: eventHandler)
         }
     }
 
@@ -85,8 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
             let viewController = Preferences()
             viewController.owner = self
             preferenceWindow = NSWindow(contentViewController: viewController)
-            let nonResizableMask: UInt = preferenceWindow!.styleMask.rawValue &
-                ~NSWindow.StyleMask.resizable.rawValue
+            let nonResizableMask: UInt = preferenceWindow!.styleMask.rawValue & ~NSWindow.StyleMask.resizable.rawValue
             preferenceWindow!.styleMask = NSWindow.StyleMask(rawValue: nonResizableMask)
             preferenceWindow!.title = "kmbmpdc Preferences"
         }
@@ -110,8 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate,
         return true
     }
 
-    func userNotificationCenter(_ center: NSUserNotificationCenter,
-                                didActivate notification: NSUserNotification) {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
         if !popover.isShown {
             togglePopover()
         }

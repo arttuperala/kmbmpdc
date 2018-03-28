@@ -91,8 +91,7 @@ class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
-                   row: Int) -> Any? {
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         guard let identifier = tableColumn?.identifier else {
             return nil
         }

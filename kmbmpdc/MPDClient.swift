@@ -35,8 +35,7 @@ class MPDClient: NSObject {
         return host
     }
 
-    /// Returns the saved connection password string. If no string is saved in preferences, nil is
-    /// returned.
+    /// Returns the saved connection password string. If no string is saved in preferences, nil is returned.
     var connectionPassword: String? {
         guard let pass = UserDefaults.standard.string(forKey: Constants.Preferences.mpdPass) else {
             return nil
@@ -239,9 +238,8 @@ class MPDClient: NSObject {
         idleEnter()
     }
 
-    /// Toggles between play and pause modes. If there isn't a song currently playing or paused,
-    /// starts playing the first track on the playlist to make sure there is a change to playback
-    /// when requested.
+    /// Toggles between play and pause modes. If there isn't a song currently playing or paused, starts playing the
+    /// first track on the playlist to make sure there is a change to playback when requested.
     func playPause() {
         idleExit()
         let status = mpd_run_status(mpdConnection!)
@@ -268,9 +266,8 @@ class MPDClient: NSObject {
         idleEnter()
     }
 
-    /// Continuously sends idle commands to MPD until quitIdle is set to true. When the loop exits,
-    /// idling property is set to false so that operations that wait for idling to be finished can
-    /// continue execution.
+    /// Continuously sends idle commands to MPD until quitIdle is set to true. When the loop exits, idling property is
+    /// set to false so that operations that wait for idling to be finished can continue execution.
     func receiveIdleEvents() {
         DispatchQueue.global(qos: .background).async {
             idleLoop: while !self.quitIdle {
@@ -384,8 +381,7 @@ class MPDClient: NSObject {
         NotificationCenter.default.post(notification)
     }
 
-    /// Fetches the queue not including the currently playing track and saves it to the global
-    /// `TrackQueue` object.
+    /// Fetches the queue not including the currently playing track and saves it to the global `TrackQueue` object.
     func reloadQueue() {
         while self.queueBusy {
             usleep(100 * 1000)
@@ -460,8 +456,7 @@ class MPDClient: NSObject {
         idleEnter()
     }
 
-    /// Toggles a MPD option with idle mode cancel and resume, and refreshes the instance variables
-    /// from MPD afterwards.
+    /// Toggles a MPD option with idle mode cancel and resume, and refreshes the instance variables from MPD afterwards.
     /// - Parameter mode: MPDClient instance variable that stores the option value.
     /// - Parameter modeToggleFunction: libmpdclient function that toggles the option.
     func toggleMode(_ mode: Bool, modeToggleFunction: MPDSettingToggle) {

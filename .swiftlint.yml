@@ -4,7 +4,8 @@ disabled_rules:
 opt_in_rules:
   - overridden_super_call
   - conditional_returns_on_newline
+  - operator_usage_whitespace
 included:
   - kmbmpdc
 
-line_length: 110
+line_length: 120
