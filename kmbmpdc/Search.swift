@@ -68,10 +68,13 @@ class Search: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     @IBAction func performSearch(_ sender: NSSearchField) {
         if sender.stringValue.isEmpty {
             results.removeAll()
+            resultTable.reloadData()
         } else {
-            results = MPDClient.shared.search(for: sender.stringValue)
+            MPDClient.shared.search(for: sender.stringValue) { results in
+                self.results = results
+                DispatchQueue.main.async { self.resultTable.reloadData() }
+            }
         }
-        resultTable.reloadData()
     }
 
     /// Resizes the table columns to their predefined widths.

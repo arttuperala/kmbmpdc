@@ -1,14 +1,24 @@
 import Cocoa
 import libmpdclient
 
+extension mpd_idle {
+    static func mask(_ masks: mpd_idle...) -> mpd_idle {
+        var bitMask: UInt32 = masks[0].rawValue
+        for mask in masks[1...] {
+            bitMask |= mask.rawValue
+        }
+        return mpd_idle(bitMask)
+    }
+
+    func matches(mask: mpd_idle) -> Bool {
+        return self.rawValue & mask.rawValue == mask.rawValue
+    }
+}
+
 class MPDClient: NSObject {
     static let shared = MPDClient()
-    static let idleMask: mpd_idle = mpd_idle(MPD_IDLE_STORED_PLAYLIST.rawValue |
-                                             MPD_IDLE_QUEUE.rawValue |
-                                             MPD_IDLE_PLAYER.rawValue |
-                                             MPD_IDLE_OPTIONS.rawValue)
-
-    var mpdConnection: OpaquePointer?
+    static let idleMask: mpd_idle = mpd_idle.mask(MPD_IDLE_STORED_PLAYLIST, MPD_IDLE_QUEUE,
+                                                  MPD_IDLE_PLAYER, MPD_IDLE_OPTIONS)
 
     var connected: Bool = false
     var consumeMode: Bool = false
@@ -22,9 +32,12 @@ class MPDClient: NSObject {
     var singleMode: Bool = false
     var stopAfterCurrent: Bool = false
 
-    private var queueBusy: Bool = false
+    private var commandQueue: [MPDCommand] = []
+    private var mpdConnection: OpaquePointer?
+    private var mpdSocket: FileHandle?
 
     typealias MPDSettingToggle = (OpaquePointer, Bool) -> Bool
+    typealias MPDCommand = (OpaquePointer) -> Void
 
     /// Returns the saved connection host string. If no string is saved in preferences, an empty
     /// string is returned, which in turns makes mpd_connection_new use the default host.
@@ -51,11 +64,11 @@ class MPDClient: NSObject {
 
     /// Adds an array of `Track` objects at the end of the queue.
     func append(_ tracks: [Track]) {
-        idleExit()
-        for track in tracks {
-            mpd_run_add(mpdConnection!, track.uri)
+        runBlock { connection in
+            for track in tracks {
+                mpd_run_add(connection, track.uri)
+            }
         }
-        idleEnter()
     }
 
     /// Checks that the controller has some kind of permission to message the server. Returns `true`
@@ -63,7 +76,7 @@ class MPDClient: NSObject {
     ///
     /// The permissions that `MPDClient` looks for are _"play"_ (for control) and _"currentsong"_
     /// (for reading the server).
-    func checkPermissions() -> Bool {
+    private func checkPermissions() -> Bool {
         var currentSongPermission = false
         var playPermission = false
 
@@ -105,7 +118,10 @@ class MPDClient: NSObject {
             reloadOptions()
             reloadPlaylists()
             reloadQueue()
-            idleEnter()
+            mpd_send_idle_mask(self.mpdConnection!, MPDClient.idleMask)
+
+            mpdSocket = FileHandle(fileDescriptor: mpd_connection_get_fd(mpdConnection!))
+            mpdSocket?.readabilityHandler = self.handleIdleEvent
 
             notificationName = Constants.Notifications.connected
         }
@@ -120,40 +136,59 @@ class MPDClient: NSObject {
 
     /// Frees up the connection and sets the instance variable connected to false. Also exits idle
     /// if still idling. Sends a KMBMPDCDisconnected on completion.
-    /// - Parameter exitIdle: Boolean value indicating if idle should be exited before the
-    /// connection is freed up. Defaults to true.
-    func disconnect(_ exitIdle: Bool = true) {
-        if exitIdle {
-            idleExit()
-        }
+    func disconnect() {
         mpd_connection_free(mpdConnection!)
+        mpdSocket = nil
         connected = false
 
         let notification = Notification(name: Constants.Notifications.disconnected, object: nil)
         NotificationCenter.default.post(notification)
     }
 
-    /// Starts the idling background loop and sets quitIdle to false.
-    func idleEnter() {
-        quitIdle = false
-        receiveIdleEvents()
+    /// Checks and attempts to recover from errors. If error cannot be recovered from, disconnects client.
+    @discardableResult private func handleError() -> Bool {
+        if mpd_connection_get_error(mpdConnection!) != MPD_ERROR_SUCCESS {
+            let result = mpd_connection_clear_error(mpdConnection!)
+            if !result {
+                disconnect()
+            }
+            return result
+        }
+        return true
     }
 
-    /// Sets quitIdle variable to false, prompting the background idle loop to exit. Blocks until
-    /// the idle loop exits.
-    func idleExit() {
-        quitIdle = true
-        mpd_send_noidle(mpdConnection!)
-        while self.idling {
-            usleep(100 * 1000)
+    /// Fired every time the MPD socket is ready to be read. Handles updating the player state with
+    /// the information from the server as well as sending commands sent with runBlock.
+    private func handleIdleEvent(socket: FileHandle) {
+        let event_mask: mpd_idle = mpd_recv_idle(mpdConnection!, true)
+        self.handleError()
+
+        if event_mask.matches(mask: MPD_IDLE_STORED_PLAYLIST) {
+            reloadPlaylists()
         }
+        if event_mask.matches(mask: MPD_IDLE_PLAYER) {
+            reloadPlayerStatus()
+        }
+        if event_mask.matches(mask: MPD_IDLE_QUEUE) {
+            reloadQueue()
+        }
+        if event_mask.matches(mask: MPD_IDLE_OPTIONS) {
+            reloadOptions()
+        }
+
+        while commandQueue.count > 0 {
+            let command = commandQueue.removeFirst()
+            command(mpdConnection!)
+        }
+
+        mpd_send_idle_mask(mpdConnection!, MPDClient.idleMask)
     }
 
     /// Inserts given tracks at the given position.
-    func insert(_ tracks: [Track], at beginning: UInt32) {
+    func insert(_ connection: OpaquePointer, tracks: [Track], at beginning: UInt32) {
         var position = beginning
         for track in tracks {
-            mpd_run_add_id_to(mpdConnection!, track.uri, position)
+            mpd_run_add_id_to(connection, track.uri, position)
             position += 1
         }
     }
@@ -161,141 +196,105 @@ class MPDClient: NSObject {
     /// Inserts given tracks before the first track with a different album name compared to the
     /// current track album name.
     func insertAfterCurrentAlbum(_ tracks: [Track]) {
-        idleExit()
-        let status = mpd_run_status(mpdConnection!)
-        var position = UInt32(mpd_status_get_song_pos(status) + 1)
-        if let albumName = currentTrack?.album {
-            let queueLength = mpd_status_get_queue_length(status)
-            while position < queueLength {
-                let song = mpd_run_get_queue_song_pos(mpdConnection!, position)
-                if song == nil {
-                    break
-                }
-                let track = Track(trackInfo: song!)
+        runBlock { connection in
+            let status = mpd_run_status(connection)
+            var position = UInt32(mpd_status_get_song_pos(status) + 1)
+            if let albumName = self.currentTrack?.album {
+                let queueLength = mpd_status_get_queue_length(status)
+                while position < queueLength {
+                    let song = mpd_run_get_queue_song_pos(connection, position)
+                    if song == nil {
+                        break
+                    }
+                    let track = Track(trackInfo: song!)
 
-                if track.album == albumName {
-                    position += 1
-                } else {
-                    break
+                    if track.album == albumName {
+                        position += 1
+                    } else {
+                        break
+                    }
                 }
             }
+            self.insert(connection, tracks: tracks, at: position)
+            mpd_status_free(status)
         }
-        insert(tracks, at: position)
-        mpd_status_free(status)
-        idleEnter()
     }
 
     /// Inserts given tracks after currently playing song.
     func insertAfterCurrentTrack(_ tracks: [Track]) {
-        idleExit()
-        let status = mpd_run_status(mpdConnection!)
-        let position = UInt32(mpd_status_get_song_pos(status) + 1)
-        insert(tracks, at: position)
-        mpd_status_free(status)
-        idleEnter()
+        runBlock { connection in
+            let status = mpd_run_status(connection)
+            let position = UInt32(mpd_status_get_song_pos(status) + 1)
+            self.insert(connection, tracks: tracks, at: position)
+            mpd_status_free(status)
+        }
     }
 
     /// Inserts given tracks to the beginning of the queue.
     func insertAtBeginning(_ tracks: [Track]) {
-        idleExit()
-        insert(tracks, at: 0)
-        idleEnter()
+        runBlock { connection in
+            self.insert(connection, tracks: tracks, at: 0)
+        }
     }
 
     /// Loads playlist with given name and starts playback at first item based on queue length.
     func loadPlaylist(_ name: String) {
-        idleExit()
-        let status = mpd_run_status(mpdConnection!)
-        let queueLength = mpd_status_get_queue_length(status)
-        mpd_status_free(status)
-        mpd_run_load(mpdConnection!, name)
-        mpd_run_play_pos(mpdConnection!, queueLength)
-        idleEnter()
+        runBlock { connection in
+            let status = mpd_run_status(connection)
+            let queueLength = mpd_status_get_queue_length(status)
+            mpd_status_free(status)
+            mpd_run_load(connection, name)
+            mpd_run_play_pos(connection, queueLength)
+        }
     }
 
+    /// Get song ID from MPD server by queue identifier.
     func lookupSong(identifier: Int32) -> OpaquePointer {
         return mpd_run_get_queue_song_id(mpdConnection!, UInt32(identifier))
     }
 
-    func matchIdle(event: mpd_idle, mask: mpd_idle) -> Bool {
-        return event.rawValue & mask.rawValue == mask.rawValue
-    }
-
     /// Moves given track after the currently playing track.
     func moveAfterCurrent(_ track: Track) {
-        idleExit()
-        let status = mpd_run_status(mpdConnection!)
-        let position: UInt32 = UInt32(mpd_status_get_song_pos(status) + 1)
-        mpd_status_free(status)
-        mpd_run_move_id(mpdConnection!, UInt32(track.identifier), position)
-        idleEnter()
+        runBlock { connection in
+            let status = mpd_run_status(connection)
+            let position: UInt32 = UInt32(mpd_status_get_song_pos(status) + 1)
+            mpd_status_free(status)
+            mpd_run_move_id(connection, UInt32(track.identifier), position)
+        }
     }
 
     /// Goes to the next track on the current playlist.
     func next() {
-        idleExit()
-        mpd_run_next(mpdConnection!)
-        idleEnter()
+        runBlock { connection in
+            mpd_run_next(connection)
+        }
     }
 
     /// Toggles between play and pause modes. If there isn't a song currently playing or paused, starts playing the
     /// first track on the playlist to make sure there is a change to playback when requested.
     func playPause() {
-        idleExit()
-        let status = mpd_run_status(mpdConnection!)
-        switch mpd_status_get_state(status) {
-        case MPD_STATE_PLAY:
-            mpd_run_pause(mpdConnection, true)
-        case MPD_STATE_PAUSE:
-            mpd_run_play(mpdConnection!)
-        default:
-            mpd_send_list_queue_range_meta(mpdConnection!, 0, 1)
-            if let song = mpd_recv_song(mpdConnection!) {
-                mpd_run_play_pos(mpdConnection!, 0)
-                mpd_song_free(song)
+        runBlock { connection in
+            let status = mpd_run_status(connection)
+            switch mpd_status_get_state(status) {
+            case MPD_STATE_PLAY:
+                mpd_run_pause(connection, true)
+            case MPD_STATE_PAUSE:
+                mpd_run_play(connection)
+            default:
+                mpd_send_list_queue_range_meta(connection, 0, 1)
+                if let song = mpd_recv_song(connection) {
+                    mpd_run_play_pos(connection, 0)
+                    mpd_song_free(song)
+                }
             }
+            mpd_status_free(status)
         }
-        mpd_status_free(status)
-        idleEnter()
     }
 
     /// Goes to the previous track on the current playlist.
     func previous() {
-        idleExit()
-        mpd_run_previous(mpdConnection!)
-        idleEnter()
-    }
-
-    /// Continuously sends idle commands to MPD until quitIdle is set to true. When the loop exits, idling property is
-    /// set to false so that operations that wait for idling to be finished can continue execution.
-    func receiveIdleEvents() {
-        DispatchQueue.global(qos: .background).async {
-            idleLoop: while !self.quitIdle {
-                self.idling = mpd_send_idle_mask(self.mpdConnection!, MPDClient.idleMask)
-                let event_mask: mpd_idle = mpd_recv_idle(self.mpdConnection!, true)
-
-                // Received no data; disconnect if not peacefully exiting idle.
-                if event_mask.rawValue == 0 {
-                    if !self.quitIdle {
-                        self.disconnect(false)
-                        break idleLoop
-                    }
-                }
-
-                if self.matchIdle(event: event_mask, mask: MPD_IDLE_STORED_PLAYLIST) {
-                    self.reloadPlaylists()
-                }
-                if self.matchIdle(event: event_mask, mask: MPD_IDLE_PLAYER) {
-                    self.reloadPlayerStatus()
-                }
-                if self.matchIdle(event: event_mask, mask: MPD_IDLE_QUEUE) {
-                    self.reloadQueue()
-                }
-                if self.matchIdle(event: event_mask, mask: MPD_IDLE_OPTIONS) {
-                    self.reloadOptions()
-                }
-            }
-            self.idling = false
+        runBlock { connection in
+            mpd_run_previous(connection)
         }
     }
 
@@ -306,7 +305,7 @@ class MPDClient: NSObject {
 
     /// Checks MPD playing state and looks for potential track changes for notifications. Sends a
     /// KMBMPDCPlayerReload notification upon completion.
-    func reloadPlayerStatus() {
+    private func reloadPlayerStatus() {
         var changedTrack: Bool = false
         let status = mpd_run_status(mpdConnection!)
         let songId: Int32 = mpd_status_get_song_id(status)
@@ -347,7 +346,7 @@ class MPDClient: NSObject {
 
     /// Fetches the current playlists and adds the playlist names to `playlists` array.
     /// Sends a KMBMPDCPlaylistReload notification when the operation is finished.
-    func reloadPlaylists() {
+    private func reloadPlaylists() {
         let success: Bool = mpd_send_list_playlists(mpdConnection!)
         guard success else {
             return
@@ -369,7 +368,7 @@ class MPDClient: NSObject {
 
     /// Fetches the current options of MPD and updates the instance variables with the new data.
     /// Sends a KMBMPDCOptionsReload notification when the operation is finished.
-    func reloadOptions() {
+    private func reloadOptions() {
         let status = mpd_run_status(mpdConnection!)
         consumeMode = mpd_status_get_consume(status)
         repeatMode = mpd_status_get_repeat(status)
@@ -382,12 +381,7 @@ class MPDClient: NSObject {
     }
 
     /// Fetches the queue not including the currently playing track and saves it to the global `TrackQueue` object.
-    func reloadQueue() {
-        while self.queueBusy {
-            usleep(100 * 1000)
-        }
-        self.queueBusy = true
-
+    private func reloadQueue() {
         let success = mpd_send_list_queue_meta(mpdConnection!)
         var newQueue: [Track] = []
         while success {
@@ -408,7 +402,6 @@ class MPDClient: NSObject {
         }
 
         TrackQueue.global.tracks = newQueue
-        self.queueBusy = false
 
         let notification = Notification(name: Constants.Notifications.queueRefresh, object: nil)
         NotificationCenter.default.post(notification)
@@ -416,9 +409,9 @@ class MPDClient: NSObject {
 
     /// Removes a track from the queue.
     func remove(_ track: Track) {
-        idleExit()
-        mpd_run_delete_id(mpdConnection!, UInt32(track.identifier))
-        idleEnter()
+        runBlock { connection in
+            mpd_run_delete_id(connection, UInt32(track.identifier))
+        }
     }
 
     /// Toggles repeat mode.
@@ -426,22 +419,32 @@ class MPDClient: NSObject {
         toggleMode(repeatMode, modeToggleFunction: mpd_run_repeat)
     }
 
-    func search(for searchString: String) -> [Track] {
-        idleExit()
-        var tracks: [Track] = []
-        mpd_search_db_songs(mpdConnection!, false)
-        mpd_search_add_any_tag_constraint(mpdConnection!, MPD_OPERATOR_DEFAULT, searchString)
-        let success = mpd_search_commit(mpdConnection!)
-        while success {
-            let song = mpd_recv_song(mpdConnection!)
-            if song == nil {
-                break
+    /// Run MPD commands. Breaks idle loop in order for the commands to be processed.
+    /// - Parameter block: Commands to run after idle loop exits.
+    private func runBlock(block: @escaping MPDCommand) {
+        commandQueue.append(block)
+        mpd_send_noidle(mpdConnection!)
+    }
+
+    /// Performs search in MPD. Doesn't use any constraints in the search.
+    /// - Parameter searchString: String to perform the search with.
+    /// - Parameter update: Called with the Track array when search is complete.
+    func search(for searchString: String, update: @escaping ([Track]) -> Void) {
+        runBlock { connection in
+            var tracks: [Track] = []
+            mpd_search_db_songs(connection, false)
+            mpd_search_add_any_tag_constraint(connection, MPD_OPERATOR_DEFAULT, searchString)
+            let success = mpd_search_commit(connection)
+            while success {
+                let song = mpd_recv_song(connection)
+                if song == nil {
+                    break
+                }
+                let track = Track(trackInfo: song!)
+                tracks.append(track)
             }
-            let track = Track(trackInfo: song!)
-            tracks.append(track)
+            update(tracks)
         }
-        idleEnter()
-        return tracks
     }
 
     /// Toggles single mode.
@@ -451,18 +454,18 @@ class MPDClient: NSObject {
 
     /// Stops playback.
     func stop() {
-        idleExit()
-        mpd_run_stop(mpdConnection!)
-        idleEnter()
+        runBlock { connection in
+            mpd_run_stop(connection)
+        }
     }
 
     /// Toggles a MPD option with idle mode cancel and resume, and refreshes the instance variables from MPD afterwards.
     /// - Parameter mode: MPDClient instance variable that stores the option value.
     /// - Parameter modeToggleFunction: libmpdclient function that toggles the option.
-    func toggleMode(_ mode: Bool, modeToggleFunction: MPDSettingToggle) {
-        idleExit()
-        _ = modeToggleFunction(mpdConnection!, !mode)
-        reloadOptions()
-        idleEnter()
+    private func toggleMode(_ mode: Bool, modeToggleFunction: @escaping MPDSettingToggle) {
+        runBlock { connection in
+            _ = modeToggleFunction(connection, !mode)
+            self.reloadOptions()
+        }
     }
 }
