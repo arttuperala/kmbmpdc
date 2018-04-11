@@ -42,4 +42,5 @@ deploy:
     skip_cleanup: true
     script: 'curl -H "Authorization: ${MEIDO_KEY}" -F "build_number=${TRAVIS_BUILD_NUMBER}" -F "commit=${TRAVIS_COMMIT}" -F "file=@kmbmpdc.tar.gz" https://meido.perala.me/management/api/build'
     on:
+      all_branches: true
       condition: $TRAVIS_TAG = ''
