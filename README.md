@@ -28,7 +28,7 @@ Release builds can be found in [Github releases](https://github.com/arttuperala/
 
 If you are using [Homebrew-Cask](https://github.com/caskroom/homebrew-cask), you can install the official build with the command:
 
-    brew cask install kmbmpdc
+    brew install --cask kmbmpdc
 
 ## Usage
 
