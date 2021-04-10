@@ -2,17 +2,17 @@ import Cocoa
 
 struct Constants {
     struct Images {
-        static let pauseButton = NSImage.Name("PauseButton")
-        static let pauseButtonAlt = NSImage.Name("PauseButtonAlt")
-        static let placeholderCover = NSImage.Name("PlaceholderCover")
-        static let playButton = NSImage.Name("PlayButton")
-        static let playButtonAlt = NSImage.Name("PlayButtonAlt")
-        static let statusPaused = NSImage.Name("StatusPaused")
-        static let statusPlaying = NSImage.Name("StatusPlaying")
+        static let pauseButton = "PauseButton"
+        static let pauseButtonAlt = "PauseButtonAlt"
+        static let placeholderCover = "PlaceholderCover"
+        static let playButton = "PlayButton"
+        static let playButtonAlt = "PlayButtonAlt"
+        static let statusPaused = "StatusPaused"
+        static let statusPlaying = "StatusPlaying"
     }
 
     struct Nibs {
-        static let search = NSNib.Name("Search")
+        static let search = "Search"
     }
 
     struct Notifications {

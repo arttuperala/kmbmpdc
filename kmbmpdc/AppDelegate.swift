@@ -3,7 +3,7 @@ import MediaKeyTap
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate, MediaKeyTapDelegate {
-    let controller = Controller(nibName: NSNib.Name("Controller"), bundle: Bundle.main)
+    let controller = Controller(nibName: "Controller", bundle: Bundle.main)
     let popover = NSPopover()
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
