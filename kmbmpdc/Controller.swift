@@ -245,7 +245,7 @@ class Controller: NSViewController {
     func reconnectSchedule() {
         let timer = Timer(timeInterval: reconnectTimer, target: self,
                           selector: #selector(Controller.reconnect), userInfo: nil, repeats: false)
-        RunLoop.main.add(timer, forMode: .commonModes)
+        RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
 
         reconnectTimer *= 2
         if reconnectTimer > 60.0 {
